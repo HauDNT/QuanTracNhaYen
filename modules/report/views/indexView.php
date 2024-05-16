@@ -65,7 +65,7 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="row">
-                <h3>Thống kê</h3>
+                <h3>Báo cáo</h3>
             </div>
             <!-- Dropdowns -->
             <!-- <div class="row dropdown-wrapper">

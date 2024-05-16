@@ -24,7 +24,7 @@
                     </a>
                 </li>
                 <li class="list">
-                    <a href="#" class="nav-link">
+                    <a href="?mod=report" class="nav-link">
                         <i class="bx bxs-bar-chart-alt-2 icon"></i>
                         <span class="link">Báo cáo</span>
                     </a>

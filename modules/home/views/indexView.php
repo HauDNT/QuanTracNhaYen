@@ -18,13 +18,13 @@
         <div class="sidebar-content">
             <ul class="lists list-inline">
                 <li class="list">
-                    <a href="/nhayen" class="nav-link">
+                    <a href="?mod=home" class="nav-link">
                         <i class="bx bxs-home icon"></i>
                         <span class="link">Dashboard</span>
                     </a>
                 </li>
                 <li class="list">
-                    <a href="#" class="nav-link">
+                    <a href="?mod=report" class="nav-link">
                         <i class="bx bxs-bar-chart-alt-2 icon"></i>
                         <span class="link">Báo cáo</span>
                     </a>
@@ -61,7 +61,7 @@
     </div>
 </nav>
 
-<div class="container-fluid mainpage">
+<div class="container-fluid mainpage mt-3">
     <div class="row">
         <div class="col-sm-12">
             <div class="row">
@@ -116,7 +116,7 @@
             </div>
 
             <!-- Cards -->
-            <div class="row card-wrapper">
+            <div class="row card-wrapper mx-1">
                 <div class="card col-sm-2">
                     <div class="card-body">
                         <div class="card-heading">

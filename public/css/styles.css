@@ -134,7 +134,7 @@ nav.open ~ .overlay {
 
 /* Main page */
 .mainpage {
-    margin: 15px 0 10px 20px;
+    /* margin: 15px 0 10px 20px; */
     position: absolute;
     top: var(--nav-height);
     z-index: -1;

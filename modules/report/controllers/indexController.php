@@ -6,7 +6,8 @@ function construct() {
 }
 
 function indexAction() {
-    load_view('index');
+    $report = get_report();
+    load_view('index', ["report" => $report]);
 }
 
 function addAction() {

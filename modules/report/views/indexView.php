@@ -1,6 +1,5 @@
 <!-- Header -->
 <?php require "./layout/header.php" ?>
-
 <!-- Navbar -->
 <nav>
     <div class="logo">
@@ -91,21 +90,27 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th scope="col">STT</th>
-                        <th scope="col">Tên cảm biến</th>
-                        <th scope="col">Giá trị</th>
-                        <th scope="col">Đơn vị</th>
-                        <th scope="col">Ngày tạo</th>
+                        <th scope="col" class="text-center">STT</th>
+                        <th scope="col" class="text-center">Tên cảm biến</th>
+                        <th scope="col" class="text-center">Trạm</th>
+                        <th scope="col" class="text-center">Tầng</th>
+                        <th scope="col" class="text-center">Giá trị</th>
+                        <th scope="col" class="text-center">Đơn vị</th>
+                        <th scope="col" class="text-center">Ngày tạo</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th>1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
+                    <?php foreach($report as $index => $value): ?>
+                        <tr>
+                            <th class="text-center"><?= $index + 1 ?></th>
+                            <td class="text-center"><?= $value["sensorsName"] ?></td>
+                            <td class="text-center"><?= $value["stationName"] ?></td>
+                            <td class="text-center"><?= $value["Position"] ?></td>
+                            <td class="text-center"><?= $value["value"] ?></td>
+                            <td class="text-center"><?= $value["unit"] ?></td>
+                            <td class="text-center"><?= $value["createdAt"] ?></td>
+                        </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>

@@ -11,7 +11,7 @@
  * 
  */
 
-$config['base_url'] = "http://localhost/nhayen/";
+$config['base_url'] = "http://localhost:8080/swiftlet_home/";
 
 
 $config['default_module'] = 'home';

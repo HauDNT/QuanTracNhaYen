@@ -18,7 +18,7 @@
         <div class="sidebar-content">
             <ul class="lists list-inline">
                 <li class="list">
-                    <a href="/nhayen" class="nav-link">
+                    <a href="#" class="nav-link">
                         <i class="bx bxs-home icon"></i>
                         <span class="link">Dashboard</span>
                     </a>

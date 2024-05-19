@@ -9,91 +9,16 @@
     </div>
 
     <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="logo">
-            <i class="bx bx-menu menu-icon"></i>
-            <span class="logo-name">Quản lý nhà yến</span>
-        </div>
-
-        <div class="sidebar-content">
-            <ul class="lists list-inline">
-                <li class="list">
-                    <a href="?mod=home" class="nav-link">
-                        <i class="bx bxs-home icon"></i>
-                        <span class="link">Dashboard</span>
-                    </a>
-                </li>
-                <li class="list">
-                    <a href="?mod=report" class="nav-link">
-                        <i class="bx bxs-bar-chart-alt-2 icon"></i>
-                        <span class="link">Báo cáo</span>
-                    </a>
-                </li>
-                <li class="list">
-                    <a href="#" class="nav-link">
-                        <i class="bx bxs-certification icon"></i>
-                        <span class="link">Nhiệt độ, độ ẩm</span>
-                    </a>
-                </li>
-                <li class="list">
-                    <a href="#" class="nav-link">
-                        <i class="bx bxs-hot icon"></i>
-                        <span class="link">Báo cháy</span>
-                    </a>
-                </li>
-                <li class="list">
-                    <a href="#" class="nav-link">
-                        <i class="bx bxs-cog icon"></i>
-                        <span class="link">Thiết lập</span>
-                    </a>
-                </li>
-            </ul>
-
-            <div class="bottom-cotent">
-                <li class="list">
-                    <a href="#" class="nav-link">
-                        <i class="bx bx-log-out icon"></i>
-                        <span class="link">Đăng xuất</span>
-                    </a>
-                </li>
-            </div>
-        </div>
-    </div>
+    <?php require "./layout/sidebar.php" ?>
 </nav>
 
+<!-- Content -->
 <div class="container-fluid mainpage mt-3">
     <div class="row">
         <div class="col-sm-12">
             <div class="row">
                 <h3>Thống kê</h3>
             </div>
-            <!-- Dropdowns -->
-            <!-- <div class="row dropdown-wrapper">
-                <div class="dropdown">
-                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Vị trí
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Action</a>
-                    </div>
-                </div>
-                <div class="dropdown">
-                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Nhiệt độ
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Action</a>
-                    </div>
-                </div>
-                <div class="dropdown">
-                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Tháng
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Action</a>
-                    </div>
-                </div>
-            </div> -->
 
             <div class="d-flex">
                 <select class="form-select w-auto me-2" style="cursor: pointer" aria-label="Default select example">

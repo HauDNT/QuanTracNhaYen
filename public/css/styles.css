@@ -181,3 +181,19 @@ nav.open ~ .overlay {
     text-align: center;
     width: 100vw;
 }
+
+/* toast */
+.toast-container {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 1055;
+}
+.toast {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}
+.toast-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}

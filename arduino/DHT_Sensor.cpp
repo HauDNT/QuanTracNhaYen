@@ -15,10 +15,10 @@ float DHT_Sensor::readHumidity() {
 }
 
 void DHT_Sensor::showData(float temperature, float humidity) {
-    Serial.print("Temperature: ");
+    Serial.print("- Temperature: ");
     Serial.print(temperature);
     Serial.println(" °C");
-    Serial.print("Humidity: ");
+    Serial.print("- Humidity: ");
     Serial.print(humidity);
     Serial.println(" %");
 }

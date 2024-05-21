@@ -1,2 +1,0 @@
-interval=2
-temperature=30

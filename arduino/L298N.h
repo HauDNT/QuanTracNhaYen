@@ -10,7 +10,7 @@ int enable_PIN = 14;
 const int freq = 30000;   // Tín hiệu 30000hz
 const int pwnChannel = 0; // Kênh số 0
 const int resolution = 8; // Độ phân giải 8 bit
-int dutyCycle = 200;      // Bắt đầu chu kỳ nhiệm vụ: 200 (Có khả năng nếu nhỏ hơn 200 thì động cơ không hoạt động được - phụ thuộc vào tần số động cơ)
+int dutyCycle = 255;      // Bắt đầu chu kỳ nhiệm vụ: 200 (Có khả năng nếu nhỏ hơn 200 thì động cơ không hoạt động được - phụ thuộc vào tần số động cơ)
 
 // Thời gian quay của động cơ:
 unsigned long engineStartDuration = 5000;

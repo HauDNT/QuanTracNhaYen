@@ -7,6 +7,8 @@
 #include <WebServer.h>
 #include "WebServer.h"
 #include "DDNS.h"
+#include <EEPROM.h>
+#include "EEPROM_SaveData.h"
 
 //---------------------------------------------------------Khai báo---------------------------------------------------------
 #define DHT_1_PIN 18
@@ -21,8 +23,8 @@ const int flame_id = 2;
 
 // Các tham số sẽ được cập nhật thông qua ESP32 Server:
 WebServer server(80);
-unsigned long timeSendData = 2000;     // Mặc định là 2s gửi dữ liệu
-unsigned long temperatureWarning = 35; // Mặc định 35 độ C thì quạt sẽ quay tản nhiệt
+int timeSendData;     // Chu kỳ gửi dữ liệu 
+float temperatureWarning; // Nhiệt độ cảnh báo
 
 // Thời gian cập nhật mới DDNS:
 unsigned long previousTimeUpdateDDNS = 0; // Lưu thời điểm hiện tại khi update lại DDNS
@@ -49,6 +51,9 @@ void setup()
   // Setup L298N:
   L298N_setup();
 
+  // Setup EEPROM để lưu cấu hình và khởi tạo giá trị ban đầu:
+  setupEEPROM();
+
   // DHT11 starts:
   dhtSensor_1.begin();
 
@@ -59,12 +64,16 @@ void loop()
 {
   unsigned long currentTimestamp = millis();
 
+  // Nhận tương tác từ phía người dùng trên Server:
+  server.handleClient();
+
   // Công việc 1 - Gửi dữ liệu và kiểm tra môi trường:
   // Nếu thời gian hiện tại đã vượt hoặc bằng thời hạn gửi data thì gửi:
   if (currentTimestamp - prevTimestampGetDataFromSensors >= timeSendData)
   {
     prevTimestampGetDataFromSensors = currentTimestamp;
 
+    // Show thông tin kết nối Wifi:
     ConnectWFData();
 
     // Đọc giá trị cảm biến:
@@ -77,19 +86,15 @@ void loop()
     if (temperatureDHT11 > temperatureWarning)
     {
       // Nếu nhiệt độ đạt đến mức nguy hiểm và hiện không có lửa:
-      LedsHighDanger();   // Đèn báo nguy hiểm
-      startEngine();      // Cho động cơ L298N chuyển động với tốc độ tăng dần:
+      LedsHighDanger(); // Đèn báo nguy hiểm
+      startEngine();    // Cho động cơ L298N chuyển động với tốc độ tăng dần:
     }
     else
     {
       // Nếu nhiệt độ ở mức an toàn:
-      LedsHighSafe();     // Đèn báo an toàn
-      resetEngine();      // Cho động cơ L298N ngừng lại
+      LedsHighSafe(); // Đèn báo an toàn
+      resetEngine();  // Cho động cơ L298N ngừng lại
     }
-
-    // Nhận tương tác từ người dùng trên Server & gửi dữ liệu lên DB:
-    // ESP32 Server process:
-    server.handleClient();
 
     // ESP32 sends data:
     SendData(

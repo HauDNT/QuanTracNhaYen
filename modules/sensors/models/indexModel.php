@@ -1,7 +1,7 @@
 <?php
 
 function get_list_sensor() {
-    $result = db_fetch_array("SELECT sensors.id, sensors.name, stations.name AS station_name, position.Position FROM sensors JOIN stations ON sensors.station_id = stations.id JOIN position ON sensors.position_id = position.id");
+    $result = db_fetch_array("SELECT * FROM sensors");
     return $result;
 }
 

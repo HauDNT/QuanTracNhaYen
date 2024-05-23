@@ -32,6 +32,12 @@
                     </a>
                 </li>
                 <li class="list">
+                    <a href="?mod=stations" class="nav-link">
+                        <i class='bx bx-broadcast icon'></i>
+                        <span class="link">Trạm giám sát</span>
+                    </a>
+                </li>
+                <li class="list">
                     <a href="#" class="nav-link">
                         <i class="bx bxs-cog icon"></i>
                         <span class="link">Thiết lập</span>

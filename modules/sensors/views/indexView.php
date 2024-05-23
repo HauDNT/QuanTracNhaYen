@@ -67,8 +67,7 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Tên cảm biến</th>
-                        <th scope="col">Trạm</th>
-                        <th scope="col">Vị trí</th>
+                        <th scope="col">Trạng thái</th>
                         <th scope="col">Hành động</th>
                     </tr>
                 </thead>
@@ -81,8 +80,7 @@
                         <tr>
                             <th scope="row"><?php echo $count ?></th>
                             <td><?php echo $sensor['name'] ?></td>
-                            <td><?php echo $sensor['station_name'] ?></td>
-                            <td><?php echo $sensor['Position'] ?></td>
+                            <td><?php echo $sensor['connect_status'] == 0 ? "Chưa kết nối" : "Đã kết nối" ?></td>
                             <td>
                                 <div class="d-flex">
                                     <a href="?mod=sensors&action=updateSensor&views=update&id=<?php echo $sensor['id'] ?>" class="text-light btn btn-warning shadow me-3 btn-xs sharp"><i class='bx bx-edit-alt h-1'></i></a>
@@ -90,10 +88,8 @@
                                         <i class='bx bx-trash'></i>
                                     </a>
                                 </div>
-
                             </td>
                         </tr>
-
                     <?php
                     }
                     ?>
@@ -118,28 +114,6 @@
                     <div class="mb-3">
                         <label for="recipient-name" class="col-form-label">Tên cảm biến</label>
                         <input type="text" class="form-control" id="recipient-name" name="name_sensor">
-                    </div>
-                    <div class="mb-3">
-                        <label for="message-text" class="col-form-label">Trạm</label>
-                        <select class="form-select" aria-label="Default select example" name="station">
-                            <option selected hidden>-- Chọn trạm --</option>
-                            <?php foreach ($list_station as $station) { ?>
-                                <option value="<?php echo $station['id'] ?>"><?php echo $station['name'] ?></option>
-                            <?php
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="message-text" class="col-form-label">Vị trí</label>
-                        <select class="form-select" aria-label="Default select example" name="position">
-                            <option selected hidden>-- Chọn tầng --</option>
-                            <?php foreach ($list_position as $position) { ?>
-                                <option value="<?php echo $position['id'] ?>"><?php echo $position['Position'] ?></option>
-                            <?php
-                            }
-                            ?>
-                        </select>
                     </div>
                     <div class="mb3 mt-8 d-flex modal-footer">
                         <button type="button" class="btn btn-secondary ms-auto mr-4" data-bs-dismiss="modal">Trở lại</button>

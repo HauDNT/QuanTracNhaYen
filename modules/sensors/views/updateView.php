@@ -24,28 +24,6 @@
                             value="<?php if (!empty($sensor_update['name'])) echo $sensor_update['name'];?>"
                         >
                     </div>
-                    <div class="mb-3">
-                        <label for="update-message-text" class="col-form-label">Trạm</label>
-                        <select class="form-select" id="update-station" name="station">
-                            <option selected hidden>-- Chọn trạm --</option>
-                            <?php foreach ($list_station as $station) { ?>
-                                <option value="<?php echo $station['id'] ?>" <?php if ($sensor_update['station_id'] == $station['id']) echo 'selected' ?> ><?php echo $station['name'] ?></option>
-                            <?php
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="update-position" class="col-form-label">Vị trí</label>
-                        <select class="form-select" id="update-position" name="position">
-                            <option selected hidden>-- Chọn tầng --</option>
-                            <?php foreach ($list_position as $position) { ?>
-                                <option value="<?php echo $position['id'] ?>" <?php if ($sensor_update['position_id'] == $position['id']) echo 'selected' ?> ><?php echo $position['Position'] ?></option>
-                            <?php
-                            }
-                            ?>
-                        </select>
-                    </div>
                     <div class="mb3 mt-8 d-flex modal-footer">
                         <button type="button" class="btn btn-secondary ms-auto mr-4" data-bs-dismiss="modal"><a href="?mod=sensors" class="text-light text-decoration-none">Trở lại</a></button>
                         <button type="submit" class="btn btn-primary ms-2" name="update_sensor">Cập nhật</button>

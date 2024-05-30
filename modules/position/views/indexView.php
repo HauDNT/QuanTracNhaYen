@@ -16,12 +16,10 @@
     <div class="row">
         <div class="col-sm-12 pb-3">
             <div class="row d-flex align-items-center">
-                <h3 class="w-auto">Quản lý tài khoản</h3>
+                <h3 class="w-auto">Tầng</h3>
                 <div class="w-auto ms-auto">
-                    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#addUserModal" data-bs-whatever="@mdo">
-                    <a href="?mod=users&action=addUser&views=add" class="btn btn-primary ms-auto">
-                        <i class='bx bx-add-to-queue'></i> Thêm tài khoản
-                    </a>    
+                    <button type="button" class="btn btn-primary ms-auto" data-bs-toggle="modal" data-bs-target="#addPositionModal" data-bs-whatever="@mdo">
+                        <i class='bx bx-add-to-queue'></i> Thêm Tầng
                     </button>
                 </div>
             </div>
@@ -68,44 +66,30 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">Họ tên</th>
-                        <th scope="col">Ngày sinh</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Số điện thoại</th>
-                        <th scope="col">Giới tính</th>
-                        <th scope="col">Vai trò</th>
+                        <th scope="col">Tầng</th>
                         <th scope="col">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
                     $count = 0;
-                    foreach ($list_users as $user) {
+                    foreach ($list_position as $position) {
                         $count++;
                     ?>
                         <tr>
                             <th scope="row"><?php echo $count ?></th>
-                            <td><?php echo $user['username'] ?></td>
-                            <td><?php echo $user['fullname'] ?></td>
-                            <td><?php echo $user['birthday'] ?></td>
-                            <td><?php echo $user['email'] ?></td>
-                            <td><?php echo $user['phone_number'] ?></td>
-                            <td><?php if ($user['gender'] == 1) {
-                                    echo 'Nam';
-                                } else {
-                                    echo 'Nữ';
-                                } ?></td>
-                            <td><?php echo $user['name'] ?></td>
+                            <td><?php echo $position['Position'] ?></td>
                             <td>
                                 <div class="d-flex">
-                                    <a href="?mod=users&action=updateUser&views=update&id=<?php echo $user['account_id'] ?>" class="text-light btn btn-warning shadow me-3 btn-xs sharp"><i class='bx bx-edit-alt h-1'></i></a>
-                                    <a href="?mod=users&action=deleteUser&id=<?php echo $user['account_id'] ?>" class="btn btn-danger shadow btn-xs sharp" onclick="return confirm('Bạn muốn xoá tài khoản này?')">
+                                    <a href="?mod=position&action=updatePosition&views=update&id=<?php echo $position['id'] ?>" class="text-light btn btn-warning shadow me-3 btn-xs sharp"><i class='bx bx-edit-alt h-1'></i></a>
+                                    <a href="?mod=position&action=deletePosition&id=<?php echo $position['id'] ?>" class="btn btn-danger shadow btn-xs sharp" onclick="return confirm('Bạn muốn xoá tầng này?')">
                                         <i class='bx bx-trash'></i>
                                     </a>
                                 </div>
+
                             </td>
                         </tr>
+
                     <?php
                     }
                     ?>
@@ -116,6 +100,30 @@
 </div>
 
 <section class="overlay"></section>
+
+<!-- Modal add Sensor-->
+<div class="modal fade" id="addPositionModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm Tầng</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form enctype="multipart/form-data" method="POST" action="?mod=position&action=addPosition">
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Tầng</label>
+                        <input type="text" class="form-control" id="recipient-name" name="name_position">
+                    </div>
+                    <div class="mb3 mt-8 d-flex modal-footer">
+                        <button type="button" class="btn btn-secondary ms-auto mr-4" data-bs-dismiss="modal">Trở lại</button>
+                        <button type="submit" class="btn btn-primary ms-2" name="add_position">Thêm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!-- Footer -->

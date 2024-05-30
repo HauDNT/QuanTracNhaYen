@@ -66,6 +66,14 @@ function construct() {
     
     function deletePositionAction() {
         $id = (int) $_GET['id'];
+
+        $item = db_fetch_row("SELECT id FROM position WHERE `Position` = 'tang0'");
+        $data = array(
+            'position_id' => $item['id'],
+        );
+
+        db_update('stations', $data, "`position_id` = '{$id}'");
+
         db_delete('position', "`id` = {$id}");
         header('location: ?mod=position');
     }

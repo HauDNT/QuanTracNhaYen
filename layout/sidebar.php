@@ -43,6 +43,12 @@
                         <span class="link">Thiết lập</span>
                     </a>
                 </li>
+                <li class="list">
+                    <a href="?mod=users" class="nav-link">
+                        <i class="bx bxs-cog icon"></i>
+                        <span class="link">Tài khoản</span>
+                    </a>
+                </li>
             </ul>
 
             <div class="bottom-cotent">

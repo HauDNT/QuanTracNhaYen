@@ -4,9 +4,15 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 
-const char* ddns_hostname = "esp32webserver.ddns.net";
-const char* ddns_username = "hau21072006018@vnkgu.edu.vn";
-const char* ddns_password = "hau21072006018@vnkgu.edu.vn";
+// DDNS của trạm 1:
+//const char* ddns_hostname = "esp32webserver.ddns.net";
+//const char* ddns_username = "hau21072006018@vnkgu.edu.vn";
+//const char* ddns_password = "hau21072006018@vnkgu.edu.vn";
+
+// DDNS của trạm 2:
+const char* ddns_hostname = "esp32webserver2.ddns.net";
+const char* ddns_username = "tienhau.it@gmail.com";
+const char* ddns_password = "tienhau.it@gmail.com";
 
 // URL cập nhật No-IP
 const char* update_url = "http://dynupdate.no-ip.com/nic/update";

@@ -1,105 +1,81 @@
 <!-- Header -->
 <?php require "./layout/header.php" ?>
-
-<!-- Navbar -->
-<nav>
-    <div class="logo">
-        <i class="bx bx-menu menu-icon"></i>
-        <span class="logo-name">Logo</span>
-    </div>
-
-    <!-- Sidebar -->
+<!-- Content -->
+<div class="main-page container-xxl d-flex p-0">
     <?php require "./layout/sidebar.php" ?>
-</nav>
-
-<div class="container-fluid mainpage mt-3">
-    <div class="row">
-        <div class="col-sm-12 pb-3">
-            <div class="row d-flex align-items-center">
-                <h3 class="w-auto">Tầng</h3>
-                <div class="w-auto ms-auto">
-                    <button type="button" class="btn btn-primary ms-auto" data-bs-toggle="modal" data-bs-target="#addPositionModal" data-bs-whatever="@mdo">
-                        <i class='bx bx-add-to-queue'></i> Thêm Tầng
-                    </button>
-                </div>
+    <div class="content w-100 mt-2">
+        <div class="row g-0 mb-2">
+            <h3>Tầng</h3>
+            <div class="w-auto ms-auto">
+                <button type="button" class="btn btn-primary ms-auto" data-bs-toggle="modal" data-bs-target="#addPositionModal" data-bs-whatever="@mdo">
+                    <i class='bx bx-add-to-queue'></i> Thêm Tầng
+                </button>
             </div>
         </div>
-        <div class="col-md-12">
 
-            <?php
-            global $error, $success;
-            if (!empty($_SESSION['success'])) {
-                $success['success'] = $_SESSION['success'];
-                unset($_SESSION['success']); // Xóa thông báo sau khi đã hiển thị
-            ?>
-                <div id="successToast" class="toast position-fixed top-50 start-50 translate-middle" role="alert" style="z-index: 9999;" aria-live="polite" aria-atomic="true">
-                    <div class="toast-header text-bg-primary">
-                        <span class="mr-4"><i class='bx bxs-bell-ring'></i></span>
-                        <strong class="me-auto">Thông báo</strong>
-                        <button type="button" class="btn-close text-light" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                    <div class="toast-body">
-                        <?php if (!empty($success['success'])) echo $success['success']; ?>
-                    </div>
+        <?php
+        global $error, $success;
+        if (!empty($_SESSION['success'])) {
+            $success['success'] = $_SESSION['success'];
+            unset($_SESSION['success']); // Xóa thông báo sau khi đã hiển thị
+        ?>
+            <div id="successToast" class="toast position-fixed top-50 start-50 translate-middle" role="alert" style="z-index: 9999;" aria-live="polite" aria-atomic="true">
+                <div class="toast-header text-bg-primary">
+                    <span class="mr-4"><i class='bx bxs-bell-ring'></i></span>
+                    <strong class="me-auto">Thông báo</strong>
+                    <button type="button" class="btn-close text-light" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
-            <?php
-            }
-            if (!empty($_SESSION['error'])) {
-                $error['error'] = $_SESSION['error'];
-                unset($_SESSION['error']); // Xóa thông báo sau khi đã hiển thị
-            ?>
-                <div id="successToast" class="toast position-fixed top-50 start-50 translate-middle" role="alert" style="z-index: 9999;" aria-live="polite" aria-atomic="true">
-                    <div class="toast-header text-bg-danger">
-                        <span class="mr-4"><i class='bx bxs-bell-ring'></i></span>
-                        <strong class="me-auto">Thông báo</strong>
-                        <button type="button" class="btn-close text-light" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                    <div class="toast-body">
-                        <?php if (!empty($error['error'])) echo $error['error']; ?>
-                    </div>
+                <div class="toast-body">
+                    <?php if (!empty($success['success'])) echo $success['success']; ?>
                 </div>
-            <?php
-            }
-            ?>
+            </div>
+        <?php
+        }
+        if (!empty($_SESSION['error'])) {
+            $error['error'] = $_SESSION['error'];
+            unset($_SESSION['error']); // Xóa thông báo sau khi đã hiển thị
+        ?>
+            <div id="successToast" class="toast position-fixed top-50 start-50 translate-middle" role="alert" style="z-index: 9999;" aria-live="polite" aria-atomic="true">
+                <div class="toast-header text-bg-danger">
+                    <span class="mr-4"><i class='bx bxs-bell-ring'></i></span>
+                    <strong class="me-auto">Thông báo</strong>
+                    <button type="button" class="btn-close text-light" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    <?php if (!empty($error['error'])) echo $error['error']; ?>
+                </div>
+            </div>
+        <?php
+        }
+        ?>
 
-            <table class="table">
-                <thead>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center">STT</th>
+                    <th scope="col" class="text-center">Tầng</th>
+                    <th scope="col" class="text-center">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($list_position as $index => $position) : ?>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Tầng</th>
-                        <th scope="col">Hành động</th>
+                        <th class="text-center"><?= $index + 1 ?></th>
+                        <td class="text-center"><?= $position['Position'] ?></td>
+                        <td class="text-center">
+                            <div class="d-flex">
+                                <a href="?mod=position&action=updatePosition&views=update&id=<?= $position['id'] ?>" class="text-light btn btn-warning shadow me-3 btn-xs sharp"><i class='bx bx-edit-alt h-1'></i></a>
+                                <a href="?mod=position&action=deletePosition&id=<?= $position['id'] ?>" class="btn btn-danger shadow btn-xs sharp" onclick="return confirm('Bạn muốn xoá tầng này?')">
+                                    <i class='bx bx-trash'></i>
+                                </a>
+                            </div>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $count = 0;
-                    foreach ($list_position as $position) {
-                        $count++;
-                    ?>
-                        <tr>
-                            <th scope="row"><?php echo $count ?></th>
-                            <td><?php echo $position['Position'] ?></td>
-                            <td>
-                                <div class="d-flex">
-                                    <a href="?mod=position&action=updatePosition&views=update&id=<?php echo $position['id'] ?>" class="text-light btn btn-warning shadow me-3 btn-xs sharp"><i class='bx bx-edit-alt h-1'></i></a>
-                                    <a href="?mod=position&action=deletePosition&id=<?php echo $position['id'] ?>" class="btn btn-danger shadow btn-xs sharp" onclick="return confirm('Bạn muốn xoá tầng này?')">
-                                        <i class='bx bx-trash'></i>
-                                    </a>
-                                </div>
-
-                            </td>
-                        </tr>
-
-                    <?php
-                    }
-                    ?>
-                </tbody>
-            </table>
-        </div>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
     </div>
 </div>
-
-<section class="overlay"></section>
 
 <!-- Modal add Sensor-->
 <div class="modal fade" id="addPositionModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

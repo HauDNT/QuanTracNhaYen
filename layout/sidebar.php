@@ -15,7 +15,7 @@
                 <li class="list">
                     <a href="?mod=home" class="nav-link">
                         <i class="bx bxs-home icon"></i>
-                        <span class="link">Dashboard</span>
+                        <span class="link">Thống kê</span>
                     </a>
                 </li>
                 <li class="list">
@@ -43,15 +43,15 @@
                     </a>
                 </li>
                 <li class="list">
-                    <a href="#" class="nav-link">
-                        <i class="bx bxs-cog icon"></i>
-                        <span class="link">Thiết lập</span>
-                    </a>
-                </li>
-                <li class="list">
                     <a href="?mod=users" class="nav-link">
                         <i class="bx bxs-cog icon"></i>
                         <span class="link">Tài khoản</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#" class="nav-link">
+                        <i class="bx bxs-cog icon"></i>
+                        <span class="link">Thiết lập</span>
                     </a>
                 </li>
             </ul>

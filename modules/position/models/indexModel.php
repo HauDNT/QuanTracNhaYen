@@ -1,7 +1,7 @@
 <?php
 
 function get_list_position(){
-    $result = db_fetch_array("SELECT * FROM position");
+    $result = db_fetch_array("SELECT * FROM position WHERE `Position` != 'tang0'");
     return $result;
 }
 

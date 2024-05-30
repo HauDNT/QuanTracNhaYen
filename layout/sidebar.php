@@ -1,11 +1,16 @@
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="logo">
-            <i class="bx bx-menu menu-icon"></i>
-            <span class="logo-name">Quản lý nhà yến</span>
+    <!-- Sidebar 0 -->
+    <div class="sidebar offcanvas offcanvas-start p-2 me-2" tabindex="-1" id="sidebar-user" aria-labelledby="sidebar-userLabel">
+        <div class="logo d-flex align-items-center">
+            <button type="button" class="btn border-0 p-0 px-2" data-bs-dismiss="offcanvas" aria-label="Close">
+                <i class="bi bi-list fs-3"></i>
+            </button>
+            <img src="public/img/logoKGU.png" alt="" height="32px">
+            <div class="logo-name d-flex flex-column">
+                <span class="ms-2 fw-semibold">Đại học kiên giang</span>
+                <span class="ms-2 text-secondary">Hệ thống quản lý nhà yến</span>
+            </div>
         </div>
-
-        <div class="sidebar-content">
+        <div class="offcanvas-body px-0">
             <ul class="lists list-inline">
                 <li class="list">
                     <a href="?mod=home" class="nav-link">
@@ -44,13 +49,5 @@
                     </a>
                 </li>
             </ul>
-
-            <div class="bottom-cotent">
-                <li class="list">
-                    <a href="#" class="nav-link">
-                        <i class="bx bx-log-out icon"></i>
-                        <span class="link">Đăng xuất</span>
-                    </a>
-                </li>
-            </div>
         </div>
+    </div>

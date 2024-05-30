@@ -32,6 +32,12 @@
                     </a>
                 </li>
                 <li class="list">
+                    <a href="?mod=position" class="nav-link">
+                        <i class="bx bxs-hot icon"></i>
+                        <span class="link">Tầng</span>
+                    </a>
+                </li>
+                <li class="list">
                     <a href="#" class="nav-link">
                         <i class="bx bxs-cog icon"></i>
                         <span class="link">Thiết lập</span>

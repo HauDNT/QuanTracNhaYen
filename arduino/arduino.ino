@@ -1,14 +1,20 @@
+// Thêm các thư viện
+#include <WebServer.h>
+#include <EEPROM.h>
+#include <WiFi.h>
+#include <ArduinoJson.h>
+#include <SPIFFS.h>
+#include <HTTPClient.h>
+
+// Thêm các file đã được xây dựng riêng
+#include "EEPROM_SaveData.h"
+#include "ConnectWifi.h"
+#include "WebServer.h"
+#include "SendData.h"
 #include "DHT_Sensor.h"
 #include "Flame_Sensor.h"
 #include "L298N.h"
 #include "LedStatus.h"
-#include "ConnectWifi.h"
-#include "SendData.h"
-#include <WebServer.h>
-#include "WebServer.h"
-#include "DDNS.h"
-#include <EEPROM.h>
-#include "EEPROM_SaveData.h"
 
 //---------------------------------------------------------Khai báo---------------------------------------------------------
 #define DHT_1_PIN 18
@@ -17,9 +23,11 @@ DHT_Sensor dhtSensor_1(DHT_1_PIN);
 #define FlameSensor_1_PIN 19
 Flame_Sensor FlameSensor_1(FlameSensor_1_PIN);
 
-// Mã id của các cảm biến trong tầng chiếu theo DB (VD 1 tầng 1 bộ gồm: 1 DHT 11, 1 FlameSensor)
-const int dht11_id = 1;
-const int flame_id = 2;
+// Mã id của các cảm biến trong tầng chiếu theo dữ liệu hiện có của bảng "sensors" trong Database
+const int dht11_id = 4;    // DHT - Trạm 1
+const int flame_id = 5;    // Báo cháy - Trạm 1
+//const int dht11_id = 6;       // DHT - Trạm 2
+//const int flame_id = 7;       // Báo cháy - Trạm 2
 
 // Trạng thái môi trường: an toàn - false, nguy hiểm - true:
 bool isDanger = false;
@@ -28,10 +36,7 @@ bool isDanger = false;
 WebServer server(80);
 int timeSendData;     // Chu kỳ gửi dữ liệu 
 float temperatureWarning; // Nhiệt độ cảnh báo
-
-// Thời gian cập nhật mới DDNS:
-unsigned long previousTimeUpdateDDNS = 0; // Lưu thời điểm hiện tại khi update lại DDNS
-const long timeRenderDDNS = 600000;       // 10 phút cập nhật 1 lần
+float humidWarning;
 
 // Lưu thời gian hiện tại khi lấy giá trị từ các cảm biến:
 unsigned long prevTimestampGetDataFromSensors = 0;
@@ -41,9 +46,6 @@ void setup()
 {
   // Connect wifi:
   connectWifi();
-
-  // Start DDNS:
-  updateDDNS();
 
   // Start ESP32 Server:
   StartServer();
@@ -105,15 +107,10 @@ void loop()
     SendData(
         "temperature=" + String(temperatureDHT11) +
         "&humidity=" + String(humidity) +
-        "&fire=" + String(fireSignal));
+        "&fire=" + String(fireSignal) + 
+        "&dht_id=" + String(dht11_id) +
+        "&flame_id=" + String(flame_id));
 
     if (isDanger == true) delay(10000);   // Nếu có nguy hiểm thì 10s gửi dữ liệu 1 lần để tránh spam request
-  }
-
-  // Re-render DDNS:
-  if (currentTimestamp - previousTimeUpdateDDNS >= timeRenderDDNS)
-  {
-    previousTimeUpdateDDNS = currentTimestamp;
-    updateDDNS();
   }
 }

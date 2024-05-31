@@ -1,11 +1,8 @@
 #ifndef CONNECT_WIFI_H
 #define CONNECT_WIFI_H
 
-#include <WiFi.h>
-#include "DDNS.h"
-
 const char *ssid = "Wifi";
-const char *password = "tienhau2003";
+const char *password = "tienhau2003@";
 
 void connectWifi() {
   WiFi.mode(WIFI_OFF);

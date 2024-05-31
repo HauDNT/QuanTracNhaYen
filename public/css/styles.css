@@ -159,6 +159,12 @@ nav {
     border-bottom: 1px solid #dee2e6;
 }
 
+/* Maobox */
+#map {
+    height: 300px;
+    width: 100%;
+}
+
 @media (min-width: 992px) {
     .sidebar {
         min-width: 260px;

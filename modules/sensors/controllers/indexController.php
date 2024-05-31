@@ -15,17 +15,15 @@ function indexAction() {
 
 function addSensorAction() {
     if (isset($_POST['add_sensor'])) {
-        if (empty($_POST['name_sensor']) || empty($_POST['station'])) {
+        if (empty($_POST['name_sensor'])) {
             $_SESSION['error'] = "<b>THÊM THẤT BẠI</b> vui lòng nhập hết các trường dữ liệu!";
         } else {
             $name_sensor = $_POST['name_sensor'];
-            $station = $_POST['station'];
         }
 
        if (empty($_SESSION['error'])) {
            $data = array(
                'name' => $name_sensor,
-               'station_id' => $station,
            );
            
            db_insert('sensors', $data);

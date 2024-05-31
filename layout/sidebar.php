@@ -31,20 +31,20 @@
                     </a>
                 </li>
                 <li class="list">
-                    <a href="#" class="nav-link">
-                        <i class="bx bxs-hot icon"></i>
-                        <span class="link">Báo cháy</span>
+                    <a href="?mod=stations" class="nav-link">
+                        <i class='bx bx-broadcast icon'></i>
+                        <span class="link">Trạm giám sát</span>
                     </a>
                 </li>
                 <li class="list">
-                    <a href="?mod=position" class="nav-link">
-                        <i class="bx bxs-hot icon"></i>
-                        <span class="link">Tầng</span>
+                    <a href="?mod=units" class="nav-link">
+                        <i class='bx bxs-calculator icon'></i>
+                        <span class="link">Đơn vị đo</span>
                     </a>
                 </li>
                 <li class="list">
                     <a href="?mod=users" class="nav-link">
-                        <i class="bx bxs-cog icon"></i>
+                        <i class='bx bxs-user-circle icon'></i>
                         <span class="link">Tài khoản</span>
                     </a>
                 </li>

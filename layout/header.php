@@ -16,6 +16,9 @@
     <!-- Link CSS -->
     <link rel="stylesheet" href="public/css/styles.css?v=<?= time() ?>">
 
+    <!-- Link Mapbox -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet">
 </head>
 
 <body>

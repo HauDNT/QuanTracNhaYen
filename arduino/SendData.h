@@ -1,10 +1,8 @@
 #ifndef SEND_DATA_H
 #define SEND_DATA_H
 
-#include <HTTPClient.h>
-
 // Website cần gửi thông tin đến
-const char *URL = "http://192.168.225.67/NCKH_NhaYen/Website/index.php";
+const char *URL = "http://192.168.225.67/nhayen/modules/insertValuesSensor.php";
 
 void SendData(String data)
 {

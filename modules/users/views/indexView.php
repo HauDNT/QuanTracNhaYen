@@ -51,7 +51,7 @@
         }
         ?>
 
-        <table class="table">
+        <table class="table table-hover">
             <thead>
                 <tr>
                     <th class="text-center">#</th>
@@ -74,7 +74,7 @@
                         <td class="text-center"><?= $user['birthday'] ?></td>
                         <td class="text-center"><?= $user['email'] ?></td>
                         <td class="text-center"><?= $user['phone_number'] ?></td>
-                        <td class="text-center"><?= $user['gender'] == 1 ? "Name" : "Nữ" ?></td>
+                        <td class="text-center"><?= $user['gender'] == 1 ? "Nam" : "Nữ" ?></td>
                         <td><?= $user['name'] ?></td>
                         <td class="d-flex justify-content-center">
                             <a href="?mod=users&action=updateUser&views=update&id=<?= $user['account_id'] ?>" class="text-light btn btn-warning shadow me-3 btn-xs sharp"><i class='bx bx-edit-alt h-1'></i></a>

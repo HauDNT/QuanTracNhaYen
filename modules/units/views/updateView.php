@@ -24,7 +24,6 @@
                             value="<?php if (!empty($station_update['name'])) echo $station_update['name'];?>"
                         >
                     </div>
-                    <div class="mb-3" id="map"></div>
                     <div class="mb-3">
                         <label for="station-longtitude" class="col-form-label">Kinh độ</label>
                         <input 
@@ -46,46 +45,19 @@
                         >
                     </div>
                     <div class="mb-3">
+                        <label class="col-form-label">Chọn địa điểm</label>
+                        <div id="map"></div>
+                    </div>
+                    <div class="mb-3">
                         <label for="message-text" class="col-form-label">Thêm cảm biến</label>
-                        <table class="table">
-                            <tr class="text-center">
-                                <th>Cảm biến</th>
-                                <th>Thêm/Xóa</th>
-                            </tr>
-                            
-                            <?php 
-                            foreach ($list_sensors as $sensor) {
-                                // if ($sensor['station_id'] == $_GET['id']) {    
+                        <select class="form-select" name="station_sensors[]" multiple aria-label="Default select example">
+                            <option selected hidden>-- Chọn cảm biến --</option>
+                            <?php foreach ($list_sensors_unconnect as $sensor) { ?>
+                                <option value="<?php echo $sensor['id'] ?>" <?php echo $sensor['connect_status'] == 0 ? "style='color: green'" : "style='color: red' disabled" ?>><?php echo $sensor['name'] ?></option>
+                            <?php
+                            }
                             ?>
-                                <tr class="text-center">
-                                    <td><?php echo $sensor['name'] ?></td>
-                                    <td>
-                                        <?php if ($sensor['connect_status'] == 0) { ?>
-                                            <button 
-                                                class="btn btn-primary add-sensor" 
-                                                type="button" 
-                                                data-sensor-id="<?php echo $sensor['id'] ?>" 
-                                                data-station-id="<?php echo $_GET['id']; ?>"
-                                            >
-                                                Thêm
-                                            </button>
-                                        <?php } else { ?>
-                                            <button 
-                                                class="btn btn-danger remove-sensor" 
-                                                type="button" 
-                                                data-sensor-id="<?php echo $sensor['id'] ?>" 
-                                                data-station-id="<?php echo $_GET['id']; ?>"
-                                                >
-                                                Xóa
-                                            </button>
-                                        <?php } ?>
-                                    </td>
-                                </tr>
-                            <?php 
-                                // }
-                            } 
-                            ?>
-                        </table>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="station-langtitude" class="col-form-label">Địa chỉ DDNS URL</label>
@@ -97,16 +69,7 @@
                             value="<?php if (!empty($station_update['urlServer'])) echo $station_update['urlServer'];?>"
                         >
                     </div>
-                    <div class="mb-3">
-                        <label for="station-langtitude" class="col-form-label">Chi tiết</label>
-                        <input 
-                            type="text" 
-                            class="form-control" 
-                            id="station-langtitude" 
-                            name="station_detail"
-                            value="<?php if (!empty($station_update['detail'])) echo $station_update['detail'];?>"
-                        >
-                    </div>
+
                     <div class="mb-3">
                         <label for="message-text" class="col-form-label">Người quản lý</label>
                         <select class="form-select" aria-label="Default select example" name="station_user">

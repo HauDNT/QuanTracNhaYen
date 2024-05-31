@@ -55,6 +55,7 @@
             <thead>
                 <tr>
                     <th class="text-center">#</th>
+                    <th class="text-center">Mã cảm biến</th>
                     <th class="text-center">Tên cảm biến</th>
                     <th class="text-center">Trạng thái</th>
                     <th class="text-center">Hành động</th>
@@ -64,6 +65,7 @@
                 <?php foreach ($list_sensor as $index => $sensor) : ?>
                     <tr>
                         <th class="text-center"><?= $index + 1 ?></th>
+                        <td class="text-center"><?= $sensor['id'] ?></td>
                         <td class="text-center"><?= $sensor['name'] ?></td>
                         <td class="text-center"><?= $sensor['connect_status'] == 0 ? "Chưa kết nối" : "Đã kết nối" ?></td>
                         <td class="text-center d-flex justify-content-center">
@@ -92,28 +94,6 @@
                     <div class="mb-3">
                         <label for="recipient-name" class="col-form-label">Tên cảm biến</label>
                         <input type="text" class="form-control" id="recipient-name" name="name_sensor">
-                    </div>
-                    <div class="mb-3">
-                        <label for="message-text" class="col-form-label">Trạm</label>
-                        <select class="form-select" aria-label="Default select example" name="station">
-                            <option selected hidden>-- Chọn trạm --</option>
-                            <?php foreach ($list_station as $station) { ?>
-                                <option value="<?php echo $station['id'] ?>"><?php echo $station['name'] ?></option>
-                            <?php
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="message-text" class="col-form-label">Vị trí</label>
-                        <select class="form-select" aria-label="Default select example" name="position">
-                            <option selected hidden>-- Chọn tầng --</option>
-                            <?php foreach ($list_position as $position) { ?>
-                                <option value="<?php echo $position['id'] ?>"><?php echo $position['Position'] ?></option>
-                            <?php
-                            }
-                            ?>
-                        </select>
                     </div>
                     <div class="mb3 mt-8 d-flex modal-footer">
                         <button type="button" class="btn btn-secondary ms-auto mr-4" data-bs-dismiss="modal">Trở lại</button>

@@ -10,74 +10,37 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="col-12 mainpage">
-        <form class="row g-3 col-sm-5">
-            <h3 class="text-center">Cấu hình thông số trạm cảm biến</h3>
-            <div class="col-md-12">
+    <div class="mainpage">
+        <form action="/update-settings" method="POST" class="row g-3 col-10">
+            <h3 class="col-md-12 text-center mb-3">Cấu hình thông số trạm cảm biến</h3>
+            <div class="col-md-4">
+              <label for="interval" class="form-label">Mạng Wifi</label>
+              <input type="text" class="form-control" id="interval" name="ssid" min="1" value="{{ssid}}" readonly>
+            </div>
+            <div class="col-md-4">
+              <label for="temperature" class="form-label">Mật khẩu</label>
+              <input type="text" class="form-control" id="temperature" name="password" value="{{password}}" readonly>
+            </div>
+            <div class="col-md-4">
+              <label for="humidity" class="form-label">Web server trạm</label>
+              <input type="text" class="form-control" id="humidity" name="webserver" value="{{webserver}}" readonly>
+            </div>
+            <div class="col-md-4">
               <label for="interval" class="form-label">Thời gian gửi dữ liệu</label>
               <input type="number" class="form-control" id="interval" name="interval" min="1" value="{{interval}}">
             </div>
-
-            <div class="col-md-6">
-              <label for="temperature" class="form-label">Nhiệt độ cảnh báo</label>
+            <div class="col-md-4">
+              <label for="temperature" class="form-label">Nhiệt độ cao nhất</label>
               <input type="number" class="form-control" id="temperature" name="temperature" value="{{temperature}}">
             </div>
-            <div class="col-md-6">
-              <label for="humidity" class="form-label">Độ ẩm cảnh báo</label>
+            <div class="col-md-4 mb-3">
+              <label for="humidity" class="form-label">Độ ẩm thấp nhất</label>
               <input type="number" class="form-control" id="humidity" name="humidity" value="{{humidity}}">
             </div>
-            <div class="col-12">
-              <label for="inputAddress2" class="form-label">Address 2</label>
-              <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-            </div>
-            <div class="col-md-6">
-              <label for="inputCity" class="form-label">City</label>
-              <input type="text" class="form-control" id="inputCity">
-            </div>
-            <div class="col-md-4">
-              <label for="inputState" class="form-label">State</label>
-              <select id="inputState" class="form-select">
-                <option selected>Choose...</option>
-                <option>...</option>
-              </select>
-            </div>
-            <div class="col-md-2">
-              <label for="inputZip" class="form-label">Zip</label>
-              <input type="text" class="form-control" id="inputZip">
-            </div>
-            <div class="col-12">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="gridCheck">
-                <label class="form-check-label" for="gridCheck">
-                  Check me out
-                </label>
-              </div>
-            </div>
-            <div class="col-12">
-              <button type="submit" class="btn btn-primary">Sign in</button>
+            <div class="col-12 mb-3">
+              <button type="submit" class="btn btn-primary col-12">Cập nhật</button>
             </div>
         </form>
-
-        <!-- <form action="/update-settings" method="POST" class="col-sm-5">
-            <h2 class="text-center">Cập nhật thông số hệ thống</h2>
-            <div class="mb-3 row">
-                <label for="interval" class="col-sm-4 col-form-label">Thời gian gửi dữ liệu:</label>
-                <div class="col-sm-8">
-                    <input type="number" class="form-control" id="interval" name="interval" min="1" value="{{interval}}">
-                </div>Nhiệt độ nguy hiểm:
-            </div>
-            <div class="mb-3 row">
-                <label for="temperature" class="col-sm-4 col-form-label"></label>
-                <div class="col-sm-8">
-                    <input type="number" class="form-control" id="temperature" name="temperature" value="{{temperature}}">
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <div class="col-sm-12 btn-wrapper">
-                    <input type="submit" value="Cập nhật" class="btn btn-primary mb-3">
-                </div>
-            </div>
-        </form> -->
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

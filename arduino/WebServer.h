@@ -1,16 +1,14 @@
 #ifndef WEB_SERVER_H
 #define WEB_SERVER_H
 
-#include <WiFi.h>
-#include <WebServer.h>
-#include <ArduinoJson.h>
-#include <SPIFFS.h>
-#include "EEPROM_SaveData.h"
-
 // Tạo Webserver cho ESP32 để lắng nghe sự thay đổi:
-extern WebServer server;
+// Lấy các giá trị để hiển thị lên Webserver
 extern int timeSendData;
 extern float temperatureWarning;
+extern float humidWarning;
+extern const char *ssid;
+extern const char *password;
+extern WebServer server;
 
 // ----- Tạo trang Webserver ESP32
 void Create_HTMLPage()
@@ -25,8 +23,13 @@ void Create_HTMLPage()
 
   // Đọc file HTML và thay thế các giá trị hiện tại vào trong các ô input:
   String page = file.readString();
+  page.replace("{{ssid}}", String(ssid));
+  page.replace("{{password}}", String(password));
+  page.replace("{{webserver}}", WiFi.localIP().toString());
+  // page.replace("{{webserver}}", String(WiFi.localIP()));
   page.replace("{{interval}}", String(timeSendData / 1000));
   page.replace("{{temperature}}", String(temperatureWarning));
+  page.replace("{{humidity}}", String(humidWarning));
   server.send(200, "text/html", page);
   file.close();
 };
@@ -51,24 +54,20 @@ void UpdateParams()
   // Cập nhật sau khi được ấn nút "Cập nhật" thì dữ liệu sẽ được gửi đến URL /update-settings
   // Hàm UpdateParams() này sẽ thực thi mọi tác vụ sau:
 
-  // Nếu có yêu cầu thay đổi về interval (thời gian gửi dữ liệu) và nhiệt độ nguy hiểm:
-  if (server.hasArg("interval") && server.hasArg("temperature"))
+  // Nếu có yêu cầu thay đổi về interval (thời gian gửi dữ liệu), nhiệt độ ngưỡng, độ ẩm ngưỡng:
+  if (server.hasArg("interval") && server.hasArg("temperature") && server.hasArg("humidity"))
   {
     // Lấy giá trị này và cập nhật vào board ESP32:
     String getInterval = server.arg("interval");
     String getTemp = server.arg("temperature");
-
-    Serial.print("Received interval: ");
-    Serial.println(getInterval);
-    Serial.print("Received temperature: ");
-    Serial.println(getTemp);
+    String getHumid = server.arg("humidity");
 
     // Sau đó đưa giá trị này vào cập nhật trong EEPROM để nó vẫn còn dù ESP32 mất nguồn:
     updateValues(
       getInterval.toInt(),  // ms
-      getTemp.toFloat()
+      getTemp.toFloat(),
+      getHumid.toFloat()
     );
-    // Chuyển đổi chuỗi ký tự thành giá trị unsigned long
 
     // Sau khi gửi đến đường dẫn /update-settings thì điều hướng lại về trang chính
     String message = "<script>alert('Settings Updated'); window.location.href = \"/\";</script>";

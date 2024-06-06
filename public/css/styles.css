@@ -19,7 +19,7 @@
 
 body {
     min-height: 100%;
-    background: #e3f2fd;
+    background: #F4F6FA;
     overflow-x: hidden;
 }
 
@@ -94,9 +94,15 @@ nav.open .sidebar {
 }
 
 .lists .nav-link:hover {
+    background-color: #DEE2E6;
+}
+
+.lists .nav-link.active {
+    color: white !important;
     background-color: #4070f4;
 }
 
+<<<<<<< Updated upstream
 .nav-link .icon {
     margin-right: 14px;
     font-size: 20px;
@@ -132,6 +138,8 @@ nav.open ~ .overlay {
     pointer-events: auto;
 }
 
+=======
+>>>>>>> Stashed changes
 /* Main page */
 .mainpage {
     /* margin: 15px 0 10px 20px; */
@@ -181,3 +189,60 @@ nav.open ~ .overlay {
     text-align: center;
     width: 100vw;
 }
+<<<<<<< Updated upstream
+=======
+
+/* toast */
+.toast-container {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 1055;
+}
+
+.toast {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}
+
+.toast-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* Maobox */
+#map {
+    height: 300px;
+    width: 100%;
+}
+
+.search:focus {
+    border-color: #DEE2E6 !important;
+    box-shadow: none !important;
+}
+
+@media (min-width: 992px) {
+    .sidebar {
+        min-width: 260px;
+        max-width: 260px;
+        height: 100vh;
+        transform: translateX(0) !important;
+        visibility: visible !important;
+        position: -webkit-stick !important;
+        position: sticky !important;
+        z-index: 1;
+    }
+
+    .sidebar .logo {
+        display: none !important;
+    }
+
+    .sidebar .offcanvas-body {
+        padding-top: 0 !important;
+    }
+
+    nav .menu-button {
+        display: none !important;
+    }
+}
+>>>>>>> Stashed changes

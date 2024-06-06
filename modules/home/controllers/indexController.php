@@ -6,7 +6,9 @@ function construct() {
 }
 
 function indexAction() {
-    load_view('index');
+    load_view('index', [
+        'active' => 'monitoring',
+    ]);
 }
 
 function addAction() {

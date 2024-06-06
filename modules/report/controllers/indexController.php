@@ -7,7 +7,10 @@ function construct() {
 
 function indexAction() {
     $report = get_report();
-    load_view('index', ["report" => $report]);
+    load_view('index', [
+        "active" => "report",
+        "report" => $report
+    ]);
 }
 
 function addAction() {

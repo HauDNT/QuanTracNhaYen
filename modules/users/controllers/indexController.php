@@ -8,8 +8,15 @@ function construct() {
 function indexAction() {
     load('helper','format');
     $list_users = get_list_users();
+<<<<<<< Updated upstream
 //    show_array($list_users);
     $data['list_users'] = $list_users;
+=======
+    $data = array(
+        'active' => 'user',
+        'list_users' => $list_users,
+    );
+>>>>>>> Stashed changes
     load_view('index', $data);
 }
 

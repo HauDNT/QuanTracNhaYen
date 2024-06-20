@@ -1,0 +1,59 @@
+<!-- Modal update Sensor-->
+<div class="modal fade" id="updateSensorModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Cập nhật cảm biến</h1>
+                <button type="button" class="btn ms-auto" data-bs-dismiss="modal" aria-label="Close">
+                    <a href="?mod=sensors" class="text-light text-decoration-none btn-close"></a>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Mã cảm biến</label>
+                        <input 
+                            type="number" 
+                            class="form-control" 
+                            id="recipient-name" 
+                            name="id_sensor" 
+                            value="<?php if (!empty($sensor_update['id'])) echo $sensor_update['id'];?>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Tên cảm biến</label>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            id="recipient-name" 
+                            name="name_sensor"
+                            value="<?php if (!empty($sensor_update['sensor_name'])) echo $sensor_update['sensor_name'];?>"
+                            >
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Trạm</label>
+                        <select class="form-select" name="station_sensor">
+                            <option selected hidden>-- Chọn trạm --</option>
+                            <?php foreach ($list_station as $index => $station) { ?>
+                                <option value="<?php echo $station['id'] ?>"
+                                    <?php 
+                                        if ($sensor_update['station_id'] == $station['id'])
+                                            echo 'selected'
+                                    ?>>
+                                    <?php echo $station['name'] ?>
+                                </option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Tầng</label>
+                        <input 
+                            type="number" 
+                            class="form-control" 
+                            id="recipient-name" 
+                            name="position_sensor" 
+                            value="<?php echo $sensor_update['position'] ?>"
+                            min="1"
+                            >
+                    </div>
+            </div>
+        </div>
+    </div>

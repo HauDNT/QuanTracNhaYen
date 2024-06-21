@@ -1,5 +1,6 @@
 <?php
 //Triệu gọi đến file xử lý thông qua request
+ob_start(); // Start output buffering
 
 $request_path = MODULESPATH . DIRECTORY_SEPARATOR . get_module() . DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR . get_controller().'Controller.php';
 
@@ -13,4 +14,6 @@ $action_name = get_action().'Action';
 
 call_function(array('construct', $action_name));
 
-
+if (!is_login() && get_action() != 'login') {
+    redirect('?mod=users&controller=login&action=login');
+}

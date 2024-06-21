@@ -1,3 +1,3 @@
 <?php
 
-echo "{$title_template} <br/>";
+//echo "{$title_template} <br/>";

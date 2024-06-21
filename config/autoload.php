@@ -31,13 +31,5 @@ $autoload['lib'] = array();
  * $autoload['helper'] = array('data','string');
  */
 
-
-$autoload['helper'] = array('data');
-
-
-
-
-
-
-
+$autoload['helper'] = array('url', 'users', 'data', 'show');
 

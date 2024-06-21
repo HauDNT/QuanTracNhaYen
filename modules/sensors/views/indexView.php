@@ -7,7 +7,7 @@
         <div class="row g-0 mb-2">
             <h3>Cảm biến</h3>
         </div>
-        
+
         <div class="row g-0 mb-2">
             <div class="w-auto ms-auto">
                 <button type="button" class="btn btn-primary ms-auto" data-bs-toggle="modal" data-bs-target="#addSensorModal" data-bs-whatever="@mdo">
@@ -50,13 +50,14 @@
         <?php
         }
         ?>
-
         <table class="table table-hover">
             <thead>
                 <tr>
                     <th class="text-center">#</th>
                     <th class="text-center">Mã cảm biến</th>
                     <th class="text-center">Tên cảm biến</th>
+                    <th class="text-center">Trạm</th>
+                    <th class="text-center">Tầng lắp đặt</th>
                     <th class="text-center">Trạng thái</th>
                     <th class="text-center">Hành động</th>
                 </tr>
@@ -66,7 +67,9 @@
                     <tr>
                         <th class="text-center"><?= $index + 1 ?></th>
                         <td class="text-center"><?= $sensor['id'] ?></td>
-                        <td class="text-center"><?= $sensor['name'] ?></td>
+                        <td class="text-center"><?= $sensor['sensor_name'] ?></td>
+                        <td class="text-center"><?= $sensor['station_name'] ?></td>
+                        <td class="text-center"> Tầng <?= $sensor['position'] ?></td>
                         <td class="text-center"><?= $sensor['connect_status'] == 0 ? "Chưa kết nối" : "Đã kết nối" ?></td>
                         <td class="text-center d-flex justify-content-center">
                             <a href="?mod=sensors&action=updateSensor&views=update&id=<?= $sensor['id'] ?>" class="text-light btn btn-warning shadow me-3 btn-xs sharp"><i class='bx bx-edit-alt h-1'></i></a>
@@ -92,9 +95,27 @@
             <div class="modal-body">
                 <form enctype="multipart/form-data" method="POST" action="?mod=sensors&action=addSensor">
                     <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Mã cảm biến</label>
+                        <input type="number" class="form-control" id="recipient-name" name="id_sensor" value="1">
+                    </div>
+                    <div class="mb-3">
                         <label for="recipient-name" class="col-form-label">Tên cảm biến</label>
                         <input type="text" class="form-control" id="recipient-name" name="name_sensor">
                     </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Trạm</label>
+                        <select class="form-select" name="station_sensor">
+                            <option selected hidden>-- Chọn trạm --</option>
+                            <?php foreach ($list_station as $index => $value) { ?>
+                                <option value="<?php echo $value['id'] ?>"><?php echo $value['name'] ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Tầng</label>
+                        <input type="number" class="form-control" id="recipient-name" name="position_sensor" value="1" min="1">
+                    </div>
+                    
                     <div class="mb3 mt-8 d-flex modal-footer">
                         <button type="button" class="btn btn-secondary ms-auto mr-4" data-bs-dismiss="modal">Trở lại</button>
                         <button type="submit" class="btn btn-primary ms-2" name="add_sensor">Thêm</button>

@@ -65,6 +65,7 @@
                     <th class="text-center">Hành động</th>
                 </tr>
             </thead>
+
             <tbody>
                 <?php foreach ($list_users as $index => $user) : ?>
                     <tr>

@@ -2,7 +2,7 @@
 
 function get_list_station_info() {
     $result = db_fetch_array("
-        SELECT s.id, s.name, s.longtitude, s.langtitude, s.urlServer, s.detail, fullname 
+        SELECT s.id, s.name, s.longtitude, s.langtitude, s.urlServer, fullname 
         FROM stations s 
         JOIN userinfo u ON s.user_id = u.account_id");
     return $result;
@@ -28,6 +28,6 @@ function get_sensors() {
 }
 
 function get_sensors_by_station_id($id) {
-    $result = db_fetch_array("SELECT sensor_id FROM station_sensors WHERE station_id = '{$id}'");
+    $result = db_fetch_array("SELECT id FROM sensors WHERE sensors.station_id = {$id}");
     return $result;
 }

@@ -31,11 +31,9 @@
                 </button>
                 <img src="public/img/logoKGU.png" alt="" height="32px">
                 <div class="logo-name d-flex flex-column">
-                    <span class="ms-2 fw-semibold">Đại học kiên giang</span>
+                    <span class="ms-2 fw-semibold">Đại học Kiên Giang</span>
                     <span class="ms-2 text-secondary">Hệ thống quản lý nhà yến</span>
                 </div>
             </div>
-
-            <div class=""></div>
         </div>
     </nav>

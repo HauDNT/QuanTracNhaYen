@@ -24,10 +24,10 @@ DHT_Sensor dhtSensor_1(DHT_1_PIN);
 Flame_Sensor FlameSensor_1(FlameSensor_1_PIN);
 
 // Mã id của các cảm biến trong tầng chiếu theo dữ liệu hiện có của bảng "sensors" trong Database
-const int dht11_id = 4;    // DHT - Trạm 1
-const int flame_id = 5;    // Báo cháy - Trạm 1
-//const int dht11_id = 6;       // DHT - Trạm 2
-//const int flame_id = 7;       // Báo cháy - Trạm 2
+//const int dht11_id = 4;    // DHT - Trạm 1
+//const int flame_id = 5;    // Báo cháy - Trạm 1
+const int dht11_id = 6;       // DHT - Trạm 2
+const int flame_id = 7;       // Báo cháy - Trạm 2
 
 // Trạng thái môi trường: an toàn - false, nguy hiểm - true:
 bool isDanger = false;
@@ -36,8 +36,8 @@ bool isDanger = false;
 WebServer server(80);
 int timeSendData;     // Chu kỳ gửi dữ liệu 
 float temperatureWarning; // Nhiệt độ cảnh báo
-float humidWarning;
-
+float humidWarning_LOW;   // Ngưỡng thấp nhất
+float humidWarning_HIGH; // Ngưỡng cao nhất
 // Lưu thời gian hiện tại khi lấy giá trị từ các cảm biến:
 unsigned long prevTimestampGetDataFromSensors = 0;
 
@@ -82,9 +82,10 @@ void loop()
 
   // Công việc 1 - Kiểm tra điều kiện môi trường và khởi động/dừng động cơ:
   // Kiểm tra nhiệt độ:
-  if (temperatureDHT11 > temperatureWarning)
+  if (temperatureDHT11 >= temperatureWarning || humidity <= humidWarning_LOW)
   {
       // Nếu nhiệt độ đạt đến mức nguy hiểm và hiện không có lửa:
+      // Nếu độ ẩm đạt ngưỡng thấp nhất:
       LedsHighDanger(); // Đèn báo nguy hiểm
       startEngine();    // Cho động cơ L298N chuyển động
       isDanger = true;  // Trạng thái môi trường được đặt ở mức nguy hiểm

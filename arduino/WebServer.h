@@ -5,7 +5,8 @@
 // Lấy các giá trị để hiển thị lên Webserver
 extern int timeSendData;
 extern float temperatureWarning;
-extern float humidWarning;
+extern float humidWarning_LOW;
+extern float humidWarning_HIGH;
 extern const char *ssid;
 extern const char *password;
 extern WebServer server;
@@ -26,10 +27,10 @@ void Create_HTMLPage()
   page.replace("{{ssid}}", String(ssid));
   page.replace("{{password}}", String(password));
   page.replace("{{webserver}}", WiFi.localIP().toString());
-  // page.replace("{{webserver}}", String(WiFi.localIP()));
   page.replace("{{interval}}", String(timeSendData / 1000));
   page.replace("{{temperature}}", String(temperatureWarning));
-  page.replace("{{humidity}}", String(humidWarning));
+  page.replace("{{humidity_low}}", String(humidWarning_LOW));
+  page.replace("{{humidity_high}}", String(humidWarning_HIGH));
   server.send(200, "text/html", page);
   file.close();
 };
@@ -55,18 +56,20 @@ void UpdateParams()
   // Hàm UpdateParams() này sẽ thực thi mọi tác vụ sau:
 
   // Nếu có yêu cầu thay đổi về interval (thời gian gửi dữ liệu), nhiệt độ ngưỡng, độ ẩm ngưỡng:
-  if (server.hasArg("interval") && server.hasArg("temperature") && server.hasArg("humidity"))
+  if (server.hasArg("interval") && server.hasArg("temperature") && server.hasArg("humidity_low") && server.hasArg("humidity_high"))
   {
     // Lấy giá trị này và cập nhật vào board ESP32:
     String getInterval = server.arg("interval");
     String getTemp = server.arg("temperature");
-    String getHumid = server.arg("humidity");
+    String getHumid_Low = server.arg("humidity_low");
+    String getHumid_High = server.arg("humidity_high");
 
     // Sau đó đưa giá trị này vào cập nhật trong EEPROM để nó vẫn còn dù ESP32 mất nguồn:
     updateValues(
       getInterval.toInt(),  // ms
       getTemp.toFloat(),
-      getHumid.toFloat()
+      getHumid_Low.toFloat(),
+      getHumid_High.toFloat()
     );
 
     // Sau khi gửi đến đường dẫn /update-settings thì điều hướng lại về trang chính

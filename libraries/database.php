@@ -9,7 +9,7 @@ function db_connect() {
         die("Kết nối không thành công ".mysqli_connect_error());
     }
 //    mysqli_set_charset($conn, "utf8");
-    
+    return $conn;
 }
 
 //Thực thi chuổi truy vấn

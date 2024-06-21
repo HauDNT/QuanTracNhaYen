@@ -46,65 +46,13 @@
                         >
                     </div>
                     <div class="mb-3">
-                        <label for="message-text" class="col-form-label">Thêm cảm biến</label>
-                        <table class="table">
-                            <tr class="text-center">
-                                <th>Cảm biến</th>
-                                <th>Thêm/Xóa</th>
-                            </tr>
-                            
-                            <?php 
-                            foreach ($list_sensors as $sensor) {
-                                // if ($sensor['station_id'] == $_GET['id']) {    
-                            ?>
-                                <tr class="text-center">
-                                    <td><?php echo $sensor['name'] ?></td>
-                                    <td>
-                                        <?php if ($sensor['connect_status'] == 0) { ?>
-                                            <button 
-                                                class="btn btn-primary add-sensor" 
-                                                type="button" 
-                                                data-sensor-id="<?php echo $sensor['id'] ?>" 
-                                                data-station-id="<?php echo $_GET['id']; ?>"
-                                            >
-                                                Thêm
-                                            </button>
-                                        <?php } else { ?>
-                                            <button 
-                                                class="btn btn-danger remove-sensor" 
-                                                type="button" 
-                                                data-sensor-id="<?php echo $sensor['id'] ?>" 
-                                                data-station-id="<?php echo $_GET['id']; ?>"
-                                                >
-                                                Xóa
-                                            </button>
-                                        <?php } ?>
-                                    </td>
-                                </tr>
-                            <?php 
-                                // }
-                            } 
-                            ?>
-                        </table>
-                    </div>
-                    <div class="mb-3">
-                        <label for="station-langtitude" class="col-form-label">Địa chỉ DDNS URL</label>
+                        <label for="station-langtitude" class="col-form-label">Địa chỉ Web Server</label>
                         <input 
                             type="text" 
                             class="form-control" 
                             id="station-langtitude" 
                             name="station_urlServer"
                             value="<?php if (!empty($station_update['urlServer'])) echo $station_update['urlServer'];?>"
-                        >
-                    </div>
-                    <div class="mb-3">
-                        <label for="station-langtitude" class="col-form-label">Chi tiết</label>
-                        <input 
-                            type="text" 
-                            class="form-control" 
-                            id="station-langtitude" 
-                            name="station_detail"
-                            value="<?php if (!empty($station_update['detail'])) echo $station_update['detail'];?>"
                         >
                     </div>
                     <div class="mb-3">

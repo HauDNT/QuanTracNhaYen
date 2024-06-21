@@ -58,8 +58,7 @@
                     <th scope="col">Trạm</th>
                     <th scope="col">Tung độ</th>
                     <th scope="col">Hoành độ</th>
-                    <th scope="col">Địa chỉ DDNS</th>
-                    <th scope="col">Chi tiết</th>
+                    <th scope="col">Địa chỉ Web Server</th>
                     <th scope="col">Người quản lý</th>
                     <th scope="col">Hành động</th>
                 </tr>
@@ -76,7 +75,6 @@
                                 <?php echo $station['urlServer'] ?>
                             </a>
                         </td>
-                        <td><?php echo $station['detail'] ?></td>
                         <td><?php echo $station['fullname'] ?></td>
 
                         <td class="text-center d-flex justify-content-center">
@@ -120,10 +118,6 @@
                         <input type="text" class="form-control" id="station-langtitude" name="station_urlServer">
                     </div>
                     <div class="mb-3">
-                        <label for="station-langtitude" class="col-form-label">Chi tiết</label>
-                        <input type="text" class="form-control" id="station-langtitude" name="station_detail">
-                    </div>
-                    <div class="mb-3">
                         <label for="message-text" class="col-form-label">Người quản lý</label>
                         <select class="form-select" aria-label="Default select example" name="station_user">
                             <option selected hidden>-- Chọn người quản lý trạm --</option>
@@ -145,4 +139,8 @@
 </div>
 
 <!-- Footer -->
-<?php require "./layout/footer.php" ?>
+<?php 
+    require "./layout/footer.php";
+?>
+
+<!-- Script for Mapbox -->

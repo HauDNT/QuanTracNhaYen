@@ -15,7 +15,7 @@
                 <li class="list">
                     <a href="?mod=home" class="nav-link">
                         <i class="bx bxs-home icon"></i>
-                        <span class="link">Thống kê</span>
+                        <span class="link">Giám sát</span>
                     </a>
                 </li>
                 <li class="list">

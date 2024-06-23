@@ -8,7 +8,7 @@
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Cập nhật thông tin trạm</h1>
                 <button type="button" class="btn ms-auto" data-bs-dismiss="modal" aria-label="Close">
-                <a href="?mod=stations" class="text-light text-decoration-none btn-close"></a>
+                    <a href="?mod=stations" class="text-light text-decoration-none btn-close"></a>
                 </button>
             </div>
             <div class="modal-body">
@@ -16,34 +16,16 @@
                     <input type="hidden" id="sensor-id" name="sensor_id">
                     <div class="mb-3">
                         <label for="recipient-name" class="col-form-label">Tên trạm</label>
-                        <input 
-                            type="text" 
-                            class="form-control" 
-                            id="update-recipient-name" 
-                            name="station_name" 
-                            value="<?php if (!empty($station_update['name'])) echo $station_update['name'];?>"
-                        >
+                        <input type="text" class="form-control" id="update-recipient-name" name="station_name" value="<?php if (!empty($station_update['name'])) echo $station_update['name']; ?>">
                     </div>
                     <div class="mb-3" id="map"></div>
                     <div class="mb-3">
                         <label for="station-longtitude" class="col-form-label">Kinh độ</label>
-                        <input 
-                            type="text" 
-                            class="form-control" 
-                            id="station-longtitude" 
-                            name="station_longtitude"
-                            value="<?php if (!empty($station_update['longtitude'])) echo $station_update['longtitude'];?>"
-                        >
+                        <input type="text" class="form-control" id="station-longtitude" name="station_longtitude" value="<?php if (!empty($station_update['longtitude'])) echo $station_update['longtitude']; ?>">
                     </div>
                     <div class="mb-3">
                         <label for="station-langtitude" class="col-form-label">Vĩ độ</label>
-                        <input 
-                            type="text" 
-                            class="form-control" 
-                            id="station-langtitude" 
-                            name="station_langtitude"
-                            value="<?php if (!empty($station_update['langtitude'])) echo $station_update['langtitude'];?>"
-                        >
+                        <input type="text" class="form-control" id="station-langtitude" name="station_langtitude" value="<?php if (!empty($station_update['langtitude'])) echo $station_update['langtitude']; ?>">
                     </div>
                     <div class="mb-3">
                         <label for="message-text" class="col-form-label">Thêm cảm biến</label>
@@ -52,8 +34,8 @@
                                 <th>Cảm biến</th>
                                 <th>Thêm/Xóa</th>
                             </tr>
-                            
-                            <?php 
+
+                            <?php
                             foreach ($list_sensors as $sensor) {
                                 // if ($sensor['station_id'] == $_GET['id']) {    
                             ?>
@@ -61,58 +43,36 @@
                                     <td><?php echo $sensor['name'] ?></td>
                                     <td>
                                         <?php if ($sensor['connect_status'] == 0) { ?>
-                                            <button 
-                                                class="btn btn-primary add-sensor" 
-                                                type="button" 
-                                                data-sensor-id="<?php echo $sensor['id'] ?>" 
-                                                data-station-id="<?php echo $_GET['id']; ?>"
-                                            >
+                                            <button class="btn btn-primary add-sensor" type="button" data-sensor-id="<?php echo $sensor['id'] ?>" data-station-id="<?php echo $_GET['id']; ?>">
                                                 Thêm
                                             </button>
                                         <?php } else { ?>
-                                            <button 
-                                                class="btn btn-danger remove-sensor" 
-                                                type="button" 
-                                                data-sensor-id="<?php echo $sensor['id'] ?>" 
-                                                data-station-id="<?php echo $_GET['id']; ?>"
-                                                >
+                                            <button class="btn btn-danger remove-sensor" type="button" data-sensor-id="<?php echo $sensor['id'] ?>" data-station-id="<?php echo $_GET['id']; ?>">
                                                 Xóa
                                             </button>
                                         <?php } ?>
                                     </td>
                                 </tr>
-                            <?php 
+                            <?php
                                 // }
-                            } 
+                            }
                             ?>
                         </table>
                     </div>
                     <div class="mb-3">
                         <label for="station-langtitude" class="col-form-label">Địa chỉ DDNS URL</label>
-                        <input 
-                            type="text" 
-                            class="form-control" 
-                            id="station-langtitude" 
-                            name="station_urlServer"
-                            value="<?php if (!empty($station_update['urlServer'])) echo $station_update['urlServer'];?>"
-                        >
+                        <input type="text" class="form-control" id="station-langtitude" name="station_urlServer" value="<?php if (!empty($station_update['urlServer'])) echo $station_update['urlServer']; ?>">
                     </div>
                     <div class="mb-3">
                         <label for="station-langtitude" class="col-form-label">Chi tiết</label>
-                        <input 
-                            type="text" 
-                            class="form-control" 
-                            id="station-langtitude" 
-                            name="station_detail"
-                            value="<?php if (!empty($station_update['detail'])) echo $station_update['detail'];?>"
-                        >
+                        <input type="text" class="form-control" id="station-langtitude" name="station_detail" value="<?php if (!empty($station_update['detail'])) echo $station_update['detail']; ?>">
                     </div>
                     <div class="mb-3">
                         <label for="message-text" class="col-form-label">Người quản lý</label>
                         <select class="form-select" aria-label="Default select example" name="station_user">
                             <option selected hidden>-- Chọn người quản lý trạm --</option>
                             <?php foreach ($list_user_info as $user) { ?>
-                                <option value="<?php echo $user['account_id'] ?>" <?php if ($station_update['user_id'] == $user['account_id']) echo 'selected'?>> <?php echo $user['fullname'] ?></option>
+                                <option value="<?php echo $user['account_id'] ?>" <?php if ($station_update['user_id'] == $user['account_id']) echo 'selected' ?>> <?php echo $user['fullname'] ?></option>
                             <?php
                             }
                             ?>

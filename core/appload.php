@@ -1,5 +1,5 @@
 <?php
-defined('APPPATH') OR exit('Không được quyền truy cập phần này');
+defined('APPPATH') or exit('Không được quyền truy cập phần này');
 
 // Include file config/database
 require CONFIGPATH . DIRECTORY_SEPARATOR . 'database.php';
@@ -21,13 +21,13 @@ require LIBPATH . DIRECTORY_SEPARATOR . 'database.php';
 require COREPATH . DIRECTORY_SEPARATOR . 'base.php';
 
 if (is_array($autoload)) {
-    foreach ($autoload as $type => $list_auto) {
-        if (!empty($list_auto)) {
-            foreach ($list_auto as $name) {
-                load($type, $name);
-            }
-        }
-    }
+   foreach ($autoload as $type => $list_auto) {
+      if (!empty($list_auto)) {
+         foreach ($list_auto as $name) {
+            load($type, $name);
+         }
+      }
+   }
 }
 
 //

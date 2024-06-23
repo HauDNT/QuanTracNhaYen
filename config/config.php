@@ -17,15 +17,3 @@ $config['base_url'] = "http://localhost/nhayen/";
 $config['default_module'] = 'monitoring';
 $config['default_controller'] = 'index';
 $config['default_action'] = 'index';
-
-
-
-
-
-
-
-
-
-
-
-

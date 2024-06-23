@@ -16,10 +16,8 @@
  */
 
 $db = array(
-    'hostname' => 'localhost',
-    'username' => 'root',
-    'password' => '',
-    'database' => 'environment_control_system',
+   'hostname' => 'localhost',
+   'username' => 'root',
+   'password' => '',
+   'database' => 'environment_control_system',
 );
-
-

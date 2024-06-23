@@ -55,8 +55,8 @@ mainPage.on('keypress', '.search', function (e) {
     }
 });
 
-mainPage.on('click', '.search-btn', function () {
-    var searchQuery = $(this).prev('input').val();
+mainPage.on('input', '.search', function() {
+    var searchQuery = $(this).val();
     $.ajax({
         type: 'POST',
         url: window.location.href,
@@ -107,6 +107,13 @@ mainPage.on('click', '#add_sensor', function () {
     }
 });
 
+mainPage.on('hidden.bs.modal', '#addSensorModal', function() {
+    $('#addSensorModal').find('#id_sensor').val('1');
+    $('#addSensorModal').find('#name_sensor').val('');
+    $('#addSensorModal').find('#station_sensor option:first').prop('selected', true);
+    $('#addSensorModal').find('#position_sensor').val('1');
+});
+
 mainPage.on('click', '.update-modal', function (e) {
     e.preventDefault();
     var url = $(this).attr('href');
@@ -114,7 +121,6 @@ mainPage.on('click', '.update-modal', function (e) {
         type: 'GET',
         url: url,
         success: function (response) {
-            console.log(response);
             $('#updateSensorModal').html(response);
             $('#updateSensorModal').modal('show');
         },
@@ -159,4 +165,8 @@ mainPage.on('click', '#update_sensor', function () {
             }
         });
     }
+});
+
+mainPage.on('click', '#add_station', function() {
+    alert("text")
 });

@@ -1,7 +1,7 @@
 <!-- Header -->
 <?php require "./layout/header.php" ?>
 <!-- Content -->
-<div class="main-page container-xxl d-flex p-0">
+<div class="main-page container-fluid d-flex p-0">
     <?php require "./layout/sidebar.php" ?>
     <div class="content w-100 mt-2 px-2">
         <div class="row g-0 mb-2">

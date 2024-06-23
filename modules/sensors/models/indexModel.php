@@ -5,9 +5,9 @@ function get_list_sensor_info() {
     return $result;
 }
 
-function get_list_sensor_by_name() {
+function get_list_sensor_by_name($name) {
     $result = db_fetch_array("SELECT s.id, s.name AS sensor_name, s.position, st.name AS station_name, s.connect_status FROM sensors s JOIN stations st ON s.station_id = st.id
-    WHERE s.name LIKE '%".$_GET['search']."%'");
+    WHERE s.name LIKE '%".$name."%'");
     return $result;
 }
 

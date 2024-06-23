@@ -1,7 +1,7 @@
 <!-- Header -->
 <?php require "./layout/header.php" ?>
 
-<div class="main-page container-xxl d-flex p-0">
+<div class="main-page container-fluid d-flex p-0">
     <?php require "./layout/sidebar.php" ?>
     <div class="content w-100 mt-2 px-2">
         <div class="content w-100 mt-2 px-2">
@@ -10,8 +10,8 @@
 
         <div class="row g-0 mb-2">
             <div class="input-group w-auto">
-                <input class="search form-control" type="search" placeholder="Tìm kiếm..." aria-label="Search">
-                <button class="search-btn btn text-bg-primary"><i class="bi bi-search"></i></button>
+                <label for="search" class="text-secondary bg-white border border-end-0 rounded-start-pill text-center py-2 ps-3 pe-1"><i class="bi bi-search"></i></label>
+                <input class="search ps-1 form-control border-start-0 rounded-end-pill" type="search" placeholder="Tìm kiếm..." aria-label="Search">
             </div>
             <div class="w-auto ms-auto">
                 <button type="button" class="btn btn-primary ms-auto" data-bs-toggle="modal" data-bs-target="#addUnitModal" data-bs-whatever="@mdo">
@@ -59,16 +59,14 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form enctype="multipart/form-data" method="POST" action="?mod=units&action=addUnit">
-                    <div class="mb-3">
-                        <label for="unit-name" class="col-form-label">Đơn vị đo</label>
-                        <input type="text" class="form-control" id="unit-name" name="unit_name">
-                    </div>
-                    <div class="mb3 mt-8 d-flex modal-footer">
-                        <button type="button" class="btn btn-secondary ms-auto mr-4" data-bs-dismiss="modal">Trở lại</button>
-                        <button type="submit" class="btn btn-primary ms-2" name="add_unit">Thêm</button>
-                    </div>
-                </form>
+                <div class="mb-3">
+                    <label for="unit-name" class="col-form-label">Đơn vị đo</label>
+                    <input type="text" class="form-control" id="unit-name" name="unit_name">
+                </div>
+            </div>
+            <div class="mb3 mt-8 d-flex modal-footer">
+                <button type="button" class="btn btn-secondary ms-auto mr-4" data-bs-dismiss="modal">Trở lại</button>
+                <button type="button" class="btn btn-primary ms-2" id="add_unit">Thêm</button>
             </div>
         </div>
     </div>

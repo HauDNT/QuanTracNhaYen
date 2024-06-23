@@ -35,7 +35,7 @@
 
     <!-- Navbar -->
     <nav class="d-flex align-items-center bg-white shadow-sm justify-content-between px-2 z-3">
-        <div class="container-xxl p-0">
+        <div class="container-fluid p-0">
             <div class="logo d-flex align-items-center">
                 <button class="menu-button btn border-0 p-0 px-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar-user" aria-controls="sidebar-user">
                     <i class="bi bi-list fs-3"></i>

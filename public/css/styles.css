@@ -158,6 +158,10 @@ nav {
     box-shadow: none !important;
 }
 
+/* .mapboxgl-canvas {
+    width: 100% !important;
+} */
+
 @media (min-width: 992px) {
     .sidebar {
         min-width: 260px;

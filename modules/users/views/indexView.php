@@ -1,6 +1,6 @@
 <!-- Header -->
 <?php require "./layout/header.php" ?>
-<div class="main-page container-xxl d-flex p-0">
+<div class="main-page container-fluid d-flex p-0">
     <?php require "./layout/sidebar.php" ?>
     <div class="content w-100 mt-2 px-2">
         <div class="row g-0 mb-2">
@@ -9,8 +9,8 @@
 
         <div class="row g-0 mb-2">
             <div class="input-group w-auto">
-                <input class="search form-control" type="search" placeholder="Tìm kiếm..." aria-label="Search">
-                <button class="search-btn btn text-bg-primary"><i class="bi bi-search"></i></button>
+                <label for="search" class="text-secondary bg-white border border-end-0 rounded-start-pill text-center py-2 ps-3 pe-1"><i class="bi bi-search"></i></label>
+                <input class="search ps-1 form-control border-start-0 rounded-end-pill" type="search" placeholder="Tìm kiếm..." aria-label="Search">
             </div>
             <button type="button" class="btn w-auto ms-auto btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal" data-bs-whatever="@mdo">
                 <a href="?mod=users&action=addUser&views=add" class="text-white text-decoration-none">

@@ -29,9 +29,9 @@
                 <input type="number" class="form-control" id="position_sensor" value="<?php echo $sensor_update['position'] ?>" min="1">
             </div>
         </div>
-        <div class="mb3 mt-8 d-flex modal-footer">
-            <button type="button" class="btn btn-secondary ms-auto mr-4" data-bs-dismiss="modal"><a href="?mod=sensors" class="text-light text-decoration-none">Trở lại</a></button>
-            <button type="submit" class="btn btn-primary ms-2" id="update_sensor">Cập nhật</button>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trở lại</button>
+            <button type="submit" class="btn btn-primary" id="update_sensor">Cập nhật</button>
         </div>
     </div>
 </div>

@@ -1,7 +1,7 @@
 <!-- Header -->
 <?php require "./layout/header.php" ?>
 
-<div class="main-page container-xxl d-flex p-0">
+<div class="main-page container-fluid d-flex p-0">
     <?php require "./layout/sidebar.php" ?>
     <div class="content w-100 mt-2 px-2">
         <div class="row g-0 mb-2">
@@ -10,8 +10,8 @@
 
         <div class="row g-0 mb-2">
             <div class="input-group w-auto">
-                <input class="search form-control" type="search" placeholder="Tìm kiếm..." aria-label="Search">
-                <button class="search-btn btn text-bg-primary"><i class="bi bi-search"></i></button>
+                <label for="search" class="text-secondary bg-white border border-end-0 rounded-start-pill text-center py-2 ps-3 pe-1"><i class="bi bi-search"></i></label>
+                <input class="search ps-1 form-control border-start-0 rounded-end-pill" type="search" placeholder="Tìm kiếm..." aria-label="Search">
             </div>
             <div class="w-auto ms-auto">
                 <button type="button" class="btn btn-primary ms-auto" data-bs-toggle="modal" data-bs-target="#addStationModal" data-bs-whatever="@mdo">
@@ -23,13 +23,13 @@
         <table class="table table-hover shadow-sm rounded-3 overflow-hidden">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Trạm</th>
-                    <th scope="col">Tung độ</th>
-                    <th scope="col">Hoành độ</th>
-                    <th scope="col">Địa chỉ Web Server</th>
-                    <th scope="col">Người quản lý</th>
-                    <th scope="col">Hành động</th>
+                    <th scope="col" class="text-bg-primary">#</th>
+                    <th scope="col" class="text-bg-primary">Trạm</th>
+                    <th scope="col" class="text-bg-primary">Tung độ</th>
+                    <th scope="col" class="text-bg-primary">Hoành độ</th>
+                    <th scope="col" class="text-bg-primary">Địa chỉ Web Server</th>
+                    <th scope="col" class="text-bg-primary">Người quản lý</th>
+                    <th scope="col" class="text-bg-primary">Hành động</th>
                 </tr>
             </thead>
             <tbody>
@@ -58,55 +58,51 @@
             </tbody>
         </table>
     </div>
-</div>
 
-<!-- Modal add Station-->
-<div class="modal fade" id="addStationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm trạm mới</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form enctype="multipart/form-data" method="POST" action="?mod=stations&action=addStation">
+    <!-- Modal add Station-->
+    <div class="modal fade" id="addStationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm trạm mới</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
                     <div class="mb-3">
                         <label for="station-name" class="col-form-label">Tên trạm</label>
-                        <input type="text" class="form-control" id="station-name" name="station_name">
+                        <input type="text" class="form-control" id="station-name">
                     </div>
                     <div id="map" class="mb-3"></div>
                     <div class="mb-3">
                         <label for="station-longtitude" class="col-form-label">Kinh độ</label>
-                        <input type="text" class="form-control" id="station-longtitude" name="station_longtitude">
+                        <input type="text" class="form-control" id="station-longtitude">
                     </div>
                     <div class="mb-3">
                         <label for="station-langtitude" class="col-form-label">Vĩ độ</label>
-                        <input type="text" class="form-control" id="station-langtitude" name="station_langtitude">
+                        <input type="text" class="form-control" id="station-langtitude">
                     </div>
                     <div class="mb-3">
                         <label for="station-langtitude" class="col-form-label">Địa chỉ DDNS URL</label>
-                        <input type="text" class="form-control" id="station-langtitude" name="station_urlServer">
+                        <input type="text" class="form-control" id="station-langtitude">
                     </div>
                     <div class="mb-3">
                         <label for="station-langtitude" class="col-form-label">Chi tiết</label>
-                        <input type="text" class="form-control" id="station-langtitude" name="station_detail">
+                        <input type="text" class="form-control" id="station-langtitude">
                     </div>
                     <div class="mb-3">
-                        <label for="message-text" class="col-form-label">Người quản lý</label>
-                        <select class="form-select" aria-label="Default select example" name="station_user">
+                        <label for="station_user" class="col-form-label">Người quản lý</label>
+                        <select class="form-select" aria-label="Default select example" id="station_user">
                             <option selected hidden>-- Chọn người quản lý trạm --</option>
-                            <?php foreach ($list_user_info as $user) { ?>
-                                <option value="<?php echo $user['account_id'] ?>"><?php echo $user['fullname'] ?></option>
-                            <?php
-                            }
-                            ?>
+                            <?php foreach ($list_user_info as $user) : ?>
+                                <option value="<?= $user['account_id'] ?>"><?= $user['fullname'] ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
-                    <div class="mb3 mt-8 d-flex modal-footer">
-                        <button type="button" class="btn btn-secondary ms-auto mr-4" data-bs-dismiss="modal">Trở lại</button>
-                        <button type="submit" class="btn btn-primary ms-2" name="add_station">Thêm</button>
-                    </div>
-                </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trở lại</button>
+                    <button type="button" class="btn btn-primary" id="add_station">Thêm</button>
+                </div>
             </div>
         </div>
     </div>

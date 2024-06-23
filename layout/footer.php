@@ -1,7 +1,3 @@
-        
-        <!-- Custom JS -->
-        <script src="public/js/customs.js?v=<?= time() ?>" type="text/javascript"></script>
-        
         <!-- import jquery -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
@@ -14,10 +10,7 @@
         </script>
 
         <!-- Script for Mapbox -->
-        <script src="public/js/mapbox.js" type="text/javascript"></script>
-        
-        <!-- Script for add-remove sensor with AJAX -->
-        <script src="public/js/addOrRemoveSensorFromStation.js" type="text/javascript"></script>
+        <script src="public/js/mapbox.js?v=<?= time() ?>" type="text/javascript"></script>
         <script src="public/js/script.js?v=<?= time() ?>" type="text/javascript"></script>
     </body>
 

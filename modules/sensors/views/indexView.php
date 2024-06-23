@@ -1,7 +1,7 @@
 <!-- Header -->
 <?php require "./layout/header.php" ?>
 
-<div class="main-page container-xxl d-flex p-0">
+<div class="main-page container-fluid d-flex p-0">
     <?php require "./layout/sidebar.php" ?>
     <div class="content w-100 mt-2 px-2">
         <div class="row g-0 mb-2">
@@ -10,8 +10,8 @@
 
         <div class="row g-0 mb-2">
             <div class="input-group w-auto">
-                <input class="search form-control" type="search" placeholder="Tìm kiếm..." aria-label="Search">
-                <button class="search-btn btn text-bg-primary"><i class="bi bi-search"></i></button>
+                <label for="search" class="text-secondary bg-white border border-end-0 rounded-start-pill text-center py-2 ps-3 pe-1"><i class="bi bi-search"></i></label>
+                <input class="search ps-1 form-control border-start-0 rounded-end-pill" type="search" placeholder="Tìm kiếm..." aria-label="Search">
             </div>
             <div class="w-auto ms-auto">
                 <button type="button" class="btn btn-primary ms-auto" data-bs-toggle="modal" data-bs-target="#addSensorModal" data-bs-whatever="@mdo">
@@ -23,13 +23,13 @@
         <table class="table table-hover shadow-sm rounded-3 overflow-hidden">
             <thead>
                 <tr>
-                    <th class="text-center">#</th>
-                    <th class="text-center">Mã cảm biến</th>
-                    <th class="text-center">Tên cảm biến</th>
-                    <th class="text-center">Trạm</th>
-                    <th class="text-center">Tầng lắp đặt</th>
-                    <th class="text-center">Trạng thái</th>
-                    <th class="text-center">Hành động</th>
+                    <th class="text-center text-bg-primary">#</th>
+                    <th class="text-center text-bg-primary">Mã cảm biến</th>
+                    <th class="text-center text-bg-primary">Tên cảm biến</th>
+                    <th class="text-center text-bg-primary">Trạm</th>
+                    <th class="text-center text-bg-primary">Tầng lắp đặt</th>
+                    <th class="text-center text-bg-primary">Trạng thái</th>
+                    <th class="text-center text-bg-primary">Hành động</th>
                 </tr>
             </thead>
             <tbody>
@@ -82,8 +82,8 @@
                         <label for="station_sensor" class="col-form-label">Trạm</label>
                         <select class="form-select" id="station_sensor">
                             <option selected hidden disabled>-- Chọn trạm --</option>
-                            <?php foreach ($list_station as $index => $value) { ?>
-                                <option value="<?php echo $value['id'] ?>"><?php echo $value['name'] ?></option>
+                            <?php foreach ($list_station as $value) { ?>
+                                <option value="<?= $value['id'] ?>"><?= $value['name'] ?></option>
                             <?php } ?>
                         </select>
                     </div>
@@ -92,9 +92,9 @@
                         <input type="number" class="form-control" id="position_sensor" value="1" min="1">
                     </div>
                 </div>
-                <div class="mb3 mt-8 d-flex modal-footer">
-                    <button type="button" class="btn btn-secondary ms-auto mr-4" data-bs-dismiss="modal">Trở lại</button>
-                    <button type="submit" class="btn btn-primary ms-2" id="add_sensor">Thêm</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trở lại</button>
+                    <button type="button" class="btn btn-primary" id="add_sensor">Thêm</button>
                 </div>
             </div>
         </div>

@@ -2,25 +2,25 @@
 
 function construct()
 {
-   //    echo "DÙng chung, load đầu tiên";
-   load_model('index');
+  //    echo "DÙng chung, load đầu tiên";
+  load_model('index');
 }
 
 function indexAction()
 {
-   load_view('index', [
-      'active' => 'monitoring',
-   ]);
+  load_view('index', [
+    'active' => 'monitoring',
+  ]);
 }
 
 function addAction()
 {
-   echo "Thêm dữ liệu";
+  echo "Thêm dữ liệu";
 }
 
 function editAction()
 {
-   $id = (int)$_GET['id'];
-   $item = get_user_by_id($id);
-   show_array($item);
+  $id = (int)$_GET['id'];
+  $item = get_user_by_id($id);
+  show_array($item);
 }

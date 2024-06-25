@@ -21,13 +21,13 @@ require LIBPATH . DIRECTORY_SEPARATOR . 'database.php';
 require COREPATH . DIRECTORY_SEPARATOR . 'base.php';
 
 if (is_array($autoload)) {
-   foreach ($autoload as $type => $list_auto) {
-      if (!empty($list_auto)) {
-         foreach ($list_auto as $name) {
-            load($type, $name);
-         }
+  foreach ($autoload as $type => $list_auto) {
+    if (!empty($list_auto)) {
+      foreach ($list_auto as $name) {
+        load($type, $name);
       }
-   }
+    }
+  }
 }
 
 //

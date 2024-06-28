@@ -37,7 +37,7 @@
             </div>
           </div>
         </div>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSensorModal" data-bs-whatever="@mdo">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal" data-bs-whatever="@mdo">
           <i class="bi bi-plus-lg"></i>
         </button>
       </div>
@@ -70,8 +70,8 @@
                       <i class="bi bi-three-dots-vertical"></i>
                     </button>
                     <ul class="dropdown-menu px-2">
-                      <li><a id="view-sensor" class="dropdown-item rounded-3" href="?mod=users&action=updateUser&views=update&id=<?= $user['account_id'] ?>">Chỉnh sửa</a></li>
-                      <li><a class="dropdown-item rounded-3 text-danger" href="?mod=users&action=deleteUser&id=<?= $user['account_id'] ?>" onclick="return confirm('Bạn có chắc muốn xoá người dùng này?')">Xóa</a></li>
+                      <li><a id="view-sensor" class="dropdown-item rounded-3" href="?mod=users&action=updateUser&views=update&id=<?= $user['id'] ?>">Chỉnh sửa</a></li>
+                      <li><a class="dropdown-item rounded-3 text-danger" href="?mod=users&action=deleteUser&id=<?= $user['id'] ?>" onclick="return confirm('Bạn có chắc muốn xoá người dùng này?')">Xóa</a></li>
                     </ul>
                   </div>
                 </td>
@@ -100,6 +100,72 @@
           <a class="page-link border-0 rounded-2" href="<?= $current_page < $total_page ? $current_page + 1 : $current_page ?>">Sau <i class="bi bi-arrow-right"></i></a>
         </li>
       </ul>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="addUserModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm người dùng</h1>
+        <button type="button" class="btn ms-auto p-0" data-bs-dismiss="modal" aria-label="Close">
+          <a href="?mod=users" class="text-light text-decoration-none btn-close d-block"></a>
+        </button>
+      </div>
+
+      <div class="modal-body overflow-y-scroll pe-2">
+        <input type="hidden" id="sensor-id" name="sensor_id">
+        <div class="mb-3">
+          <label for="recipient-name" class="col-form-label">Họ tên</label>
+          <input type="text" class="form-control" id="update-recipient-name" name="fullname">
+        </div>
+        <div class="mb-3">
+          <label for="recipient-name" class="col-form-label">Username</label>
+          <input type="text" class="form-control" id="update-recipient-name" name="username">
+        </div>
+        <div class="mb-3">
+          <label for="station-longtitude" class="col-form-label">Email</label>
+          <input type="email" class="form-control" id="station-longtitude" name="email">
+        </div>
+        <div class="mb-3">
+          <label for="station-langtitude" class="col-form-label">Số điện thoại</label>
+          <input type="text" class="form-control" id="station-langtitude" name="phone_number">
+        </div>
+        <div class="mb-3">
+          <label for="station-langtitude" class="col-form-label">Ngày sinh</label>
+          <input type="text" class="form-control" id="station-langtitude" name="birthday">
+        </div>
+        <div class="mb-3">
+          <label for="message-text" class="col-form-label">Giới tính</label>
+          <select class="form-select" name="gender" aria-label="Default select example">
+            <option selected hidden>-- Chọn giới tính --</option>
+            <option value="0">Nữ</option>
+            <option value="1">Nam</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="message-text" class="col-form-label">Chọn Quyền</label>
+          <select class="form-select" name="role" aria-label="Default select example">
+            <option selected hidden>-- Chọn quyền --</option>
+            <?php foreach ($roles as $item) {
+              echo $item;
+            ?>
+              <option value="<?php echo $item['id'] ?>"><?php echo $item['name'] ?></option>
+            <?php
+            }
+            ?>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="station-langtitude" class="col-form-label">Mật khẩu</label>
+          <input type="text" class="form-control" id="station-langtitude" name="password">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary ms-auto mr-4 p-0" data-bs-dismiss="modal"><a href="?mod=users" class="text-light text-decoration-none d-block p-2">Trở lại</a></button>
+        <button type="submit" class="btn btn-primary ms-2" name="add_user">Thêm</button>
+      </div>
     </div>
   </div>
 </div>

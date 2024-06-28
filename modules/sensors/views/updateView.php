@@ -4,7 +4,7 @@
       <h1 class="modal-title fs-5" id="exampleModalLabel">Chỉnh sửa cảm biến</h1>
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
-    <div class="modal-body">
+    <div class="modal-body overflow-y-scroll pe-2">
       <div class="mb-3">
         <label for="id_sensor" class="col-form-label">Mã cảm biến</label>
         <input type="number" class="form-control bg-transparent" id="id_sensor" value="<?php if (!empty($sensor_update['id'])) echo $sensor_update['id']; ?>" disabled min="1">

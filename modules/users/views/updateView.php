@@ -11,7 +11,7 @@
           <a href="?mod=users" class="text-light text-decoration-none btn-close d-block"></a>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body overflow-y-scroll pe-2">
         <form enctype="multipart/form-data" method="POST">
           <input type="hidden" id="sensor-id" name="sensor_id">
           <div class="mb-3">

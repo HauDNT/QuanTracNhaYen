@@ -92,7 +92,7 @@
         <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm đơn vị</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body overflow-y-scroll pe-2">
         <div class="mb-3">
           <label for="unit-name" class="col-form-label">Tên đơn vị</label>
           <input type="text" class="form-control" id="unit_name">

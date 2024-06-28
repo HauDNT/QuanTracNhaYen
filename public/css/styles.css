@@ -31,6 +31,15 @@ nav {
   height: var(--nav-height);
 }
 
+nav .dropdown-toggle::after {
+  display: none;
+}
+
+nav .dropdown-toggle {
+  width: 36px;
+  height: 36px;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -73,6 +82,10 @@ nav {
   list-style: none;
 }
 
+.sidebar .logo {
+  padding-bottom: 5px;
+}
+
 /* .sidebar .logo {
     display: none !important;
 } */
@@ -99,42 +112,7 @@ nav {
 .main-page {
   margin-top: var(--nav-height);
   height: calc(100vh - 56px);
-  overflow-y: auto;
-}
-
-.dropdown-wrapper {
-  margin-top: 10px;
-}
-
-.dropdown:not(:first-child) {
-  margin-left: 10px;
-}
-
-.dropdown-toggle {
-  background-color: white;
-}
-
-.card-wrapper {
-  margin-top: 20px;
-}
-
-.card {
-  padding: 0;
-  border-radius: 10px;
-  margin-bottom: 10px;
-}
-
-.card:first-child {
-  margin-right: 10px;
-}
-
-.card-heading {
-  display: flex;
-}
-
-.card-heading i {
-  font-size: 24px;
-  margin-right: 5px;
+  overflow-y: scroll;
 }
 
 .chart-wrapper {
@@ -215,5 +193,52 @@ nav {
 
   nav .menu-button {
     display: none !important;
+  }
+
+  .sidebar .logo {
+    display: none;
+  }
+}
+
+@media (max-width: 576px) {
+  nav .logo {
+    display: none !important;
+  }
+
+  .table thead {
+    display: none;
+  }
+
+  
+  .table tbody tr {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+
+  .table tbody tr th,
+  .table tbody tr td {
+    display: block;
+    text-align: left !important;
+    width: 100%;
+  }
+
+  .table tbody tr th::before,
+  .table tbody tr td:not(td[data-title="Chức năng"])::before {
+    content: attr(data-title) ": ";
+    font-weight: bold;
+  }
+
+  .table tbody tr th[data-title="STT"] {
+    width: 50%;
+  }
+
+  .table tbody tr td[data-title="Chức năng"] {
+    width: 50%;
+    text-align: right !important;
+  }
+
+  .table tbody tr td:not(td[data-title="Chức năng"]) {
+    order: 2;
   }
 }

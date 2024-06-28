@@ -1,5 +1,7 @@
 <!-- Header -->
 <?php require "./layout/header.php" ?>
+<?php require "./layout/sidebar.php" ?>
+
 <div class="content w-100 p-0 d-flex flex-column">
   <div class="row g-0">
     <ul id="tab-sensor" class="nav nav-tabs border-0">
@@ -39,16 +41,16 @@
           <tbody>
             <?php foreach ($list_units as $index => $unit) : ?>
               <tr>
-                <th class="text-center"><?= $index + 1 ?></th>
-                <td class="text-center"><?= $unit['name'] ?></td>
-                <td class="text-center"><?= $unit['symbol'] ?></td>
-                <td class="text-center">
+                <th data-title="STT" class="text-center"><?= $index + 1 ?></th>
+                <td data-title="Đơn vị" class="text-center"><?= $unit['name'] ?></td>
+                <td data-title="Ký hiệu" class="text-center"><?= $unit['symbol'] ?></td>
+                <td data-title="Chức năng" class="text-center">
                   <div class="dropdown">
                     <button class="btn bg-transparent border-0 p-0 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                       <i class="bi bi-three-dots-vertical"></i>
                     </button>
                     <ul class="dropdown-menu px-2">
-                      <li><a id="view-sensor" class="dropdown-item rounded-3" href="?mod=units&action=updateUnit&views=update&id=<?= $unit['id'] ?>">Chỉnh sửa</a></li>
+                      <li><a id="view-unit" class="dropdown-item rounded-3" href="?mod=units&action=updateUnit&views=update&id=<?= $unit['id'] ?>">Chỉnh sửa</a></li>
                       <li><a class="dropdown-item rounded-3 text-danger" href="?mod=units&action=deleteUnit&id=<?= $unit['id'] ?>" onclick="return confirm('Bạn có chắc muốn xoá đơn vị này?')">Xóa</a></li>
                     </ul>
                   </div>
@@ -85,9 +87,9 @@
   </div>
 </div>
 
-<!-- Modal add Sensor-->
+<!-- Modal add Unit-->
 <div class="modal fade" id="addUnitModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm đơn vị</h1>
@@ -109,6 +111,11 @@
       </div>
     </div>
   </div>
+</div>
+
+<!-- Modal update Unit-->
+<div class="modal fade" id="updateUnitModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
 </div>
 <!-- Footer -->
 <?php require "./layout/footer.php" ?>

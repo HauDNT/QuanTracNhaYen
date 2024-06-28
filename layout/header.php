@@ -36,20 +36,40 @@
 
   <!-- Navbar -->
   <nav class="d-flex align-items-center bg-white justify-content-between px-2 z-3 shadow-sm">
-    <div class="container-fluid p-0">
+    <div class="container-fluid p-0 d-flex align-items-center flex-wrap">
+      <button class="menu-button btn border-0 p-0 px-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar-user" aria-controls="sidebar-user">
+        <i class="bi bi-list fs-3"></i>
+      </button>
       <div class="logo d-flex align-items-center">
-        <button class="menu-button btn border-0 p-0 px-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar-user" aria-controls="sidebar-user">
-          <i class="bi bi-list fs-3"></i>
-        </button>
-        <img src="public/img/logoKGU.png" alt="" height="32px">
-        <div class="logo-name d-flex flex-column">
-          <span class="ms-2 fw-semibold">Đại học kiên giang</span>
-          <span class="ms-2 text-secondary">Hệ thống quản lý nhà yến</span>
-        </div>
+        <a class="nav-link d-flex align-items-center" href="?mod=monitoring">
+          <img src="public/img/logoKGU.png" alt="" height="36px">
+          <div class="logo-name d-flex flex-column">
+            <span class="ms-2 text-dark-emphasis fw-semibold">Đại học kiên giang</span>
+            <span class="ms-2 text-secondary">Hệ thống quản lý nhà yến</span>
+          </div>
+        </a>
       </div>
-      <div class=""></div>
+      <ul class="action-list list-inline ms-auto m-0 p-0 d-flex align-items-center">
+        <li class="action-item me-2">
+          <a href="#" class="nav-link btn bg-transparent border-0 rounded-circle dropdown-toggle p-0 d-flex align-items-center" role="button">
+            <i class="bx bx-cog fs-4 text-secondary mx-auto"></i>
+          </a>
+        </li>
+        <li class="action-item dropdown me-2">
+          <button class="btn bg-transparent border-0 rounded-circle dropdown-toggle p-0 d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bx bx-bell fs-4 text-secondary mx-auto"></i>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+        <li class="action-item ms-2">
+          <img src="upload/avatar-default.jpg" class="rounded-circle" alt="" width="36px" height="36px">
+        </li>
+      </ul>
     </div>
   </nav>
 
-  <div class="main-page container-fluid d-flex p-2">
-    <?php require "./layout/sidebar.php" ?>
+  <div class="main-page container-fluid d-flex p-2 pe-0">

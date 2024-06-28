@@ -1,5 +1,6 @@
 <!-- Header -->
 <?php require "./layout/header.php" ?>
+<?php require "./layout/sidebar.php" ?>
 
 <div class="content w-100 p-0 d-flex flex-column">
   <div class="row g-0">
@@ -16,9 +17,9 @@
   <div class="row g-0 bg-white shadow-sm flex-fill flex-column <?= $active == "sensor"  ? "rounded-end-3 rounded-bottom-3" : "rounded-3" ?>">
     <div class="row g-0 align-items-center p-3 border-2 border-bottom border-light-subtle">
       <div class="d-flex w-auto ms-auto">
-        <div class="input-group w-auto">
+        <div class="input-group w-auto me-2">
           <label for="" class="d-flex align-items-center text-secondary text-center bg-white border border-end-0 rounded-start-3 ps-2 pe-1"><i class="bi bi-search"></i></label>
-          <input id="search-sensor" class="search px-1 form-control border-start-0 rounded-end-3 text-secondary" type="search" placeholder="Tìm kiếm..." aria-label="Search">
+          <input class="search px-1 form-control border-start-0 rounded-end-3 text-secondary" type="search" placeholder="Tìm kiếm..." aria-label="Search">
         </div>
         <div class="filter dropdown me-2">
           <button class="btn btn-outline-secondary border dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -46,54 +47,50 @@
     </div>
 
     <div id="table" class="row g-0 mb-3 flex-fill">
-      <?php if (count($list_sensor) > 0) : ?>
-        <table class="table table-hover table-borderless align-self-start">
-          <thead>
+      <table class="table table-hover table-borderless align-self-start w-100 nowrap">
+        <thead>
+          <tr>
+            <th class="text-center" width="80px">STT</th>
+            <th class="text-start">Tên cảm biến</th>
+            <th class="text-start">Tên trạm</th>
+            <th class="text-center">Tầng</th>
+            <th class="text-center">Trạng thái</th>
+            <th class="text-center" width="80px"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($list_sensor as $sensor) : ?>
             <tr>
-              <th class="text-center" width="80px">STT</th>
-              <th class="text-start">Tên cảm biến</th>
-              <th class="text-start">Tên trạm</th>
-              <th class="text-center">Tầng</th>
-              <th class="text-center">Trạng thái</th>
-              <th class="text-center" width="80px"></th>
+              <th data-title="STT" class="text-center"><?= $sensor["no"] ?></th>
+              <td data-title="Tên cảm biến" class="text-start">
+                <i class="bi bi-cpu"></i>
+                <?= $sensor['sensor_name'] ?>
+              </td>
+              <td data-title="Tên trạm" class="text-start">
+                <i class='bi bi-broadcast-pin'></i>
+                <?= $sensor['station_name'] ?>
+              </td>
+              <td data-title="Tầng" class="text-center"><?= $sensor['position'] ?></td>
+              <td data-title="Trạng thái" class="text-center">
+                <span class="badge <?= $sensor['connect_status'] == 0 ? 'bg-secondary text-secondary' : 'bg-success text-success' ?> bg-opacity-25">
+                  <?= $sensor['connect_status'] == 0 ? "Ngắt kết nối" : "Hoạt động" ?>
+                </span>
+              </td>
+              <td data-title="Chức năng" class="text-center">
+                <div class="dropdown">
+                  <button class="btn bg-transparent border-0 p-0 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-three-dots-vertical"></i>
+                  </button>
+                  <ul class="dropdown-menu px-2">
+                    <li><a id="view-sensor" class="dropdown-item rounded-3" href="?mod=sensors&action=updateSensor&views=update&id=<?= $sensor['id'] ?>">Chỉnh sửa</a></li>
+                    <li><a class="dropdown-item rounded-3 text-danger" href="?mod=sensors&action=deleteSensor&id=<?= $sensor['id'] ?>" onclick="return confirm('Bạn có chắc muốn xoá cảm biến này?')">Xóa</a></li>
+                  </ul>
+                </div>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            <?php foreach ($list_sensor as $index => $sensor) : ?>
-              <tr>
-                <th class="text-center"><?= $index + 1 ?></th>
-                <td class="text-start">
-                  <i class="bi bi-cpu"></i>
-                  <?= $sensor['sensor_name'] ?>
-                </td>
-                <td class="text-start">
-                  <i class='bi bi-broadcast-pin'></i>
-                  <?= $sensor['station_name'] ?>
-                </td>
-                <td class="text-center"><?= $sensor['position'] ?></td>
-                <td class="text-center">
-                  <span class="badge rounded-pill <?= $sensor['connect_status'] == 0 ? 'bg-secondary text-secondary' : 'bg-success text-success' ?> bg-opacity-25">
-                    <?= $sensor['connect_status'] == 0 ? "Ngưng hoạt động" : "Hoạt động" ?>
-                  </span>
-                </td>
-                <td class="text-center">
-                  <div class="dropdown">
-                    <button class="btn bg-transparent border-0 p-0 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      <i class="bi bi-three-dots-vertical"></i>
-                    </button>
-                    <ul class="dropdown-menu px-2">
-                      <li><a id="view-sensor" class="dropdown-item rounded-3" href="?mod=sensors&action=updateSensor&views=update&id=<?= $sensor['id'] ?>">Chỉnh sửa</a></li>
-                      <li><a class="dropdown-item rounded-3 text-danger" href="?mod=sensors&action=deleteSensor&id=<?= $sensor['id'] ?>" onclick="return confirm('Bạn có chắc muốn xoá cảm biến này?')">Xóa</a></li>
-                    </ul>
-                  </div>
-                </td>
-              </tr>
-            <?php endforeach; ?>
-          </tbody>
-        </table>
-      <?php else : ?>
-        <h4 class="text-center text-secondary align-self-center">Không có dữ liệu</h4>
-      <?php endif; ?>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
     </div>
 
     <div class="row g-0 p-3 border-2 border-top border-light-subtle mt-auto">
@@ -114,14 +111,13 @@
           <a class="page-link border-0 rounded-2" href="#">Sau <i class="bi bi-arrow-right"></i></a>
         </li>
       </ul>
-
     </div>
   </div>
 </div>
 
 <!-- Modal add Sensor-->
 <div class="modal fade" id="addSensorModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm cảm biến</h1>

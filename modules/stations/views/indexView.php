@@ -1,12 +1,13 @@
 <!-- Header -->
 <?php require "./layout/header.php" ?>
+<?php require "./layout/sidebar.php" ?>
 
 <div class="content w-100 p-0 d-flex flex-column">
   <div class="row g-0 bg-white shadow-sm flex-fill flex-column rounded-3">
-    <div class="row g-0 align-items-center p-3 border-2 border-bottom border-light-subtle">
-      <strong class="w-auto">Danh sách trạm</strong>
-      <div class="d-flex w-auto ms-auto">
-        <div class="input-group w-auto">
+    <div class="row g-0 align-items-center p-3 pb-0 border-2 border-bottom border-light-subtle">
+      <strong class="w-auto fs-5 pb-3">Danh sách trạm</strong>
+      <div class="d-flex w-auto ms-auto pb-3">
+        <div class="input-group w-auto me-2">
           <label for="" class="d-flex align-items-center text-secondary text-center bg-white border border-end-0 rounded-start-3 ps-2 pe-1"><i class="bi bi-search"></i></label>
           <input id="search-station" class="search px-1 form-control border-start-0 rounded-end-3 text-secondary" type="search" placeholder="Tìm kiếm..." aria-label="Search">
         </div>

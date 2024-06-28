@@ -41,27 +41,17 @@ function addUnitAction()
 
 function updateUnitAction()
 {
-  if (isset($_POST['update_unit'])) {
-    $id = (int) $_GET['id'];
-    show_array($id);
-
-    if (empty($_POST['unit_name'])) {
-      $_SESSION['error'] = "<b>CẬP NHẬT THẤT BẠI</b> vui lòng nhập hết các trường dữ liệu!";
+  if (isset($_POST['unit_id'])) {
+    $data = array(
+      'name' => $_POST["unit_name"],
+      'symbol' => $_POST["unit_symbol"],
+    );
+    if (update_unit($_POST['unit_id'], $data)) {
+      echo 'success';
     } else {
-      $unit_name = $_POST['unit_name'];
-
-      if (empty($_SESSION['error'])) {
-        $data = array(
-          'name' => $unit_name,
-        );
-
-        update_unit($id, $data);
-
-        $_SESSION['success'] = 'Cập nhật đơn vị đo <b>THÀNH CÔNG!</b>';
-      }
+      echo 'fail';
     }
-
-    header('location: ?mod=units');
+    exit();
   } else {
     $id = (int) $_GET['id'];
     $unit_update = get_unit_by_id($id);

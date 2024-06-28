@@ -20,5 +20,5 @@ function get_unit_by_id($id)
 
 function update_unit($id, $data)
 {
-  db_update('units', $data, "`id` = '{$id}'");
+  return db_update('units', $data, "`id` = '{$id}'");
 }

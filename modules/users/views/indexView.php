@@ -1,53 +1,113 @@
 <!-- Header -->
 <?php require "./layout/header.php" ?>
-<div class="content w-100 mt-2 px-2">
-  <div class="row g-0 mb-2">
-    <h4 class="m-2 ms-3">Quản lý tài khoản</h4>
+<?php require "./layout/sidebar.php" ?>
+
+<div class="content w-100 p-0 d-flex flex-column">
+  <div class="row g-0">
+    <ul id="tab-sensor" class="nav nav-tabs border-0">
+      <li class="nav-item">
+        <a class="nav-link text-secondary fw-semibold border-0 <?= $active == "user"  ? "active" : "" ?>" href="?mod=users">Người dùng</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-secondary fw-semibold border-0 <?= $active == "role"  ? "active" : "" ?>" href="?mod=roles">Quyền</a>
+      </li>
+    </ul>
   </div>
 
-  <div class="row g-0 mb-2">
-    <div class="input-group w-auto">
-      <label for="search" class="text-secondary bg-white border border-end-0 rounded-start-pill text-center py-2 ps-3 pe-1"><i class="bi bi-search"></i></label>
-      <input class="search ps-1 form-control border-start-0 rounded-end-pill" type="search" placeholder="Tìm kiếm..." aria-label="Search">
-    </div>
-    <button type="button" class="btn w-auto ms-auto btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal" data-bs-whatever="@mdo">
-      <a href="?mod=users&action=addUser&views=add" class="text-white text-decoration-none">
-        <i class="bi bi-plus-lg"></i>
-      </a>
-    </button>
-  </div>
-
-  <table class="table table-hover shadow-sm rounded-3 overflow-hidden">
-    <thead>
-      <tr>
-        <th class="text-center">#</th>
-        <th class="text-center">Họ tên</th>
-        <th class="text-center">Email</th>
-        <th class="text-center">Số điện thoại</th>
-        <th class="text-center">Vai trò</th>
-        <th class="text-center">Hành động</th>
-      </tr>
-    </thead>
-    <tbody>
-      <?php foreach ($list_users as $index => $user) : ?>
-        <tr>
-          <th class="text-center"><?= $index + 1 ?></th>
-          <td class="text-center"><?= $user['fullname'] ?></td>
-          <td class="text-center text-break"><?= $user['email'] ?></td>
-          <td class="text-center text-break"><?= $user['phone_number'] ?></td>
-          <td class="text-center"><?= $user['name'] ?></td>
-          <td class="text-center">
-            <div class="d-flex flex-wrap justify-content-center">
-              <a href="?mod=users&action=updateUser&views=update&id=<?= $user['account_id'] ?>" class="text-light btn btn-warning me-3 btn-xs sharp"><i class='bx bx-edit-alt h-1'></i></a>
-              <a href="?mod=users&action=deleteUser&id=<?= $user['account_id'] ?>" class="btn btn-danger btn-xs sharp" onclick="return confirm('Bạn muốn xoá tài khoản này?')">
-                <i class='bx bx-trash'></i>
-              </a>
+  <div class="row g-0 bg-white shadow-sm flex-fill flex-column <?= $active == "user"  ? "rounded-end-3 rounded-bottom-3" : "rounded-3" ?>">
+    <div class="row g-0 align-items-center p-3 border-2 border-bottom border-light-subtle">
+      <div class="d-flex w-auto ms-auto">
+        <div class="input-group w-auto">
+          <label for="" class="d-flex align-items-center text-secondary text-center bg-white border border-end-0 rounded-start-3 ps-2 pe-1"><i class="bi bi-search"></i></label>
+          <input id="search-sensor" class="search px-1 form-control border-start-0 rounded-end-3 text-secondary" type="search" placeholder="Tìm kiếm..." aria-label="Search">
+        </div>
+        <div class="filter dropdown me-2">
+          <button class="btn btn-outline-secondary border dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-funnel"></i>
+          </button>
+          <div class="dropdown-menu border border-light-subtle border-opacity-10 shadow-sm">
+            <div class="dropdown-menu-header">
+              <strong class="p-2">Bộ lọc</strong>
+              <hr class="m-0 mt-2">
             </div>
-          </td>
-        </tr>
-      <?php endforeach; ?>
-    </tbody>
-  </table>
+            <div class="dropdown-menu-body p-2">
+              <label for="sensor-status" class="text-secondary mb-1">Trang thái</label>
+              <select id="sensor-status" class="form-select">
+                <option value="-1" selected>Tất cả</option>
+                <option value="0">Ngừng hoạt động</option>
+                <option value="1">Hoạt động</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSensorModal" data-bs-whatever="@mdo">
+          <i class="bi bi-plus-lg"></i>
+        </button>
+      </div>
+    </div>
+
+    <div id="table" class="row g-0 mb-3 flex-fill">
+      <?php if (count($list_users) > 0) : ?>
+        <table class="table table-hover table-borderless align-self-start">
+          <thead>
+            <tr>
+              <th class="text-center" width="80px">STT</th>
+              <th class="text-start">Họ tên</th>
+              <th class="text-start">Email</th>
+              <th class="text-start">Số điện thoại</th>
+              <th class="text-start">Vai trò</th>
+              <th class="text-center" width="80px"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($list_users as $index => $user) : ?>
+              <tr>
+                <th data-title="STT" class="text-center"><?= $index + 1 ?></th>
+                <td data-title="Họ tên" class="text-start"><?= $user['fullname'] ?></td>
+                <td data-title="Email" class="text-start text-break"><?= $user['email'] ?></td>
+                <td data-title="Số điện thoại" class="text-start text-break"><?= $user['phone_number'] ?></td>
+                <td data-title="Vai trò" class="text-start"><?= $user['name'] ?></td>
+                <td data-title="Chức năng" class="text-center">
+                  <div class="dropdown">
+                    <button class="btn bg-transparent border-0 p-0 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="bi bi-three-dots-vertical"></i>
+                    </button>
+                    <ul class="dropdown-menu px-2">
+                      <li><a id="view-sensor" class="dropdown-item rounded-3" href="?mod=users&action=updateUser&views=update&id=<?= $user['account_id'] ?>">Chỉnh sửa</a></li>
+                      <li><a class="dropdown-item rounded-3 text-danger" href="?mod=users&action=deleteUser&id=<?= $user['account_id'] ?>" onclick="return confirm('Bạn có chắc muốn xoá người dùng này?')">Xóa</a></li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      <?php else : ?>
+        <h4 class="text-center text-secondary align-self-center">Không có dữ liệu</h4>
+      <?php endif; ?>
+    </div>
+
+    <div class="row g-0 p-3 border-2 border-top border-light-subtle mt-auto">
+      <ul class="pagination justify-content-center m-0">
+        <li class="page-item me-auto disabled">
+          <a class="page-link border-0 rounded-2"><i class="bi bi-arrow-left"></i> Trước</a>
+        </li>
+        <li class="page-item me-2">
+          <a class="page-link border-0 rounded-2 active" href="#">1</a>
+        </li>
+        <li class="page-item me-2">
+          <a class="page-link border-0 rounded-2" href="#">2</a>
+        </li>
+        <li class="page-item me-2">
+          <a class="page-link border-0 rounded-2" href="#">3</a>
+        </li>
+        <li class="page-item ms-auto">
+          <a class="page-link border-0 rounded-2" href="#">Sau <i class="bi bi-arrow-right"></i></a>
+        </li>
+      </ul>
+
+    </div>
+  </div>
 </div>
 
 <!-- Footer -->

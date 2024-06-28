@@ -45,33 +45,22 @@ if (sessionStorage.getItem('add')) {
 
 if (sessionStorage.getItem('update')) {
   showNotify("Cập nhật thành công.", "success");
-  sessionStorage.removeItem('update-sensor');
+  sessionStorage.removeItem('update');
 }
 
 var mainPage = $('.main-page');
 
 //========================sensor=============================
-mainPage.on('click', '#tab-sensor .nav-link', function () {
-  $('#tab-sensor .nav-link').removeClass('active');
-  $(this).addClass('active')
-})
-
-mainPage.on('keypress', '.search', function (e) {
-  if (e.keyCode == 13) {
-    $('.search-btn').click();
-  }
-});
-
-mainPage.on('input', '#search-sensor', function () {
-  var searchQuery = $(this).val();
-  var sensorStatus = $('#sensor-status').val()
-  updateSensorList(searchQuery, sensorStatus)
+mainPage.on('input', '.search', function () {
+  var searchQuery = $('.search').val().trim();
+  var sensorStatus = $('#sensor-status').val().trim();
+  updateSensorList(searchQuery, sensorStatus);
 });
 
 mainPage.on('change', '#sensor-status', function () {
-  var searchQuery = $('#search-sensor').val();
-  var sensorStatus = $(this).val()
-  updateSensorList(searchQuery, sensorStatus)
+  var searchQuery = $('.search').val().trim();
+  var sensorStatus = $('#sensor-status').val().trim();
+  updateSensorList(searchQuery, sensorStatus);
 });
 
 function updateSensorList(searchQuery, sensorStatus) {
@@ -84,7 +73,9 @@ function updateSensorList(searchQuery, sensorStatus) {
     },
     success: function (data) {
       var value = $(data).find('#table').html();
+      var pagination = $(data).find('.pagination').html();
       $('#table').html(value);
+      $('.pagination').html(pagination);
     },
     error: function () {
       showNotify("Lỗi hệ thống vui lòng thử lại sau.", "warning");
@@ -172,7 +163,7 @@ mainPage.on('click', '#update_sensor', function () {
 
       success: function (response) {
         if (response == 'success') {
-          sessionStorage.setItem('update-sensor', 'success');
+          sessionStorage.setItem('update', 'success');
           window.location.reload();
         } else if (response == 'fail') {
           showNotify("Cập nhật thất bại.", "danger");
@@ -208,8 +199,8 @@ mainPage.on('input', '#search-unit', function () {
 });
 
 mainPage.on('click', '#add_unit', function () {
-  var unit_name = $('#unit_name').val().trim()
-  var unit_symbol = $('#unit_symbol').val().trim()
+  var unit_name = $('#addUnitModal').find('#unit_name').val().trim()
+  var unit_symbol = $('#addUnitModal').find('#unit_symbol').val().trim()
   if (unit_name == "" || unit_symbol == "") {
     showNotify("Vui lòng nhập đầy đủ thông tin", "warning");
   } else {
@@ -237,3 +228,58 @@ mainPage.on('click', '#add_unit', function () {
     })
   }
 });
+
+mainPage.on('hidden.bs.modal', '#addUnitModal', function () {
+  $('#addUnitModal').find('#unit_name').val('')
+  $('#addUnitModal').find('#unit_symbol').val('')
+});
+
+mainPage.on('click', '#view-unit', function (e) {
+  e.preventDefault();
+  var url = $(this).attr('href');
+  $.ajax({
+    type: "GET",
+    url: url,
+    success: function (response) {
+      $('#updateUnitModal').html(response);
+      $('#updateUnitModal').modal('show');
+    },
+
+    error: function () {
+      showNotify("Lỗi hệ thống vui lòng thử lại sau!", "danger");
+    }
+  });
+});
+
+mainPage.on('click', '#update_unit', function () {
+  var unit_id = $(this).val().trim();
+  var unit_name = $('#updateUnitModal').find('#unit_name').val().trim()
+  var unit_symbol = $('#updateUnitModal').find('#unit_symbol').val().trim()
+  if (unit_name == "" || unit_symbol == "") {
+    showNotify("Vui lòng nhập đầy đủ thông tin", "warning");
+  } else {
+    $.ajax({
+      type: "POST",
+      url: '?mod=units&action=updateUnit',
+      data: {
+        unit_id: unit_id,
+        unit_name: unit_name,
+        unit_symbol: unit_symbol
+      },
+      success: function (response) {
+        console.log(response);
+        if (response == 'success') {
+          sessionStorage.setItem('update', 'success');
+          window.location.reload();
+        } else if (response == 'fail') {
+          showNotify("Cập nhật thất bại.", "danger");
+        } else {
+          showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
+        }
+      },
+      error: function () {
+        showNotify("Lỗi hệ thống vui lòng thử lại sau!", "danger");
+      }
+    })
+  }
+})

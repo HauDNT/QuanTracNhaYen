@@ -13,9 +13,34 @@ function indexAction()
   if (isset($_POST["search"])) {
     $list_users = get_list_users_by_name($_POST["search"]);
   }
+
+  $data_list = array();
+  foreach ($list_users as $index => $value) {
+    $data_list[] = array(
+      'no' => $index + 1,
+      'id' => $value['id'],
+      'fullname' => $value['fullname'],
+      'email' => $value['email'],
+      'phone_number' => $value['phone_number'],
+      'role' => $value['name'],
+    );
+  }
+
+  $item_per_page = 10;
+  $current_page = 1;
+  if (isset($_POST["page"])) {
+    $current_page = $_POST["page"];
+  }
+  $total_page = ceil(count($data_list) / $item_per_page);
+  $offset = ($current_page - 1) * $item_per_page;
+
+  $currentItems = array_slice($data_list, $offset, $item_per_page);
+
   $data = array(
     'active' => 'user',
-    'list_users' => $list_users,
+    'list_users' => $currentItems,
+    'total_page' => $total_page,
+    'current_page' => $current_page,
   );
   load_view('index', $data);
 }

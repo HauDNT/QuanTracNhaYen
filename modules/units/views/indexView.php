@@ -39,9 +39,9 @@
             </tr>
           </thead>
           <tbody>
-            <?php foreach ($list_units as $index => $unit) : ?>
+            <?php foreach ($list_units as $unit) : ?>
               <tr>
-                <th data-title="STT" class="text-center"><?= $index + 1 ?></th>
+                <th data-title="STT" class="text-center"><?= $unit['no'] ?></th>
                 <td data-title="Đơn vị" class="text-center"><?= $unit['name'] ?></td>
                 <td data-title="Ký hiệu" class="text-center"><?= $unit['symbol'] ?></td>
                 <td data-title="Chức năng" class="text-center">
@@ -66,23 +66,20 @@
 
     <div class="row g-0 p-3 border-2 border-top border-light-subtle mt-auto">
       <ul class="pagination justify-content-center m-0">
-        <li class="page-item me-auto disabled">
-          <a class="page-link border-0 rounded-2"><i class="bi bi-arrow-left"></i> Trước</a>
+        <li class="page-item me-auto <?= $current_page <= 1 ? "disabled" : "" ?>">
+          <a class="page-link border-0 rounded-2" href="<?= $current_page > 1 ? $current_page - 1 : $current_page ?>"><i class="bi bi-arrow-left"></i> Trước</a>
         </li>
-        <li class="page-item me-2">
-          <a class="page-link border-0 rounded-2 active" href="#">1</a>
-        </li>
-        <li class="page-item me-2">
-          <a class="page-link border-0 rounded-2" href="#">2</a>
-        </li>
-        <li class="page-item me-2">
-          <a class="page-link border-0 rounded-2" href="#">3</a>
-        </li>
-        <li class="page-item ms-auto">
-          <a class="page-link border-0 rounded-2" href="#">Sau <i class="bi bi-arrow-right"></i></a>
+        <?php for ($i = 1; $i <= $total_page; $i++) : ?>
+          <?php if ($i > $current_page - 2 &&  $i < $current_page + 2) : ?>
+            <li class="page-item me-2">
+              <a class="page-link border-0 rounded-2 <?= $current_page == $i ? "active" : "" ?>" href="<?= $i ?>"><?= $i ?></a>
+            </li>
+          <?php endif; ?>
+        <?php endfor; ?>
+        <li class="page-item ms-auto <?= $current_page >= $total_page ? "disabled" : "" ?>">
+          <a class="page-link border-0 rounded-2" href="<?= $current_page < $total_page ? $current_page + 1 : $current_page ?>">Sau <i class="bi bi-arrow-right"></i></a>
         </li>
       </ul>
-
     </div>
   </div>
 </div>

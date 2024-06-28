@@ -47,68 +47,70 @@
     </div>
 
     <div id="table" class="row g-0 mb-3 flex-fill">
-      <table class="table table-hover table-borderless align-self-start w-100 nowrap">
-        <thead>
-          <tr>
-            <th class="text-center" width="80px">STT</th>
-            <th class="text-start">Tên cảm biến</th>
-            <th class="text-start">Tên trạm</th>
-            <th class="text-center">Tầng</th>
-            <th class="text-center">Trạng thái</th>
-            <th class="text-center" width="80px"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php foreach ($list_sensor as $sensor) : ?>
+      <?php if (count($list_sensor) > 0) : ?>
+        <table class="table table-hover table-borderless align-self-start w-100 nowrap">
+          <thead>
             <tr>
-              <th data-title="STT" class="text-center"><?= $sensor["no"] ?></th>
-              <td data-title="Tên cảm biến" class="text-start">
-                <i class="bi bi-cpu"></i>
-                <?= $sensor['sensor_name'] ?>
-              </td>
-              <td data-title="Tên trạm" class="text-start">
-                <i class='bi bi-broadcast-pin'></i>
-                <?= $sensor['station_name'] ?>
-              </td>
-              <td data-title="Tầng" class="text-center"><?= $sensor['position'] ?></td>
-              <td data-title="Trạng thái" class="text-center">
-                <span class="badge <?= $sensor['connect_status'] == 0 ? 'bg-secondary text-secondary' : 'bg-success text-success' ?> bg-opacity-25">
-                  <?= $sensor['connect_status'] == 0 ? "Ngắt kết nối" : "Hoạt động" ?>
-                </span>
-              </td>
-              <td data-title="Chức năng" class="text-center">
-                <div class="dropdown">
-                  <button class="btn bg-transparent border-0 p-0 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-three-dots-vertical"></i>
-                  </button>
-                  <ul class="dropdown-menu px-2">
-                    <li><a id="view-sensor" class="dropdown-item rounded-3" href="?mod=sensors&action=updateSensor&views=update&id=<?= $sensor['id'] ?>">Chỉnh sửa</a></li>
-                    <li><a class="dropdown-item rounded-3 text-danger" href="?mod=sensors&action=deleteSensor&id=<?= $sensor['id'] ?>" onclick="return confirm('Bạn có chắc muốn xoá cảm biến này?')">Xóa</a></li>
-                  </ul>
-                </div>
-              </td>
+              <th class="text-center" width="80px">STT</th>
+              <th class="text-start">Tên cảm biến</th>
+              <th class="text-start">Tên trạm</th>
+              <th class="text-center">Tầng</th>
+              <th class="text-center">Trạng thái</th>
+              <th class="text-center" width="80px"></th>
             </tr>
-          <?php endforeach; ?>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            <?php foreach ($list_sensor as $sensor) : ?>
+              <tr>
+                <th data-title="STT" class="text-center"><?= $sensor["no"] ?></th>
+                <td data-title="Tên cảm biến" class="text-start">
+                  <i class="bi bi-cpu"></i>
+                  <?= $sensor['sensor_name'] ?>
+                </td>
+                <td data-title="Tên trạm" class="text-start">
+                  <i class='bi bi-broadcast-pin'></i>
+                  <?= $sensor['station_name'] ?>
+                </td>
+                <td data-title="Tầng" class="text-center"><?= $sensor['position'] ?></td>
+                <td data-title="Trạng thái" class="text-center">
+                  <span class="badge <?= $sensor['connect_status'] == 0 ? 'bg-secondary text-secondary' : 'bg-success text-success' ?> bg-opacity-25">
+                    <?= $sensor['connect_status'] == 0 ? "Ngắt kết nối" : "Hoạt động" ?>
+                  </span>
+                </td>
+                <td data-title="Chức năng" class="text-center">
+                  <div class="dropdown">
+                    <button class="btn bg-transparent border-0 p-0 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="bi bi-three-dots-vertical"></i>
+                    </button>
+                    <ul class="dropdown-menu px-2">
+                      <li><a id="view-sensor" class="dropdown-item rounded-3" href="?mod=sensors&action=updateSensor&views=update&id=<?= $sensor['id'] ?>">Chỉnh sửa</a></li>
+                      <li><a class="dropdown-item rounded-3 text-danger" href="?mod=sensors&action=deleteSensor&id=<?= $sensor['id'] ?>" onclick="return confirm('Bạn có chắc muốn xoá cảm biến này?')">Xóa</a></li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      <?php else : ?>
+        <h4 class="text-center text-secondary align-self-center">Không có dữ liệu</h4>
+      <?php endif; ?>
     </div>
 
     <div class="row g-0 p-3 border-2 border-top border-light-subtle mt-auto">
       <ul class="pagination justify-content-center m-0">
-        <li class="page-item me-auto disabled">
-          <a class="page-link border-0 rounded-2"><i class="bi bi-arrow-left"></i> Trước</a>
+        <li class="page-item me-auto <?= $current_page <= 1 ? "disabled" : "" ?>">
+          <a class="page-link border-0 rounded-2" href="<?= $current_page > 1 ? $current_page - 1 : $current_page ?>"><i class="bi bi-arrow-left"></i> Trước</a>
         </li>
-        <li class="page-item me-2">
-          <a class="page-link border-0 rounded-2 active" href="#">1</a>
-        </li>
-        <li class="page-item me-2">
-          <a class="page-link border-0 rounded-2" href="#">2</a>
-        </li>
-        <li class="page-item me-2">
-          <a class="page-link border-0 rounded-2" href="#">3</a>
-        </li>
-        <li class="page-item ms-auto">
-          <a class="page-link border-0 rounded-2" href="#">Sau <i class="bi bi-arrow-right"></i></a>
+        <?php for ($i = 1; $i <= $total_page; $i++) : ?>
+          <?php if ($i > $current_page - 2 &&  $i < $current_page + 2) : ?>
+            <li class="page-item me-2">
+              <a class="page-link border-0 rounded-2 <?= $current_page == $i ? "active" : "" ?>" href="<?= $i ?>"><?= $i ?></a>
+            </li>
+          <?php endif; ?>
+        <?php endfor; ?>
+        <li class="page-item ms-auto <?= $current_page >= $total_page ? "disabled" : "" ?>">
+          <a class="page-link border-0 rounded-2" href="<?= $current_page < $total_page ? $current_page + 1 : $current_page ?>">Sau <i class="bi bi-arrow-right"></i></a>
         </li>
       </ul>
     </div>

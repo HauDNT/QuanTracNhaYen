@@ -8,16 +8,13 @@
       <li class="nav-item">
         <a class="nav-link text-secondary fw-semibold border-0 <?= $active == "user"  ? "active" : "" ?>" href="?mod=users">Người dùng</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link text-secondary fw-semibold border-0 <?= $active == "role"  ? "active" : "" ?>" href="?mod=roles">Quyền</a>
-      </li>
     </ul>
   </div>
 
   <div class="row g-0 bg-white shadow-sm flex-fill flex-column <?= $active == "user"  ? "rounded-end-3 rounded-bottom-3" : "rounded-3" ?>">
     <div class="row g-0 align-items-center p-3 border-2 border-bottom border-light-subtle">
       <div class="d-flex w-auto ms-auto">
-        <div class="input-group w-auto">
+        <div class="input-group w-auto me-2">
           <label for="" class="d-flex align-items-center text-secondary text-center bg-white border border-end-0 rounded-start-3 ps-2 pe-1"><i class="bi bi-search"></i></label>
           <input id="search-sensor" class="search px-1 form-control border-start-0 rounded-end-3 text-secondary" type="search" placeholder="Tìm kiếm..." aria-label="Search">
         </div>
@@ -60,13 +57,13 @@
             </tr>
           </thead>
           <tbody>
-            <?php foreach ($list_users as $index => $user) : ?>
+            <?php foreach ($list_users as $user) : ?>
               <tr>
-                <th data-title="STT" class="text-center"><?= $index + 1 ?></th>
+                <th data-title="STT" class="text-center"><?= $user['no'] ?></th>
                 <td data-title="Họ tên" class="text-start"><?= $user['fullname'] ?></td>
                 <td data-title="Email" class="text-start text-break"><?= $user['email'] ?></td>
                 <td data-title="Số điện thoại" class="text-start text-break"><?= $user['phone_number'] ?></td>
-                <td data-title="Vai trò" class="text-start"><?= $user['name'] ?></td>
+                <td data-title="Vai trò" class="text-start"><?= $user['role'] ?></td>
                 <td data-title="Chức năng" class="text-center">
                   <div class="dropdown">
                     <button class="btn bg-transparent border-0 p-0 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -89,23 +86,20 @@
 
     <div class="row g-0 p-3 border-2 border-top border-light-subtle mt-auto">
       <ul class="pagination justify-content-center m-0">
-        <li class="page-item me-auto disabled">
-          <a class="page-link border-0 rounded-2"><i class="bi bi-arrow-left"></i> Trước</a>
+        <li class="page-item me-auto <?= $current_page <= 1 ? "disabled" : "" ?>">
+          <a class="page-link border-0 rounded-2" href="<?= $current_page > 1 ? $current_page - 1 : $current_page ?>"><i class="bi bi-arrow-left"></i> Trước</a>
         </li>
-        <li class="page-item me-2">
-          <a class="page-link border-0 rounded-2 active" href="#">1</a>
-        </li>
-        <li class="page-item me-2">
-          <a class="page-link border-0 rounded-2" href="#">2</a>
-        </li>
-        <li class="page-item me-2">
-          <a class="page-link border-0 rounded-2" href="#">3</a>
-        </li>
-        <li class="page-item ms-auto">
-          <a class="page-link border-0 rounded-2" href="#">Sau <i class="bi bi-arrow-right"></i></a>
+        <?php for ($i = 1; $i <= $total_page; $i++) : ?>
+          <?php if ($i > $current_page - 2 &&  $i < $current_page + 2) : ?>
+            <li class="page-item me-2">
+              <a class="page-link border-0 rounded-2 <?= $current_page == $i ? "active" : "" ?>" href="<?= $i ?>"><?= $i ?></a>
+            </li>
+          <?php endif; ?>
+        <?php endfor; ?>
+        <li class="page-item ms-auto <?= $current_page >= $total_page ? "disabled" : "" ?>">
+          <a class="page-link border-0 rounded-2" href="<?= $current_page < $total_page ? $current_page + 1 : $current_page ?>">Sau <i class="bi bi-arrow-right"></i></a>
         </li>
       </ul>
-
     </div>
   </div>
 </div>

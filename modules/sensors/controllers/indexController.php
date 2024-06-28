@@ -13,15 +13,11 @@ function indexAction()
     $list_sensor = get_list_sensor_search($_POST["search"], $_POST["status"]);
   }
 
-  $item_per_page = 2;
-  $current_page = 2;
-  $total_page = ceil(count($list_sensor) / $item_per_page);
-  $offset = ($current_page - 1) * $total_page;
-
-  $data = array();
-  foreach($list_sensor as $index => $value) {
-    $data[] = array(
+  $data_list = array();
+  foreach ($list_sensor as $index => $value) {
+    $data_list[] = array(
       'no' => $index + 1,
+      'id' => $value['id'],
       'sensor_name' => $value['sensor_name'],
       'station_name' => $value['station_name'],
       'position' => $value['position'],
@@ -29,13 +25,23 @@ function indexAction()
     );
   }
 
-  $currentItems = array_slice($data, $offset, $total_page);
+  $item_per_page = 10;
+  $current_page = 1;
+  if (isset($_POST["page"])) {
+    $current_page = $_POST["page"];
+  }
+  $total_page = ceil(count($data_list) / $item_per_page);
+  $offset = ($current_page - 1) * $item_per_page;
+
+  $currentItems = array_slice($data_list, $offset, $item_per_page);
 
   $list_station = get_list_station();
   $data = array(
     'active' => 'sensor',
     'list_sensor' => $currentItems,
     'list_station' => $list_station,
+    'total_page' => $total_page,
+    'current_page' => $current_page,
   );
   load_view('index', $data);
 }

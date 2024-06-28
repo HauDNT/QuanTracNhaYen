@@ -34,7 +34,6 @@ define('MODULESPATH', APPPATH . DIRECTORY_SEPARATOR . $modules_folder);
 $helper_folder = 'helper';
 define('HELPERPATH', APPPATH . DIRECTORY_SEPARATOR . $helper_folder);
 
-
 /*
  * --------------------------------------------------------------------
  * library path

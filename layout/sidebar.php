@@ -40,7 +40,7 @@
           <li class="list">
             <a href="?mod=users" class="nav-link text-secondary py-2 <?= $active == "user"  ? "active" : "" ?>">
               <i class='bi bi-people me-2'></i>
-              <span class="link">Người dùng & Quyền</span>
+              <span class="link">Người dùng</span>
             </a>
           </li>
           <li class="list">

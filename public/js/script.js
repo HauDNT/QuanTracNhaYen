@@ -50,26 +50,80 @@ if (sessionStorage.getItem('update')) {
 
 var mainPage = $('.main-page');
 
-//========================sensor=============================
+mainPage.on('click', ".page-link", function (e) {
+  e.preventDefault();
+  var page = $(this).attr('href');
+  $.ajax({
+    type: "POST",
+    url: window.location.href,
+    data: requestPage(page),
+    success: function (data) {
+      var value = $(data).find('#table').html();
+      var pagination = $(data).find('.pagination').html();
+      $('#table').html(value);
+      $('.pagination').html(pagination);
+
+    },
+
+    error: function () {
+      showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
+    }
+  });
+})
+
 mainPage.on('input', '.search', function () {
-  var searchQuery = $('.search').val().trim();
-  var sensorStatus = $('#sensor-status').val().trim();
-  updateSensorList(searchQuery, sensorStatus);
+  $.ajax({
+    type: 'POST',
+    url: window.location.href,
+    data: requestSearch(),
+    success: function (data) {
+      var showing = $(data).find('.showing').html();
+      var value = $(data).find('#table').html();
+      var pagination = $(data).find('.pagination').html();
+      $('.showing').html(showing);
+      $('#table').html(value);
+      $('.pagination').html(pagination);
+    },
+    error: function () {
+      showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
+    }
+  });
 });
+
+function requestSearch() {
+  var requestData = {
+    search: $('.search').val().trim(),
+  };
+
+  if ($('#sensor-status').length > 0) {
+    requestData.sensorStatus = $('#sensor-status').val();
+  }
+
+  return requestData;
+}
+
+function requestPage(page) {
+  var requestData = {
+    page: page,
+    search: $('.search').val().trim(),
+  };
+
+  if ($('#sensor-status').length > 0) {
+    requestData.sensorStatus = $('#sensor-status').val();
+  }
+
+  return requestData;
+}
+
+//========================sensor=============================
 
 mainPage.on('change', '#sensor-status', function () {
-  var searchQuery = $('.search').val().trim();
-  var sensorStatus = $('#sensor-status').val().trim();
-  updateSensorList(searchQuery, sensorStatus);
-});
-
-function updateSensorList(searchQuery, sensorStatus) {
   $.ajax({
     type: 'POST',
     url: window.location.href,
     data: {
-      search: searchQuery,
-      status: sensorStatus
+      search: $('.search').val().trim(),
+      status: $('#sensor-status').val().trim(),
     },
     success: function (data) {
       var value = $(data).find('#table').html();
@@ -78,10 +132,10 @@ function updateSensorList(searchQuery, sensorStatus) {
       $('.pagination').html(pagination);
     },
     error: function () {
-      showNotify("Lỗi hệ thống vui lòng thử lại sau.", "warning");
+      showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
     }
   });
-}
+});
 
 mainPage.on('click', '#add_sensor', function () {
   var idSensor = $('#addSensorModal').find('#id_sensor').val();

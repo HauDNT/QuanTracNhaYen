@@ -11,9 +11,32 @@ function indexAction()
   if (isset($_POST["search"])) {
     $list_units = get_list_units_by_name($_POST["search"]);
   }
+
+  $data_list = array();
+  foreach ($list_units as $index => $value) {
+    $data_list[] = array(
+      'no' => $index + 1,
+      'id' => $value['id'],
+      'name' => $value['name'],
+      'symbol' => $value['symbol'],
+    );
+  }
+
+  $item_per_page = 10;
+  $current_page = 1;
+  if (isset($_POST["page"])) {
+    $current_page = $_POST["page"];
+  }
+  $total_page = ceil(count($data_list) / $item_per_page);
+  $offset = ($current_page - 1) * $item_per_page;
+
+  $currentItems = array_slice($data_list, $offset, $item_per_page);
+
   $data = array(
     'active' => 'unit',
-    'list_units' => $list_units
+    'list_units' => $currentItems,
+    'total_page' => $total_page,
+    'current_page' => $current_page,
   );
 
   load_view('index', $data);

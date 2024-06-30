@@ -18,8 +18,8 @@
     <div class="row g-0 align-items-center p-3 border-2 border-bottom border-light-subtle">
       <div class="d-flex w-auto ms-auto">
         <div class="input-group w-auto me-2">
-          <label for="" class="d-flex align-items-center text-secondary text-center bg-white border border-end-0 rounded-start-3 ps-2 pe-1"><i class="bi bi-search"></i></label>
-          <input class="search px-1 form-control border-start-0 rounded-end-3 text-secondary" type="search" placeholder="Tìm kiếm..." aria-label="Search">
+          <label for="search" class="d-flex align-items-center text-secondary text-center bg-white border border-end-0 rounded-start-3 ps-2 pe-1"><i class="bi bi-search"></i></label>
+          <input id="search" class="px-1 form-control border-start-0 rounded-end-3 text-secondary" type="search" placeholder="Tìm kiếm..." aria-label="Search">
         </div>
         <div class="filter dropdown me-2">
           <button class="btn btn-outline-secondary border dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -63,12 +63,16 @@
             <?php foreach ($list_sensor as $sensor) : ?>
               <tr>
                 <th data-title="STT" class="text-center"><?= $sensor["no"] ?></th>
-                <td data-title="Tên cảm biến" class="text-start">
-                  <i class="bi bi-cpu"></i>
-                  <?= $sensor['sensor_name'] ?>
+                <td data-title="Tên cảm biến" class="text-start d-flex align-items-center">
+                  <div class="d-flex align-items-center w-auto ms-2">
+                    <i class="bi bi-cpu me-2 fs-4"></i>
+                    <div>
+                      <span class="d-block"><?= $sensor['sensor_name'] ?></span>
+                      <span class="d-block text-line-secondary text-secondary"><?= $sensor['sensor_id'] ?></span>
+                    </div>
+                  </div>
                 </td>
                 <td data-title="Tên trạm" class="text-start">
-                  <i class='bi bi-broadcast-pin'></i>
                   <?= $sensor['station_name'] ?>
                 </td>
                 <td data-title="Tầng" class="text-center"><?= $sensor['position'] ?></td>
@@ -122,20 +126,20 @@
   <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm cảm biến</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm cảm biến <span class="text-danger">*</span></h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body overflow-y-scroll pe-2">
         <div class="mb-3">
-          <label for="id_sensor" class="col-form-label">Mã cảm biến</label>
-          <input type="number" class="form-control" id="id_sensor" value="1" min="1">
+          <label for="id_sensor" class="col-form-label">Mã cảm biến <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" id="id_sensor" placeholder="SS<?= date("Y") ?>00000">
         </div>
         <div class="mb-3">
-          <label for="name_sensor" class="col-form-label">Tên cảm biến</label>
+          <label for="name_sensor" class="col-form-label">Tên cảm biến <span class="text-danger">*</span></label>
           <input type="text" class="form-control" id="name_sensor">
         </div>
         <div class="mb-3">
-          <label for="station_sensor" class="col-form-label">Trạm</label>
+          <label for="station_sensor" class="col-form-label">Trạm <span class="text-danger">*</span></label>
           <select class="form-select" id="station_sensor">
             <option selected hidden disabled>-- Chọn trạm --</option>
             <?php foreach ($list_station as $value) { ?>
@@ -144,7 +148,7 @@
           </select>
         </div>
         <div class="mb-3">
-          <label for="position_sensor" class="col-form-label">Tầng</label>
+          <label for="position_sensor" class="col-form-label">Tầng <span class="text-danger">*</span></label>
           <input type="number" class="form-control" id="position_sensor" value="1" min="1">
         </div>
       </div>

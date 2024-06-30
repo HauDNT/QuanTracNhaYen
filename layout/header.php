@@ -14,12 +14,17 @@
   <!-- Link Icon -->
   <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css?v=<?= time() ?>" rel="stylesheet" />
 
-  <!-- Link CSS -->
-  <link rel="stylesheet" href="public/css/styles.css?v=<?= time() ?>">
-
   <!-- Link Mapbox -->
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet">
+
+
+  <!-- Link Flatpickr -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
+
+  <!-- Link CSS -->
+  <link rel="stylesheet" href="public/css/styles.css?v=<?= time() ?>">
 </head>
 
 <body class="bg-body-secondary">

@@ -43,10 +43,15 @@
               <span class="link">Người dùng</span>
             </a>
           </li>
+        </ul>
+      </div>
+
+      <div class="offcanvas-footer mt-auto px-2">
+        <ul class="lists list-inline">
           <li class="list">
-            <a href="#" class="nav-link text-secondary py-2 <?= $active == "setting"  ? "active" : "" ?>">
-              <i class="bi bi-gear me-2"></i>
-              <span class="link">Thiết lập</span>
+            <a href="#" class="nav-link text-secondary py-2">
+              <i class="bi bi-box-arrow-right me-2"></i>
+              <span class="link">Đăng xuất</span>
             </a>
           </li>
         </ul>

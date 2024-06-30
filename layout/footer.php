@@ -10,6 +10,10 @@
 
 <!-- Script for Mapbox -->
 <script src="public/js/mapbox.js?v=<?= time() ?>" type="text/javascript"></script>
+
+<!-- Script for flatpickr -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 <script src="public/js/script.js?v=<?= time() ?>" type="text/javascript"></script>
 </body>
 

@@ -47,6 +47,14 @@ function addUnitAction()
   if (isset($_POST['unit_name']) && isset($_POST['unit_symbol'])) {
     $unit_name = $_POST['unit_name'];
     $unit_symbol = $_POST['unit_symbol'];
+    if (empty($unit_name) || empty($unit_symbol)) {
+      echo json_encode([
+        "type" => "fail",
+        "message" => "Vui lòng nhập đầy đủ thông tin!",
+        "notifyType" => "warning",
+      ]);
+      exit();
+    }
 
     $data = array(
       'name' => $unit_name,
@@ -54,9 +62,17 @@ function addUnitAction()
     );
 
     if (db_insert('units', $data)) {
-      echo 'success';
+      echo json_encode([
+        "type" => "success",
+        "message" => "Thêm thành công.",
+        "notifyType" => "success"
+      ]);
     } else {
-      echo 'fail';
+      echo json_encode([
+        "type" => "fail",
+        "message" => "Thêm thất bại.",
+        "notifyType" => "danger"
+      ]);
     }
     exit();
   }
@@ -65,14 +81,33 @@ function addUnitAction()
 function updateUnitAction()
 {
   if (isset($_POST['unit_id'])) {
+    $unit_name = $_POST['unit_name'];
+    $unit_symbol = $_POST['unit_symbol'];
+    if (empty($unit_name) || empty($unit_symbol)) {
+      echo json_encode([
+        "type" => "fail",
+        "message" => "Vui lòng nhập đầy đủ thông tin!",
+        "notifyType" => "warning",
+      ]);
+      exit();
+    }
+
     $data = array(
-      'name' => $_POST["unit_name"],
-      'symbol' => $_POST["unit_symbol"],
+      'name' => $unit_name,
+      'symbol' => $unit_symbol,
     );
     if (update_unit($_POST['unit_id'], $data)) {
-      echo 'success';
+      echo json_encode([
+        "type" => "success",
+        "message" => "Cập nhật thành công.",
+        "notifyType" => "success"
+      ]);
     } else {
-      echo 'fail';
+      echo json_encode([
+        "type" => "fail",
+        "message" => "Cập nhật thất bại.",
+        "notifyType" => "danger"
+      ]);
     }
     exit();
   } else {

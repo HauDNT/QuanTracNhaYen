@@ -7,11 +7,11 @@
     <div class="modal-body overflow-y-scroll pe-2">
       <div class="mb-3">
         <label for="id_sensor" class="col-form-label">Mã cảm biến</label>
-        <input type="number" class="form-control bg-transparent" id="id_sensor" value="<?php if (!empty($sensor_update['id'])) echo $sensor_update['id']; ?>" disabled min="1">
+        <input type="text" class="form-control bg-transparent" id="id_sensor" placeholder="SS<?= date("Y") ?>00000" value="<?= $sensor_update['sensor_id'] ?>">
       </div>
       <div class="mb-3">
         <label for="name_sensor" class="col-form-label">Tên cảm biến</label>
-        <input type="text" class="form-control" id="name_sensor" value="<?php if (!empty($sensor_update['sensor_name'])) echo $sensor_update['sensor_name']; ?>">
+        <input type="text" class="form-control" id="name_sensor" value="<?= $sensor_update['sensor_name']; ?>">
       </div>
       <div class="mb-3">
         <label for="station_sensor" class="col-form-label">Trạm</label>

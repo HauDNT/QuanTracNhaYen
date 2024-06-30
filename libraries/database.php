@@ -85,12 +85,7 @@ function db_update($table, $data, $where)
       $sql .= "$field='" . escape_string($value) . "', ";
   }
   $sql = substr($sql, 0, -2);
-  db_query("
-            UPDATE $table
-            SET $sql
-            WHERE $where
-   ");
-  return mysqli_affected_rows($conn);
+  return db_query("UPDATE $table SET $sql WHERE $where");
 }
 
 function db_delete($table, $where)

@@ -35,12 +35,28 @@ function showNotify(message, type) {
   bootstrap.Toast.getOrCreateInstance($('#notify')).show();
 }
 
+function setNotifySession(message, type) {
+  sessionStorage.setItem('notify', JSON.stringify([
+    {
+      type: type,
+      message: message,
+    }
+  ]));
+}
+
 // showNotify("text", "success");
 
+//========================Flatpickr=============================
+$("#birthday, #birthday-update").flatpickr({
+  dateFormat: "d-m-Y",
+});
+
 //========================Notify=============================
-if (sessionStorage.getItem('add')) {
-  showNotify("Thêm mới thành công.", "success");
-  sessionStorage.removeItem('add');
+let storedData = sessionStorage.getItem('notify');
+if (storedData) {
+  let notify = JSON.parse(storedData);
+  showNotify(notify[0].message, notify[0].type);
+  sessionStorage.removeItem('notify');
 }
 
 if (sessionStorage.getItem('update')) {
@@ -71,7 +87,7 @@ mainPage.on('click', ".page-link", function (e) {
   });
 })
 
-mainPage.on('input', '.search', function () {
+mainPage.on('input', '#search', function () {
   $.ajax({
     type: 'POST',
     url: window.location.href,
@@ -92,11 +108,19 @@ mainPage.on('input', '.search', function () {
 
 function requestSearch() {
   var requestData = {
-    search: $('.search').val().trim(),
+    search: $('#search').val().trim(),
   };
 
   if ($('#sensor-status').length > 0) {
     requestData.sensorStatus = $('#sensor-status').val();
+  }
+
+  if ($('#user-role').length > 0) {
+    requestData.userRole = $('#user-role').val();
+  }
+
+  if ($('#user-status').length > 0) {
+    requestData.userStatus = $('#user-status').val();
   }
 
   return requestData;
@@ -114,6 +138,17 @@ function requestPage(page) {
 
   return requestData;
 }
+
+mainPage.on('click', '.eye-btn', function () {
+  var input = $(this).siblings('input');
+  if (input.prop('type') == 'password') {
+    input.prop('type', 'text');
+    $(this).html('<i class="bi bi-eye"></i>');
+  } else {
+    input.prop('type', 'password');
+    $(this).html('<i class="bi bi-eye-slash"></i>');
+  }
+});
 
 //========================sensor=============================
 
@@ -142,42 +177,38 @@ mainPage.on('click', '#add_sensor', function () {
   var nameSensor = $('#addSensorModal').find('#name_sensor').val();
   var stationSensor = $('#addSensorModal').find('#station_sensor').val();
   var positionSensor = $('#addSensorModal').find('#position_sensor').val();
-  if (idSensor.trim() == '' || nameSensor.trim() == '' || stationSensor == null || positionSensor.trim() == '') {
-    showNotify("Vui lòng nhập đầy đủ thông tin.", "warning");
-  } else {
-    $.ajax({
-      type: 'POST',
-      url: '?mod=sensors&action=addSensor',
-      data: {
-        idSensor: idSensor,
-        nameSensor: nameSensor,
-        stationSensor: stationSensor,
-        positionSensor: positionSensor
-      },
-
-      success: function (response) {
-        if (response == 'success') {
-          sessionStorage.setItem('add', 'success');
-          window.location.reload();
-        } else if (response == 'fail') {
-          showNotify("Thêm mới thất bại.", "danger");
-        } else {
-          showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
-        }
-      },
-
-      error: function () {
+  $.ajax({
+    type: 'POST',
+    url: '?mod=sensors&action=addSensor',
+    data: {
+      idSensor: idSensor,
+      nameSensor: nameSensor,
+      stationSensor: stationSensor,
+      positionSensor: positionSensor
+    },
+    dataType: 'json',
+    success: function (response) {
+      if (response.type == 'success') {
+        setNotifySession(response.message, response.notifyType);
+        window.location.reload();
+      } else if (response.type == 'fail') {
+        showNotify(response.message, response.notifyType);
+      } else {
         showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
       }
-    });
-  }
+    },
+
+    error: function () {
+      showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
+    }
+  });
 });
 
 mainPage.on('hidden.bs.modal', '#addSensorModal', function () {
-  $('#addSensorModal').find('#id_sensor').val('1');
-  $('#addSensorModal').find('#name_sensor').val('');
-  $('#addSensorModal').find('#station_sensor option:first').prop('selected', true);
-  $('#addSensorModal').find('#position_sensor').val('1');
+  $(this).find('#id_sensor').val('1');
+  $(this).find('#name_sensor').val('');
+  $(this).find('#station_sensor option:first').prop('selected', true);
+  $(this).find('#position_sensor').val('1');
 });
 
 mainPage.on('click', '#view-sensor', function (e) {
@@ -215,12 +246,13 @@ mainPage.on('click', '#update_sensor', function () {
         positionSensor: positionSensor
       },
 
+      dataType: 'json',
       success: function (response) {
-        if (response == 'success') {
-          sessionStorage.setItem('update', 'success');
+        if (response.type == 'success') {
+          setNotifySession(response.message, response.notifyType);
           window.location.reload();
-        } else if (response == 'fail') {
-          showNotify("Cập nhật thất bại.", "danger");
+        } else if (response.type == 'fail') {
+          showNotify(response.message, response.notifyType);
         } else {
           showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
         }
@@ -234,24 +266,6 @@ mainPage.on('click', '#update_sensor', function () {
 });
 
 //========================Unit=============================
-mainPage.on('input', '#search-unit', function () {
-  var searchQuery = $(this).val();
-  $.ajax({
-    type: 'POST',
-    url: window.location.href,
-    data: {
-      search: searchQuery,
-    },
-    success: function (data) {
-      var value = $(data).find('#table').html();
-      $('#table').html(value);
-    },
-    error: function () {
-      showNotify("Lỗi hệ thống vui lòng thử lại sau.", "warning");
-    }
-  });
-});
-
 mainPage.on('click', '#add_unit', function () {
   var unit_name = $('#addUnitModal').find('#unit_name').val().trim()
   var unit_symbol = $('#addUnitModal').find('#unit_symbol').val().trim()
@@ -265,27 +279,28 @@ mainPage.on('click', '#add_unit', function () {
         unit_name: unit_name,
         unit_symbol: unit_symbol
       },
+      dataType: 'json',
       success: function (response) {
-        console.log(response);
-        if (response == 'success') {
-          sessionStorage.setItem('add', 'success');
+        if (response.type == 'success') {
+          setNotifySession(response.message, response.notifyType);
           window.location.reload();
-        } else if (response == 'fail') {
-          showNotify("Thêm thất bại.", "danger");
+        } else if (response.type == 'fail') {
+          showNotify(response.message, response.notifyType);
         } else {
           showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
         }
       },
+
       error: function () {
-        showNotify("Lỗi hệ thống vui lòng thử lại sau!", "danger");
+        showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
       }
     })
   }
 });
 
 mainPage.on('hidden.bs.modal', '#addUnitModal', function () {
-  $('#addUnitModal').find('#unit_name').val('')
-  $('#addUnitModal').find('#unit_symbol').val('')
+  $(this).find('#unit_name').val('')
+  $(this).find('#unit_symbol').val('')
 });
 
 mainPage.on('click', '#view-unit', function (e) {
@@ -320,20 +335,162 @@ mainPage.on('click', '#update_unit', function () {
         unit_name: unit_name,
         unit_symbol: unit_symbol
       },
+      dataType: 'json',
       success: function (response) {
-        console.log(response);
-        if (response == 'success') {
-          sessionStorage.setItem('update', 'success');
+        if (response.type == 'success') {
+          setNotifySession(response.message, response.notifyType);
           window.location.reload();
-        } else if (response == 'fail') {
-          showNotify("Cập nhật thất bại.", "danger");
+        } else if (response.type == 'fail') {
+          showNotify(response.message, response.notifyType);
         } else {
           showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
         }
       },
+
       error: function () {
-        showNotify("Lỗi hệ thống vui lòng thử lại sau!", "danger");
+        showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
       }
     })
   }
-})
+});
+
+mainPage.on('change', '#user-role, #user-status', function () {
+  $.ajax({
+    type: 'POST',
+    url: window.location.href,
+    data: {
+      search: $('.search').val().trim(),
+      userRole: $('#user-role').val(),
+      userStatus: $('#user-status').val(),
+    },
+    success: function (data) {
+      var value = $(data).find('#table').html();
+      var pagination = $(data).find('.pagination').html();
+      $('#table').html(value);
+      $('.pagination').html(pagination);
+    },
+    error: function () {
+      showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
+    }
+  });
+});
+
+//========================User=============================
+mainPage.on('hidden.bs.modal', '#addUserModal', function () {
+  $(this).find('#full_name').val('');
+  $(this).find('#username').val('');
+  $(this).find('#password').val('');
+  $(this).find('#repeat_password').val('');
+  $(this).find('#email').val('');
+  $(this).find('#phone_number').val('');
+  $(this).find('#birthday').val('');
+  $(this).find('#gender option:first').prop('selected', true);
+  $(this).find('#role option:first').prop('selected', true);
+});
+
+mainPage.on('click', '#add_user', function () {
+  var full_name = $('#addUserModal').find('#full_name').val().trim();
+  var username = $('#addUserModal').find('#username').val().trim();
+  var password = $('#addUserModal').find('#password').val().trim();
+  var repeat_password = $('#addUserModal').find('#repeat_password').val().trim();
+  var email = $('#addUserModal').find('#email').val().trim();
+  var phone_number = $('#addUserModal').find('#phone_number').val().trim();
+  var birthday = $('#addUserModal').find('#birthday').val().trim();
+  var gender = $('#addUserModal').find('#gender').val();
+  var role = $('#addUserModal').find('#role').val();
+  $.ajax({
+    type: 'POST',
+    url: '?mod=users&action=addUser',
+    data: {
+      full_name: full_name,
+      username: username,
+      password: password,
+      repeat_password: repeat_password,
+      email: email,
+      phone_number: phone_number,
+      birthday: birthday,
+      gender: gender,
+      role: role
+    },
+    dataType: 'json',
+    success: function (response) {
+      console.log(response);
+      if (response.type == 'success') {
+        setNotifySession(response.message, response.notifyType);
+        window.location.reload();
+      } else if (response.type == 'fail') {
+        showNotify(response.message, response.notifyType);
+      } else {
+        showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
+      }
+    },
+
+    error: function () {
+      showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
+    }
+  });
+});
+
+mainPage.on('click', '#view-user', function (e) {
+  e.preventDefault();
+  var url = $(this).attr('href');
+  $.ajax({
+    type: "GET",
+    url: url,
+    success: function (response) {
+      $('#updateUserModal').html(response);
+      flatpickr("#birthday-update", {
+        dateFormat: "d-m-Y",
+      });
+      $('#updateUserModal').modal('show');
+    },
+
+    error: function () {
+      showNotify("Lỗi hệ thống vui lòng thử lại sau!", "danger");
+    }
+  });
+});
+
+mainPage.on('click', '#update_user', function () {
+  var account_id = $(this).val().trim();
+  var full_name = $('#updateUserModal').find('#full_name').val().trim();
+  var password = $('#updateUserModal').find('#password').val().trim();
+  var repeat_password = $('#updateUserModal').find('#repeat_password').val().trim();
+  var email = $('#updateUserModal').find('#email').val().trim();
+  var phone_number = $('#updateUserModal').find('#phone_number').val().trim();
+  var birthday = $('#updateUserModal').find('#birthday-update').val().trim();
+  var gender = $('#updateUserModal').find('#gender').val();
+  var role = $('#updateUserModal').find('#role').val();
+  var status = $('#updateUserModal').find('#status').val();
+  $.ajax({
+    type: 'POST',
+    url: '?mod=users&action=updateUser',
+    data: {
+      account_id: account_id,
+      full_name: full_name,
+      password: password,
+      repeat_password: repeat_password,
+      email: email,
+      phone_number: phone_number,
+      birthday: birthday,
+      gender: gender,
+      role: role,
+      status: status
+    },
+    dataType: 'json',
+    success: function (response) {
+      if (response.type == 'success') {
+        setNotifySession(response.message, response.notifyType);
+        window.location.reload();
+      } else if (response.type == 'fail') {
+        showNotify(response.message, response.notifyType);
+      } else {
+        showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
+      }
+    },
+
+    error: function () {
+      showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
+    }
+  });
+});

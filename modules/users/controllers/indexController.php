@@ -11,7 +11,7 @@ function indexAction()
   load('helper', 'format');
   $list_users = get_list_users();
   if (isset($_POST["search"])) {
-    $list_users = get_list_users_by_name($_POST["search"]);
+    $list_users = get_list_users_by_search($_POST["search"], $_POST["userRole"], $_POST["userStatus"]);
   }
 
   $data_list = array();
@@ -19,10 +19,12 @@ function indexAction()
     $data_list[] = array(
       'no' => $index + 1,
       'id' => $value['id'],
+      'avatar' => $value['avatar'],
       'fullname' => $value['fullname'],
       'email' => $value['email'],
-      'phone_number' => $value['phone_number'],
       'role' => $value['name'],
+      'date_created' => date('d-m-Y', strtotime($value['date_created'])),
+      'status' => $value['status']
     );
   }
 
@@ -39,6 +41,7 @@ function indexAction()
   $data = array(
     'active' => 'user',
     'list_users' => $currentItems,
+    'list_roles' => get_role_users(),
     'total_page' => $total_page,
     'current_page' => $current_page,
   );
@@ -47,106 +50,139 @@ function indexAction()
 
 function addUserAction()
 {
-  if (isset($_POST['add_user'])) {
-    if (
-      empty($_POST['fullname']) ||
-      empty($_POST['username']) ||
-      empty($_POST['email']) ||
-      empty($_POST['phone_number']) ||
-      empty($_POST['birthday']) ||
-      empty($_POST['gender']) ||
-      empty($_POST['role']) ||
-      empty($_POST['password'])
-    ) {
-      $_SESSION['error'] = "<b>THÊM THẤT BẠI</b> vui lòng nhập hết các trường dữ liệu!";
+  if (isset($_POST['username']) && isset($_POST["password"]) && isset($_POST["email"])) {
+    $pattern = "/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[0-9a-zA-Z!@#$%^&*()_+]{8,}$/";
+    $emailPattern = "/^[^\s@]+@[^\s@]+\.[^\s@]+$/";
+    if (empty($_POST['full_name']) || empty($_POST['username']) || empty($_POST['password']) || empty($_POST['email']) || empty($_POST['role'])) {
+      echo json_encode([
+        "type" => "fail",
+        "message" => "Vui lòng nhập đầy đủ thông tin!",
+        "notifyType" => "warning",
+      ]);
+    } else if (!preg_match($pattern, $_POST['password'])) {
+      echo json_encode([
+        "type" => "fail",
+        "message" => "Mật khẩu phải có ít nhất 8 ký tự bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.",
+        "notifyType" => "warning",
+      ]);
+    } else if ($_POST["password"] !== $_POST["repeat_password"]) {
+      echo json_encode([
+        "type" => "fail",
+        "message" => "Mật khẩu không trùng khớp.",
+        "notifyType" => "warning",
+      ]);
+    } else if (!preg_match($emailPattern, $_POST['email'])) {
+      echo json_encode([
+        "type" => "fail",
+        "message" => "Định dang gmail không hợp lệ.",
+        "notifyType" => "warning",
+      ]);
+    } else if (!empty(get_list_users_by_username($_POST["username"]))) {
+      echo json_encode([
+        "type" => "fail",
+        "message" => "Tài khoản đã tồn tại.",
+        "notifyType" => "warning",
+      ]);
     } else {
-      $fullname = $_POST['fullname'];
-      $username = $_POST['username'];
-      $email = $_POST['email'];
-      $phone_number = $_POST['phone_number'];
-      $birthday = $_POST['birthday'];
-      $gender = $_POST['gender'];
-      $role = $_POST['role'];
-      $password = $_POST['password'];
-    }
-
-    if (empty($_SESSION['error'])) {
       $data_accounts = array(
-        'username' => $username,
-        'role_id' => $role,
-        'password' => $password,
+        'avatar' => 'upload\avatar-default.jpg',
+        'username' => $_POST['username'],
+        'password' => $_POST["password"],
+        'status' => '1',
+        'role_id' => $_POST["role"],
       );
 
-      $id_user = db_insert('accounts', $data_accounts);
-
-      $data_userinfo = array(
-        'fullname' => $fullname,
-        'email' => $email,
-        'phone_number' => $phone_number,
-        'birthday' => $birthday,
-        'gender' => $gender,
-        'account_id' => $id_user,
+      $data_users = array(
+        'fullname' => $_POST["full_name"],
+        'email' => $_POST["email"],
+        'phone_number' => $_POST["phone_number"],
+        'birthday' => date('Y-m-d', strtotime($_POST["birthday"])),
+        'gender' => $_POST["gender"],
       );
 
-      db_insert('userinfo', $data_userinfo);
-
-      $_SESSION['success'] = 'Thêm người dùng <b>THÀNH CÔNG!</b>';
+      if (add_user($data_accounts, $data_users)) {
+        echo json_encode([
+          "type" => "success",
+          "message" => "Thêm thành công.",
+          "notifyType" => "success"
+        ]);
+      } else {
+        echo json_encode([
+          "type" => "fail",
+          "message" => "Thêm thất bại.",
+          "notifyType" => "danger"
+        ]);
+      }
     }
-    header('location: ?mod=users');
+    exit();
   }
-  $roles = get_role_users();
-  $data = array(
-    'roles' => $roles,
-  );
-  load_view('add', $data);
 }
 
 function updateUserAction()
 {
-  if (isset($_POST['update_user'])) {
-    $id = (int) $_GET['id'];
-    show_array($_POST['update_user']);
-    if (empty($_POST['fullname'] ||
-      $_POST['username'] ||
-      $_POST['email'] ||
-      $_POST['phone_number'] ||
-      $_POST['birthday'] ||
-      $_POST['gender'])) {
-      $_SESSION['error'] = "<b>CẬP NHẬT THẤT BẠI</b> vui lòng nhập hết các trường dữ liệu!";
+  if (isset($_POST['account_id'])) {
+    $pattern = "/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+])[0-9a-zA-Z!@#$%^&*()_+]{8,}$/";
+    $emailPattern = "/^[^\s@]+@[^\s@]+\.[^\s@]+$/";
+    if (empty($_POST['full_name']) || empty($_POST['password']) || empty($_POST['email']) || empty($_POST['role'])) {
+      echo json_encode([
+        "type" => "fail",
+        "message" => "Vui lòng nhập đầy đủ thông tin!",
+        "notifyType" => "warning",
+      ]);
+    } else if (!preg_match($pattern, $_POST['password'])) {
+      echo json_encode([
+        "type" => "fail",
+        "message" => "Mật khẩu phải có ít nhất 8 ký tự bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.",
+        "notifyType" => "warning",
+      ]);
+    } else if ($_POST["password"] !== $_POST["repeat_password"]) {
+      echo json_encode([
+        "type" => "fail",
+        "message" => "Mật khẩu không trùng khớp.",
+        "notifyType" => "warning",
+      ]);
+    } else if (!preg_match($emailPattern, $_POST['email'])) {
+      echo json_encode([
+        "type" => "fail",
+        "message" => "Định dang gmail không hợp lệ.",
+        "notifyType" => "warning",
+      ]);
     } else {
-      $fullname = $_POST['fullname'];
-      $username = $_POST['username'];
-      $email = $_POST['email'];
-      $phone_number = $_POST['phone_number'];
-      $birthday = $_POST['birthday'];
-      $gender = $_POST['gender'];
-      $role_id = $_POST['role'];
+      $data_accounts = array(
+        'password' => $_POST["password"],
+        'status' => $_POST["status"],
+        'role_id' => $_POST["role"],
+      );
 
-      if (empty($_SESSION['error'])) {
-        // Cập nhật thông tin user:
-        $data_user = array(
-          'fullname' => $fullname,
-          'email' => $email,
-          'phone_number' => $phone_number,
-          'birthday' => $birthday,
-          'gender' => $gender,
-        );
-        $data_account = array(
-          'username' => $username,
-          'role_id' => $role_id,
-        );
-        update_user($id, $data_user);
-        update_account($id, $data_account);
+      $data_users = array(
+        'fullname' => $_POST["full_name"],
+        'email' => $_POST["email"],
+        'phone_number' => $_POST["phone_number"],
+        'birthday' => date('Y-m-d', strtotime($_POST["birthday"])),
+        'gender' => $_POST["gender"],
+      );
 
-        $_SESSION['success'] = 'Cập nhật thông tin người dùng <b>THÀNH CÔNG!</b>';
+      if (update_user_info($_POST['account_id'], $data_accounts, $data_users)) {
+        echo json_encode([
+          "type" => "success",
+          "message" => "Cập nhật thành công.",
+          "notifyType" => "success"
+        ]);
+      } else {
+        echo json_encode([
+          "type" => "fail",
+          "message" => "Cập nhật thất bại.",
+          "notifyType" => "danger"
+        ]);
       }
     }
-    header('location: ?mod=users');
+    exit();
   } else {
     $id = (int) $_GET['id'];
     $roles = get_role_users();
     $user_update = get_user_by_id($id);
     $data_user = array(
+      'account_id' => $id,
       'user_info' => $user_update,
       'roles' => $roles,
     );

@@ -18,6 +18,7 @@ function indexAction()
     $data_list[] = array(
       'no' => $index + 1,
       'id' => $value['id'],
+      'sensor_id' => $value['sensor_id'],
       'sensor_name' => $value['sensor_name'],
       'station_name' => $value['station_name'],
       'position' => $value['position'],
@@ -41,6 +42,7 @@ function indexAction()
     'list_sensor' => $currentItems,
     'list_station' => $list_station,
     'total_page' => $total_page,
+    'max_id' => (int)get_sensor_max_id()[0]["id"],
     'current_page' => $current_page,
   );
   load_view('index', $data);
@@ -48,18 +50,44 @@ function indexAction()
 
 function addSensorAction()
 {
-  if (isset($_POST['nameSensor'])) {
+  if (isset($_POST["idSensor"]) && isset($_POST['nameSensor'])) {
+    if (empty($_POST["idSensor"]) || empty($_POST["nameSensor"]) || empty($_POST["stationSensor"]) || empty($_POST["positionSensor"])) {
+      echo json_encode([
+        "type" => "fail",
+        "message" => "Vui lòng nhập đầy đủ thông tin!",
+        "notifyType" => "warning",
+      ]);
+      exit();
+    }
+
+    if (!empty(get_sensor_by_sensor_id($_POST["idSensor"]))) {
+      echo json_encode([
+        "type" => "fail",
+        "message" => "Mã đã tồn tại!",
+        "notifyType" => "warning",
+      ]);
+      exit();
+    }
+
     $data = array(
-      'id' => $_POST["idSensor"],
+      'sensor_id' => $_POST["idSensor"],
       'name' => $_POST["nameSensor"],
       'station_id' => $_POST["stationSensor"],
       'position' => $_POST["positionSensor"],
     );
 
     if (db_insert('sensors', $data)) {
-      echo 'success';
+      echo json_encode([
+        "type" => "success",
+        "message" => "Thêm thành công.",
+        "notifyType" => "success"
+      ]);
     } else {
-      echo 'fail';
+      echo json_encode([
+        "type" => "fail",
+        "message" => "Thêm thất bại.",
+        "notifyType" => "danger"
+      ]);
     }
     exit();
   }
@@ -68,15 +96,32 @@ function addSensorAction()
 function updateSensorAction()
 {
   if (isset($_POST['idSensor'])) {
+    if (empty($_POST["idSensor"]) || empty($_POST["nameSensor"]) || empty($_POST["stationSensor"]) || empty($_POST["positionSensor"])) {
+      echo json_encode([
+        "type" => "fail",
+        "message" => "Vui lòng nhập đầy đủ thông tin!",
+        "notifyType" => "warning",
+      ]);
+      exit();
+    }
+
     $data = array(
       'name' => $_POST["nameSensor"],
       'station_id' => $_POST["stationSensor"],
       'position' => $_POST["positionSensor"],
     );
     if (update_sensor($_POST['idSensor'], $data)) {
-      echo 'success';
+      echo json_encode([
+        "type" => "success",
+        "message" => "Cập nhật thành công.",
+        "notifyType" => "success"
+      ]);
     } else {
-      echo 'fail';
+      echo json_encode([
+        "type" => "fail",
+        "message" => "Cập nhật thất bại.",
+        "notifyType" => "danger"
+      ]);
     }
     exit();
   } else {

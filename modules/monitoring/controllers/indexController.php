@@ -8,6 +8,14 @@ function construct()
 
 function indexAction()
 {
+  if(isset($_POST["get_data"])) {
+    echo json_encode([
+      "station" => get_stations(),
+      "sensor_value" => get_sensor_value(),
+      "position_list" => get_position_station(),
+    ]);
+    exit();
+  }
   load_view('index', [
     'active' => 'monitoring',
   ]);

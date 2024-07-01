@@ -1,13 +1,18 @@
 <?php
 
-function get_list_users()
+function get_stations()
 {
-  $result = db_fetch_array("SELECT * FROM `tbl_users`");
+  $result = db_fetch_array("SELECT * FROM `stations` ORDER BY langtitude DESC");
   return $result;
 }
 
-function get_user_by_id($id)
-{
-  $item = db_fetch_row("SELECT * FROM `tbl_users` WHERE `user_id` = {$id}");
-  return $item;
+
+function get_sensor_value() {
+  $result = db_fetch_array("SELECT ss.station_id , u.name, sv.value, u.symbol FROM sensors ss JOIN sensor_values sv ON ss.id = sv.sensor_id JOIN units u ON sv.unit_id = u.id");
+  return $result;
+}
+
+function get_position_station() {
+  $result = db_fetch_array("SELECT DISTINCT station_id, position FROM sensors");
+  return $result;
 }

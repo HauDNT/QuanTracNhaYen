@@ -216,6 +216,20 @@ table * {
   vertical-align: middle;
 }
 
+.mapboxgl-popup-content {
+  border-radius: 8px;
+  border: 1px solid rgba(233, 236, 239);
+}
+
+.popup-list-data {
+  max-height: 130px;
+  overflow-y: scroll;
+}
+
+.popup-title {
+  font-size: 14px;
+}
+
 @media (min-width: 992px) {
   .sidebar {
     min-width: 260px;

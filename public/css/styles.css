@@ -230,6 +230,18 @@ table * {
   font-size: 14px;
 }
 
+#table-view-btn {
+  width: 29px;
+  height: 29px;
+  right: 10px;
+  top: 105px;
+  box-shadow: 0 0 0 2px rgb(0 0 0 / 10%);
+}
+
+#table-view-btn:hover {
+  background-color: #f2f2f2 !important;
+}
+
 @media (min-width: 992px) {
   .sidebar {
     min-width: 260px;
@@ -264,39 +276,39 @@ table * {
     display: none !important;
   }
 
-  .table thead {
+  .table:not(#table-map) thead {
     display: none;
   }
 
-  .table tbody tr {
+  .table:not(#table-map) tbody tr {
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 12px;
   }
 
-  .table tbody tr th,
-  .table tbody tr td {
+  .table:not(#table-map) tbody tr th,
+  .table:not(#table-map) tbody tr td {
     display: block;
     text-align: left !important;
     width: 100%;
   }
 
-  .table tbody tr th::before,
-  .table tbody tr td:not(td[data-title="Chức năng"])::before {
+  .table:not(#table-map) tbody tr th::before,
+  .table:not(#table-map) tbody tr td:not(td[data-title="Chức năng"])::before {
     content: attr(data-title) ": ";
     font-weight: bold;
   }
 
-  .table tbody tr th[data-title="STT"] {
+  .table:not(#table-map) tbody tr th[data-title="STT"] {
     width: 50%;
   }
 
-  .table tbody tr td[data-title="Chức năng"] {
+  .table:not(#table-map) tbody tr td[data-title="Chức năng"] {
     width: 50%;
     text-align: right !important;
   }
 
-  .table tbody tr td:not(td[data-title="Chức năng"]) {
+  .table:not(#table-map) tbody tr td:not(td[data-title="Chức năng"]) {
     order: 2;
   }
 }

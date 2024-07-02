@@ -129,7 +129,7 @@
         <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm cảm biến <span class="text-danger">*</span></h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body overflow-y-scroll pe-2">
+      <div class="modal-body overflow-y-scroll">
         <div class="mb-3">
           <label for="id_sensor" class="col-form-label">Mã cảm biến <span class="text-danger">*</span></label>
           <input type="text" class="form-control" id="id_sensor" placeholder="SS<?= date("Y") ?>00000">

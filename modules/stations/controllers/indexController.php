@@ -15,7 +15,7 @@ function indexAction()
   $list_user_info = get_list_user_info();
 
   $data = array(
-    'active' => 'stations',
+    'active' => 'station',
     'list_station_info' => $list_station_info,
     'list_user_info' => $list_user_info,
   );

@@ -8,7 +8,7 @@ function get_stations()
 
 
 function get_sensor_value() {
-  $result = db_fetch_array("SELECT ss.station_id , u.name, sv.value, u.symbol FROM sensors ss JOIN sensor_values sv ON ss.id = sv.sensor_id JOIN units u ON sv.unit_id = u.id");
+  $result = db_fetch_array("SELECT ss.station_id, u.name, sv.value, u.symbol, ss.position FROM sensors ss JOIN sensor_values sv ON ss.id = sv.sensor_id JOIN units u ON sv.unit_id = u.id");
   return $result;
 }
 

@@ -20,7 +20,7 @@
       <div class="offcanvas-body px-2">
         <ul class="lists list-inline">
           <li class="list">
-            <a href="?mod=monitoring" class="nav-link text-secondary py-2 <?= $active == "monitoring"  ? "active" : "" ?>">
+            <a href="?mod=monitoring" class="nav-link text-secondary py-2 <?= $active == "monitoring" || $active == "station" ? "active" : "" ?>">
               <i class="bi bi-display me-2"></i>
               <span class="link">Giám sát</span>
             </a>

@@ -3,9 +3,18 @@
 <?php require "./layout/sidebar.php" ?>
 
 <div class="content w-100 p-0 d-flex flex-column">
-  <div class="row g-0 bg-white shadow-sm flex-fill flex-column rounded-3">
+  <div class="row g-0">
+    <ul id="tab-sensor" class="nav nav-tabs border-0">
+      <li class="nav-item">
+        <a class="nav-link text-secondary fw-semibold border-0 <?= $active == "monitoring"  ? "active" : "" ?>" href="?mod=monitoring">Bản đồ</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-secondary fw-semibold border-0 <?= $active == "station"  ? "active" : "" ?>" href="?mod=stations">Trạm</a>
+      </li>
+    </ul>
+  </div>
+  <div class="row g-0 bg-white shadow-sm flex-fill flex-column rounded-3 <?= $active == "monitoring"  ? "rounded-end-3 rounded-bottom-3" : "rounded-3" ?>">
     <div class="row g-0 align-items-center p-3 pb-0 border-2 border-bottom border-light-subtle">
-      <strong class="w-auto fs-5 pb-3">Danh sách trạm</strong>
       <div class="d-flex w-auto ms-auto pb-3">
         <div class="input-group w-auto me-2">
           <label for="" class="d-flex align-items-center text-secondary text-center bg-white border border-end-0 rounded-start-3 ps-2 pe-1"><i class="bi bi-search"></i></label>
@@ -114,18 +123,18 @@
 
 <!-- Modal add Station-->
 <div class="modal fade" id="addStationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm trạm mới</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body overflow-y-scroll">
         <div class="mb-3">
           <label for="station-name" class="col-form-label">Tên trạm</label>
           <input type="text" class="form-control" id="station-name">
         </div>
-        <div id="map" class="mb-3"></div>
+        <div id="map" view="station" class="mb-3"></div>
         <div class="mb-3">
           <label for="station-longtitude" class="col-form-label">Kinh độ</label>
           <input type="text" class="form-control" id="station-longtitude">

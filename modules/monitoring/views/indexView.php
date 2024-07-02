@@ -3,8 +3,9 @@
 <?php require "./layout/sidebar.php" ?>
 
 <div class="content w-100 p-0 d-flex flex-column">
-  <div class="row g-0 bg-white shadow-sm flex-fill flex-column rounded-3 overflow-hidden">
-    <div id="map" class="h-100"></div>
+  <div class="row g-0 bg-white shadow-sm flex-fill flex-column rounded-3 overflow-hidden position-relative">
+    <button id="table-view-btn" class="btn bg-white border-0 p-0 position-absolute z-3"><i class="bi bi-broadcast-pin"></i></button>
+    <div id="map" view="map" class="h-100"></div>
   </div>
 </div>
 

@@ -494,3 +494,166 @@ mainPage.on('click', '#update_user', function () {
     }
   });
 });
+
+mainPage.on('click', '#table-view-btn', () => {
+  window.location.href = "?mod=stations";
+});
+
+//=====================================mapbox================================
+if ($('#map').length > 0) {
+  mapboxgl.accessToken =
+    'pk.eyJ1IjoidGllbmhhdTIwMDMiLCJhIjoiY2x3a200OG1uMDZiMDJpbng2anNtYWZldCJ9.NyOqze3rNjiaHZB7CLP-nw';
+
+  // Khởi tạo Mapbox
+  var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [105.14434709756426, 9.914565453807697],
+    zoom: 14,
+  });
+
+  // Thêm thao tác thu phóng & xoay bản đồ
+  map.addControl(new mapboxgl.NavigationControl());
+
+  if ($('#map').attr("view") == "map") {
+    var markers = [];
+    const popupOffsets = {
+      'top': [0, 0],
+      'bottom': [0, -35],
+    };
+
+    function displayTable(data, position, station) {
+      var html =
+        '<p class="fw-bold my-2">Tầng ' + position + '</p>' +
+        '<table id="table-map" class="table table-hover table-borderless w-100 nowrap shadow-sm mb-1 rounded-3 overflow-hidden">' +
+        '<thead>' +
+        '<tr>' +
+        '<th class="text-start">ĐVĐ</th>' +
+        '<th class="text-center">Giá trị</th>' +
+        '<th class="text-center">Ký hiệu</th>' +
+        '</tr>' +
+        '</thead>' +
+        '<tbody>';
+      data.forEach(element => {
+        if (element["station_id"] == station["id"] && element["position"] == position) {
+          html +=
+            '<tr>' +
+            '<td class="text-start">' + element['name'] + '</td>' +
+            '<td class="text-center">' + element['value'] + '</td>' +
+            '<td class="text-center">' + element['symbol'] + '</td>' +
+            '</tr>';
+        }
+      });
+      html += '</tbody></table>';
+      return html;
+    }
+
+    function displayData(data, position_list, station) {
+      var html =
+        '<ul class="popup-list-data list-inline p-0 m-0">';
+      position_list.forEach(element => {
+        if (element["station_id"] == station["id"]) {
+          html += '<li>' + displayTable(data, element["position"], station) + '</li>';
+        }
+      });
+      html += '</ul>';
+      return html;
+    }
+
+    function updateData(data) {
+      var scrollPositions = {};
+
+      // Lưu vị trí cuộn
+      markers.forEach(function (markerObj) {
+        var popupElement = markerObj.popup.getElement();
+        var ulElement = $(popupElement).find('ul.popup-list-data');
+        if (ulElement.length) {
+          scrollPositions[markerObj.marker.getLngLat()] = ulElement.scrollTop();
+        }
+      });
+
+      data.station.forEach(element => {
+        markers.forEach(function (markerObj) {
+          var markerLngLat = markerObj.marker.getLngLat();
+          if (markerLngLat.lng === element["longtitude"] && markerLngLat.lat === element["langtitude"]) {
+            var popupElement = markerObj.popup.getElement();
+            var ulElement = $(popupElement).find('ul.popup-list-data');
+            var newHtml = displayData(data.sensor_value, data.position_list, element);
+            ulElement.html($(newHtml).html());
+
+            // Khôi phục vị trí cuộn
+            var scrollTop = scrollPositions[markerLngLat];
+            if (scrollTop !== undefined) {
+              ulElement.scrollTop(scrollTop);
+            }
+          }
+        });
+      });
+    }
+
+    function initMarkers(data) {
+      data.station.forEach(element => {
+        var marker = new mapboxgl.Marker()
+          .setLngLat([element["longtitude"], element["langtitude"]])
+          .addTo(map);
+
+        var popup = new mapboxgl.Popup({ closeOnClick: false, closeButton: false, offset: popupOffsets })
+          .setLngLat([element["longtitude"], element["langtitude"]])
+          .setHTML('<p class="popup-title fw-bold text-primary border-1 border-bottom border-light-subtle w-100 m-0 py-2">' + element["name"] + '</p>' + displayData(data.sensor_value, data.position_list, element))
+          .addTo(map);
+
+        popup.getElement().addEventListener('mouseenter', function () {
+          this.style.zIndex = 99;
+        });
+
+        popup.getElement().addEventListener('mouseleave', function () {
+          this.style.zIndex = '';
+        });
+
+        markers.push({ marker: marker, popup: popup });
+      });
+    }
+
+    $("#add-location-btn").click(() => {
+      add_location = !add_location;
+      $("#add-location-btn").toggleClass("text-primary");
+    });
+
+    $.ajax({
+      type: 'POST',
+      url: '?mod=monitoring',
+      data: { get_data: "true" },
+      dataType: 'json',
+      success: function (data) {
+        initMarkers(data);
+      },
+      error: function () {
+        alert('Không tìm thấy tọa độ!');
+      }
+    });
+
+    function update() {
+      $.ajax({
+        type: 'POST',
+        url: '?mod=monitoring',
+        data: { get_data: "true" },
+        dataType: 'json',
+        success: function (data) {
+          updateData(data);
+        },
+        error: function () {
+          alert('Không tìm thấy tọa độ!');
+        }
+      });
+    }
+
+    // setInterval(() => {
+    //   update();
+    //   console.log("2");
+    // }, 1000);
+  } else if ($('#map').attr("view") == "station") {
+    mainPage.on('shown.bs.modal', '#addStationModal', function () {
+      map.resize();
+    });
+  }
+}

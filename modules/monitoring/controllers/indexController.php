@@ -41,8 +41,8 @@ function addStationAction()
     } else {
       $data_stations = array(
         'name' => $_POST['name'],
-        'longtitude' => $_POST['longitude'],
-        'langtitude' => $_POST['latitude'],
+        'longitude' => $_POST['longitude'],
+        'latitude' => $_POST['latitude'],
         'urlServer' => empty($_POST["urlWeb"]) ? null : $_POST["urlWeb"],
         'user_id' => $_POST['user'],
       );
@@ -77,8 +77,8 @@ function updateStationAction()
     } else {
       $data_stations = array(
         'name' => $_POST['name'],
-        'longtitude' => $_POST['longitude'],
-        'langtitude' => $_POST['latitude'],
+        'longitude' => $_POST['longitude'],
+        'latitude' => $_POST['latitude'],
         'urlServer' => empty($_POST["urlWeb"]) ? null : $_POST["urlWeb"],
         'user_id' => $_POST['user'],
       );

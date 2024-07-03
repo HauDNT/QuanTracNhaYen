@@ -267,19 +267,19 @@ mainPage.on('click', '#update_sensor', function () {
   }
 });
 
-//========================Unit=============================
-mainPage.on('click', '#add_unit', function () {
-  var unit_name = $('#addUnitModal').find('#unit_name').val().trim()
-  var unit_symbol = $('#addUnitModal').find('#unit_symbol').val().trim()
-  if (unit_name == "" || unit_symbol == "") {
+//========================Indicator=============================
+mainPage.on('click', '#add_indicator', function () {
+  var indicator_name = $('#addIndicatorModal').find('#indicator_name').val().trim()
+  var indicator_unit = $('#addIndicatorModal').find('#indicator_unit').val().trim()
+  if (indicator_name == "" || indicator_unit == "") {
     showNotify("Vui lòng nhập đầy đủ thông tin", "warning");
   } else {
     $.ajax({
       type: "POST",
-      url: '?mod=units&action=addUnit',
+      url: '?mod=indicators&action=addIndicator',
       data: {
-        unit_name: unit_name,
-        unit_symbol: unit_symbol
+        indicator_name: indicator_name,
+        indicator_unit: indicator_unit
       },
       dataType: 'json',
       success: function (response) {
@@ -300,20 +300,20 @@ mainPage.on('click', '#add_unit', function () {
   }
 });
 
-mainPage.on('hidden.bs.modal', '#addUnitModal', function () {
-  $(this).find('#unit_name').val('')
-  $(this).find('#unit_symbol').val('')
+mainPage.on('hidden.bs.modal', '#addIndicatorModal', function () {
+  $(this).find('#indicator_name').val('')
+  $(this).find('#indicator_unit').val('')
 });
 
-mainPage.on('click', '#view-unit', function (e) {
+mainPage.on('click', '#view-indicator', function (e) {
   e.preventDefault();
   var url = $(this).attr('href');
   $.ajax({
     type: "GET",
     url: url,
     success: function (response) {
-      $('#updateUnitModal').html(response);
-      $('#updateUnitModal').modal('show');
+      $('#updateIndicatorModal').html(response);
+      $('#updateIndicatorModal').modal('show');
     },
 
     error: function () {
@@ -322,20 +322,20 @@ mainPage.on('click', '#view-unit', function (e) {
   });
 });
 
-mainPage.on('click', '#update_unit', function () {
-  var unit_id = $(this).val().trim();
-  var unit_name = $('#updateUnitModal').find('#unit_name').val().trim()
-  var unit_symbol = $('#updateUnitModal').find('#unit_symbol').val().trim()
-  if (unit_name == "" || unit_symbol == "") {
+mainPage.on('click', '#update_indicator', function () {
+  var indicator_id = $(this).val().trim();
+  var indicator_name = $('#updateIndicatorModal').find('#indicator_name').val().trim()
+  var indicator_unit = $('#updateIndicatorModal').find('#indicator_unit').val().trim()
+  if (indicator_name == "" || indicator_unit == "") {
     showNotify("Vui lòng nhập đầy đủ thông tin", "warning");
   } else {
     $.ajax({
       type: "POST",
-      url: '?mod=units&action=updateUnit',
+      url: '?mod=indicators&action=updateIndicator',
       data: {
-        unit_id: unit_id,
-        unit_name: unit_name,
-        unit_symbol: unit_symbol
+        indicator_id: indicator_id,
+        indicator_name: indicator_name,
+        indicator_unit: indicator_unit
       },
       dataType: 'json',
       success: function (response) {
@@ -536,7 +536,7 @@ if ($('#map').length > 0) {
       '<table id="table-map" class="table table-hover table-borderless w-100 nowrap shadow-sm mb-1 rounded-3 overflow-hidden">' +
       '<thead>' +
       '<tr>' +
-      '<th class="text-start">ĐVĐ</th>' +
+      '<th class="text-start">Chỉ số</th>' +
       '<th class="text-center">Giá trị</th>' +
       '<th class="text-center">Ký hiệu</th>' +
       '</tr>' +
@@ -548,7 +548,7 @@ if ($('#map').length > 0) {
           '<tr>' +
           '<td class="text-start">' + element['name'] + '</td>' +
           '<td class="text-center">' + element['value'] + '</td>' +
-          '<td class="text-center">' + element['symbol'] + '</td>' +
+          '<td class="text-center">' + element['unit'] + '</td>' +
           '</tr>';
       }
     });
@@ -583,7 +583,7 @@ if ($('#map').length > 0) {
     data.station.forEach(element => {
       markers.forEach(function (markerObj) {
         var markerLngLat = markerObj.marker.getLngLat();
-        if (markerLngLat.lng === element["longtitude"] && markerLngLat.lat === element["langtitude"]) {
+        if (markerLngLat.lng === element["longitude"] && markerLngLat.lat === element["latitude"]) {
           var popupElement = markerObj.popup.getElement();
           var ulElement = $(popupElement).find('ul.popup-list-data');
           var newHtml = displayData(data.sensor_value, data.position_list, element);
@@ -602,12 +602,12 @@ if ($('#map').length > 0) {
   function initMarkers(data) {
     data.station.forEach(element => {
       var marker = new mapboxgl.Marker()
-        .setLngLat([element["longtitude"], element["langtitude"]])
+        .setLngLat([element["longitude"], element["latitude"]])
         .addTo(map);
 
       var popup = new mapboxgl.Popup({ closeOnClick: false, closeButton: false, offset: popupOffsets })
-        .setLngLat([element["longtitude"], element["langtitude"]])
-        .setHTML('<p class="popup-title fw-bold text-primary border-1 border-bottom border-light-subtle w-100 m-0 py-2">' + element["name"] + '</p>' + displayData(data.sensor_value, data.position_list, element))
+        .setLngLat([element["longitude"], element["latitude"]])
+        .setHTML('<p value="' + element["id"] + '" class="popup-title fw-bold text-primary border-1 border-bottom border-light-subtle w-100 m-0 py-2">' + element["name"] + '</p>' + displayData(data.sensor_value, data.position_list, element))
         .addTo(map);
 
       popup.getElement().addEventListener('mouseenter', function () {
@@ -619,6 +619,19 @@ if ($('#map').length > 0) {
       });
 
       markers.push({ marker: marker, popup: popup });
+
+      marker.getElement().addEventListener('click', function () {
+        popup.getElement().click();
+      });
+
+      popup.getElement().addEventListener('click', function () {
+        if ($("#box-left-map.show").length > 0) {
+          bootstrap.Offcanvas.getInstance($("#box-left-map.show")[0]).hide();
+          var x = $('#box-left-map').width();
+          map.panBy([x, 0]);
+        }
+        bootstrap.Offcanvas.getOrCreateInstance($("#box-bottom-map")[0]).show();
+      });
     });
   }
 
@@ -657,6 +670,9 @@ if ($('#map').length > 0) {
 
   mainPage.on('click', '.station-content', function () {
     bootstrap.Offcanvas.getInstance($("#box-left-map.show")[0]).hide();
+    if ($("#box-bottom-map.show").length > 0) {
+      bootstrap.Offcanvas.getInstance($("#box-bottom-map.show")[0]).hide();
+    }
     var location = $(this).data('value');
     var longitude = location.split("-")[0];
     var latitude = location.split("-")[1];
@@ -816,7 +832,7 @@ if ($('#map').length > 0) {
         $('#updateStationModal').html(response);
         $('#updateStationModal').modal('show');
       },
-  
+
       error: function () {
         showNotify("Lỗi hệ thống vui lòng thử lại sau!", "danger");
       }

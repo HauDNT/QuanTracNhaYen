@@ -22,9 +22,9 @@
         <ul id="stations-list" class="list-group">
           <?php if (count($list_station_info) > 0) : ?>
             <?php foreach ($list_station_info as $station) : ?>
-              <li class="list-group-item list-group-item-action border-0 mb-2 rounded-3" aria-current="true">
+              <li class="list-group-item list-group-item-action border-0 mb-2 rounded-3 shadow-sm" aria-current="true">
                 <div class="d-flex align-items-center w-100">
-                  <div data-value="<?= $station['longtitude'] ?>-<?= $station['langtitude'] ?>" class="station-content flex-fill me-4">
+                  <div data-value="<?= $station['longitude'] ?>-<?= $station['latitude'] ?>" class="station-content flex-fill me-4">
                     <p class="fw-semibold m-0"><?= $station['name'] ?></p>
                     <small class="d-flex justify-content-between">
                       <span class="text-secondary me-2">
@@ -58,6 +58,16 @@
       </div>
     </div>
     <div id="map" view="map" class="h-100"></div>
+
+    <div class="offcanvas offcanvas-bottom position-absolute shadow border-0 rounded-3" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="box-bottom-map" aria-labelledby="boxBottomMapLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title fw-semibold" id="boxBottomMapLabel">Biểu đồ</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+      </div>
+    </div>
+
   </div>
 </div>
 

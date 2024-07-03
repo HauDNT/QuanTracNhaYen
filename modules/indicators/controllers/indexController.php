@@ -7,18 +7,18 @@ function construct()
 function indexAction()
 {
   // Lấy danh sách các đơn vị đo:
-  $list_units = get_list_units();
+  $list_indicators = get_list_indicators();
   if (isset($_POST["search"])) {
-    $list_units = get_list_units_by_name($_POST["search"]);
+    $list_indicators = get_list_indicators_by_name($_POST["search"]);
   }
 
   $data_list = array();
-  foreach ($list_units as $index => $value) {
+  foreach ($list_indicators as $index => $value) {
     $data_list[] = array(
       'no' => $index + 1,
       'id' => $value['id'],
       'name' => $value['name'],
-      'symbol' => $value['symbol'],
+      'unit' => $value['unit'],
     );
   }
 
@@ -33,8 +33,8 @@ function indexAction()
   $currentItems = array_slice($data_list, $offset, $item_per_page);
 
   $data = array(
-    'active' => 'unit',
-    'list_units' => $currentItems,
+    'active' => 'indicator',
+    'list_indicators' => $currentItems,
     'total_page' => $total_page,
     'current_page' => $current_page,
   );
@@ -42,12 +42,12 @@ function indexAction()
   load_view('index', $data);
 }
 
-function addUnitAction()
+function addIndicatorAction()
 {
-  if (isset($_POST['unit_name']) && isset($_POST['unit_symbol'])) {
-    $unit_name = $_POST['unit_name'];
-    $unit_symbol = $_POST['unit_symbol'];
-    if (empty($unit_name) || empty($unit_symbol)) {
+  if (isset($_POST['indicator_name']) && isset($_POST['indicator_unit'])) {
+    $indicator_name = $_POST['indicator_name'];
+    $indicator_unit = $_POST['indicator_unit'];
+    if (empty($indicator_name) || empty($indicator_unit)) {
       echo json_encode([
         "type" => "fail",
         "message" => "Vui lòng nhập đầy đủ thông tin!",
@@ -57,11 +57,11 @@ function addUnitAction()
     }
 
     $data = array(
-      'name' => $unit_name,
-      'symbol' => $unit_symbol
+      'name' => $indicator_name,
+      'unit' => $indicator_unit
     );
 
-    if (db_insert('units', $data)) {
+    if (db_insert('indicators', $data)) {
       echo json_encode([
         "type" => "success",
         "message" => "Thêm thành công.",
@@ -78,12 +78,12 @@ function addUnitAction()
   }
 }
 
-function updateUnitAction()
+function updateIndicatorAction()
 {
-  if (isset($_POST['unit_id'])) {
-    $unit_name = $_POST['unit_name'];
-    $unit_symbol = $_POST['unit_symbol'];
-    if (empty($unit_name) || empty($unit_symbol)) {
+  if (isset($_POST['indicator_id'])) {
+    $indicator_name = $_POST['indicator_name'];
+    $indicator_unit = $_POST['indicator_unit'];
+    if (empty($indicator_name) || empty($indicator_unit)) {
       echo json_encode([
         "type" => "fail",
         "message" => "Vui lòng nhập đầy đủ thông tin!",
@@ -93,10 +93,10 @@ function updateUnitAction()
     }
 
     $data = array(
-      'name' => $unit_name,
-      'symbol' => $unit_symbol,
+      'name' => $indicator_name,
+      'unit' => $indicator_unit,
     );
-    if (update_unit($_POST['unit_id'], $data)) {
+    if (update_indicator($_POST['indicator_id'], $data)) {
       echo json_encode([
         "type" => "success",
         "message" => "Cập nhật thành công.",
@@ -112,20 +112,20 @@ function updateUnitAction()
     exit();
   } else {
     $id = (int) $_GET['id'];
-    $unit_update = get_unit_by_id($id);
+    $indicator_update = get_indicator_by_id($id);
 
     $data = array(
-      'unit_update' => $unit_update,
+      'indicator_update' => $indicator_update,
     );
 
     load_view('update', $data);
   }
 }
 
-function deleteUnitAction()
+function deleteIndicatorAction()
 {
   $id = (int) $_GET['id'];
 
-  db_delete('units', "`id` = {$id}");
-  header('location: ?mod=units');
+  db_delete('indicators', "`id` = {$id}");
+  header('location: ?mod=indicators');
 }

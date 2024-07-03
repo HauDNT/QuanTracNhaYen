@@ -9,7 +9,7 @@
         <a class="nav-link text-secondary fw-semibold border-0 <?= $active == "sensor"  ? "active" : "" ?>" href="?mod=sensors">Cảm biến</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-secondary fw-semibold border-0 <?= $active == "unit"  ? "active" : "" ?>" href="?mod=units">Đơn vị</a>
+        <a class="nav-link text-secondary fw-semibold border-0 <?= $active == "indicators"  ? "active" : "" ?>" href="?mod=indicators">Chỉ số</a>
       </li>
     </ul>
   </div>
@@ -73,7 +73,7 @@
                   </div>
                 </td>
                 <td data-title="Tên trạm" class="text-start">
-                  <?= $sensor['station_name'] ?>
+                  <?= !empty($sensor['station_name']) ? $sensor['station_name'] : "-" ?>
                 </td>
                 <td data-title="Tầng" class="text-center"><?= $sensor['position'] ?></td>
                 <td data-title="Trạng thái" class="text-center">

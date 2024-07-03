@@ -12,11 +12,11 @@
       <div class="d-sm-flex">
         <div class="me-sm-2 flex-sm-fill mb-3">
           <label for="station-longitude" class="col-form-label">Kinh độ <span class="text-danger">*</span></label>
-          <input type="text" class="form-control" id="station-longitude" value="<?= $station_update['longtitude'] ?>">
+          <input type="text" class="form-control" id="station-longitude" value="<?= $station_update['longitude'] ?>">
         </div>
         <div class="flex-sm-fill mb-3">
           <label for="station-latitude" class="col-form-label">Vĩ độ <span class="text-danger">*</span></label>
-          <input type="text" class="form-control" id="station-latitude" value="<?= $station_update['langtitude'] ?>">
+          <input type="text" class="form-control" id="station-latitude" value="<?= $station_update['latitude'] ?>">
         </div>
       </div>
       <div class="mb-3">

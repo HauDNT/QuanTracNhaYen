@@ -94,10 +94,12 @@ mainPage.on('input', '#search', function () {
     data: requestSearch(),
     success: function (data) {
       var showing = $(data).find('.showing').html();
-      var value = $(data).find('#table').html();
+      var table = $(data).find('#table').html();
+      var stations_list = $(data).find('#stations-list').html();
       var pagination = $(data).find('.pagination').html();
       $('.showing').html(showing);
-      $('#table').html(value);
+      $('#table').html(table);
+      $('#stations-list').html(stations_list);
       $('.pagination').html(pagination);
     },
     error: function () {
@@ -129,7 +131,7 @@ function requestSearch() {
 function requestPage(page) {
   var requestData = {
     page: page,
-    search: $('.search').val().trim(),
+    search: $('#search').val().trim(),
   };
 
   if ($('#sensor-status').length > 0) {
@@ -157,7 +159,7 @@ mainPage.on('change', '#sensor-status', function () {
     type: 'POST',
     url: window.location.href,
     data: {
-      search: $('.search').val().trim(),
+      search: $('#search').val().trim(),
       status: $('#sensor-status').val().trim(),
     },
     success: function (data) {
@@ -359,7 +361,7 @@ mainPage.on('change', '#user-role, #user-status', function () {
     type: 'POST',
     url: window.location.href,
     data: {
-      search: $('.search').val().trim(),
+      search: $('#search').val().trim(),
       userRole: $('#user-role').val(),
       userStatus: $('#user-status').val(),
     },
@@ -495,10 +497,6 @@ mainPage.on('click', '#update_user', function () {
   });
 });
 
-mainPage.on('click', '#table-view-btn', () => {
-  window.location.href = "?mod=stations";
-});
-
 //=====================================mapbox================================
 if ($('#map').length > 0) {
   mapboxgl.accessToken =
@@ -512,148 +510,316 @@ if ($('#map').length > 0) {
     zoom: 14,
   });
 
+  // Thêm điều khiển định vị địa lý vào bản đồ.
+  map.addControl(
+    new mapboxgl.GeolocateControl({
+      positionOptions: {
+        enableHighAccuracy: true
+      },
+      // Khi hoạt động, bản đồ sẽ nhận được thông tin cập nhật về vị trí của thiết bị khi nó thay đổi.
+      trackUserLocation: true,
+    })
+  );
+
   // Thêm thao tác thu phóng & xoay bản đồ
   map.addControl(new mapboxgl.NavigationControl());
 
-  if ($('#map').attr("view") == "map") {
-    var markers = [];
-    const popupOffsets = {
-      'top': [0, 0],
-      'bottom': [0, -35],
-    };
+  var markers = [];
+  const popupOffsets = {
+    'top': [0, 0],
+    'bottom': [0, -35],
+  };
 
-    function displayTable(data, position, station) {
-      var html =
-        '<p class="fw-bold my-2">Tầng ' + position + '</p>' +
-        '<table id="table-map" class="table table-hover table-borderless w-100 nowrap shadow-sm mb-1 rounded-3 overflow-hidden">' +
-        '<thead>' +
-        '<tr>' +
-        '<th class="text-start">ĐVĐ</th>' +
-        '<th class="text-center">Giá trị</th>' +
-        '<th class="text-center">Ký hiệu</th>' +
-        '</tr>' +
-        '</thead>' +
-        '<tbody>';
-      data.forEach(element => {
-        if (element["station_id"] == station["id"] && element["position"] == position) {
-          html +=
-            '<tr>' +
-            '<td class="text-start">' + element['name'] + '</td>' +
-            '<td class="text-center">' + element['value'] + '</td>' +
-            '<td class="text-center">' + element['symbol'] + '</td>' +
-            '</tr>';
-        }
-      });
-      html += '</tbody></table>';
-      return html;
-    }
+  function displayTable(data, position, station) {
+    var html =
+      '<p class="fw-bold my-2">Tầng ' + position + '</p>' +
+      '<table id="table-map" class="table table-hover table-borderless w-100 nowrap shadow-sm mb-1 rounded-3 overflow-hidden">' +
+      '<thead>' +
+      '<tr>' +
+      '<th class="text-start">ĐVĐ</th>' +
+      '<th class="text-center">Giá trị</th>' +
+      '<th class="text-center">Ký hiệu</th>' +
+      '</tr>' +
+      '</thead>' +
+      '<tbody>';
+    data.forEach(element => {
+      if (element["station_id"] == station["id"] && element["position"] == position) {
+        html +=
+          '<tr>' +
+          '<td class="text-start">' + element['name'] + '</td>' +
+          '<td class="text-center">' + element['value'] + '</td>' +
+          '<td class="text-center">' + element['symbol'] + '</td>' +
+          '</tr>';
+      }
+    });
+    html += '</tbody></table>';
+    return html;
+  }
 
-    function displayData(data, position_list, station) {
-      var html =
-        '<ul class="popup-list-data list-inline p-0 m-0">';
-      position_list.forEach(element => {
-        if (element["station_id"] == station["id"]) {
-          html += '<li>' + displayTable(data, element["position"], station) + '</li>';
-        }
-      });
-      html += '</ul>';
-      return html;
-    }
+  function displayData(data, position_list, station) {
+    var html =
+      '<ul class="popup-list-data list-inline p-0 m-0">';
+    position_list.forEach(element => {
+      if (element["station_id"] == station["id"]) {
+        html += '<li>' + displayTable(data, element["position"], station) + '</li>';
+      }
+    });
+    html += '</ul>';
+    return html;
+  }
 
-    function updateData(data) {
-      var scrollPositions = {};
+  function updateData(data) {
+    var scrollPositions = {};
 
-      // Lưu vị trí cuộn
-      markers.forEach(function (markerObj) {
-        var popupElement = markerObj.popup.getElement();
-        var ulElement = $(popupElement).find('ul.popup-list-data');
-        if (ulElement.length) {
-          scrollPositions[markerObj.marker.getLngLat()] = ulElement.scrollTop();
-        }
-      });
-
-      data.station.forEach(element => {
-        markers.forEach(function (markerObj) {
-          var markerLngLat = markerObj.marker.getLngLat();
-          if (markerLngLat.lng === element["longtitude"] && markerLngLat.lat === element["langtitude"]) {
-            var popupElement = markerObj.popup.getElement();
-            var ulElement = $(popupElement).find('ul.popup-list-data');
-            var newHtml = displayData(data.sensor_value, data.position_list, element);
-            ulElement.html($(newHtml).html());
-
-            // Khôi phục vị trí cuộn
-            var scrollTop = scrollPositions[markerLngLat];
-            if (scrollTop !== undefined) {
-              ulElement.scrollTop(scrollTop);
-            }
-          }
-        });
-      });
-    }
-
-    function initMarkers(data) {
-      data.station.forEach(element => {
-        var marker = new mapboxgl.Marker()
-          .setLngLat([element["longtitude"], element["langtitude"]])
-          .addTo(map);
-
-        var popup = new mapboxgl.Popup({ closeOnClick: false, closeButton: false, offset: popupOffsets })
-          .setLngLat([element["longtitude"], element["langtitude"]])
-          .setHTML('<p class="popup-title fw-bold text-primary border-1 border-bottom border-light-subtle w-100 m-0 py-2">' + element["name"] + '</p>' + displayData(data.sensor_value, data.position_list, element))
-          .addTo(map);
-
-        popup.getElement().addEventListener('mouseenter', function () {
-          this.style.zIndex = 99;
-        });
-
-        popup.getElement().addEventListener('mouseleave', function () {
-          this.style.zIndex = '';
-        });
-
-        markers.push({ marker: marker, popup: popup });
-      });
-    }
-
-    $("#add-location-btn").click(() => {
-      add_location = !add_location;
-      $("#add-location-btn").toggleClass("text-primary");
+    // Lưu vị trí cuộn
+    markers.forEach(function (markerObj) {
+      var popupElement = markerObj.popup.getElement();
+      var ulElement = $(popupElement).find('ul.popup-list-data');
+      if (ulElement.length) {
+        scrollPositions[markerObj.marker.getLngLat()] = ulElement.scrollTop();
+      }
     });
 
+    data.station.forEach(element => {
+      markers.forEach(function (markerObj) {
+        var markerLngLat = markerObj.marker.getLngLat();
+        if (markerLngLat.lng === element["longtitude"] && markerLngLat.lat === element["langtitude"]) {
+          var popupElement = markerObj.popup.getElement();
+          var ulElement = $(popupElement).find('ul.popup-list-data');
+          var newHtml = displayData(data.sensor_value, data.position_list, element);
+          ulElement.html($(newHtml).html());
+
+          // Khôi phục vị trí cuộn
+          var scrollTop = scrollPositions[markerLngLat];
+          if (scrollTop !== undefined) {
+            ulElement.scrollTop(scrollTop);
+          }
+        }
+      });
+    });
+  }
+
+  function initMarkers(data) {
+    data.station.forEach(element => {
+      var marker = new mapboxgl.Marker()
+        .setLngLat([element["longtitude"], element["langtitude"]])
+        .addTo(map);
+
+      var popup = new mapboxgl.Popup({ closeOnClick: false, closeButton: false, offset: popupOffsets })
+        .setLngLat([element["longtitude"], element["langtitude"]])
+        .setHTML('<p class="popup-title fw-bold text-primary border-1 border-bottom border-light-subtle w-100 m-0 py-2">' + element["name"] + '</p>' + displayData(data.sensor_value, data.position_list, element))
+        .addTo(map);
+
+      popup.getElement().addEventListener('mouseenter', function () {
+        this.style.zIndex = 99;
+      });
+
+      popup.getElement().addEventListener('mouseleave', function () {
+        this.style.zIndex = '';
+      });
+
+      markers.push({ marker: marker, popup: popup });
+    });
+  }
+
+  $("#add-location-btn").click(() => {
+    add_location = !add_location;
+    $("#add-location-btn").toggleClass("text-primary");
+  });
+
+  $.ajax({
+    type: 'POST',
+    url: '?mod=monitoring',
+    data: { get_data: "true" },
+    dataType: 'json',
+    success: function (data) {
+      initMarkers(data);
+    },
+    error: function () {
+      alert('Không tìm thấy tọa độ!');
+    }
+  });
+
+  function update() {
     $.ajax({
       type: 'POST',
       url: '?mod=monitoring',
       data: { get_data: "true" },
       dataType: 'json',
       success: function (data) {
-        initMarkers(data);
+        updateData(data);
       },
       error: function () {
         alert('Không tìm thấy tọa độ!');
       }
     });
-
-    function update() {
-      $.ajax({
-        type: 'POST',
-        url: '?mod=monitoring',
-        data: { get_data: "true" },
-        dataType: 'json',
-        success: function (data) {
-          updateData(data);
-        },
-        error: function () {
-          alert('Không tìm thấy tọa độ!');
-        }
-      });
-    }
-
-    // setInterval(() => {
-    //   update();
-    //   console.log("2");
-    // }, 1000);
-  } else if ($('#map').attr("view") == "station") {
-    mainPage.on('shown.bs.modal', '#addStationModal', function () {
-      map.resize();
-    });
   }
+
+  mainPage.on('click', '.station-content', function () {
+    bootstrap.Offcanvas.getInstance($("#box-left-map.show")[0]).hide();
+    var location = $(this).data('value');
+    var longitude = location.split("-")[0];
+    var latitude = location.split("-")[1];
+    map.flyTo({
+      center: [longitude, latitude],
+      essential: true
+    });
+  });
+
+  var newStation = null;
+  var add_location = false;
+
+  mainPage.on('click', '#add-station-btn', function () {
+    add_location = !add_location;
+    if (add_location) {
+      $("#add-station-btn").addClass("active");
+    } else {
+      $("#add-station-btn").removeClass("active");
+      newStation.remove();
+    }
+  })
+
+  map.on('click', function (e) {
+    if (add_location) {
+      var coordinates = e.lngLat;
+      if (newStation !== null) {
+        newStation.remove();
+      }
+
+      newStation = new mapboxgl.Marker()
+        .setLngLat([coordinates.lng, coordinates.lat])
+        .addTo(map);
+      $('#station-longitude').val(coordinates.lng);
+      $('#station-latitude').val(coordinates.lat);
+      $('#addStationModal').modal("show");
+    }
+  });
+
+  mainPage.on('input', '#station-longitude, #station-latitude', function () {
+    var longitude = $("#station-longitude").val().trim();
+    var latitude = $("#station-latitude").val().trim();
+    newStation.setLngLat([longitude, latitude]);
+    map.setCenter([longitude, latitude]);
+  });
+  // setInterval(() => {
+  //   update();
+  //   console.log("2");
+  // }, 1000);
+
+  mainPage.on('click', '#box-left-btn', function () {
+    var x = $('#box-left-map').width();
+    map.panBy([(x * -1), 0]);
+  });
+
+  mainPage.on('click', '#box-left-map .btn-close', function () {
+    var x = $('#box-left-map').width();
+    map.panBy([x, 0]);
+  });
+
+  $(window).on('resize', function () {
+    if ($('#box-left-map').hasClass("hiding")) {
+      var x = $('#box-left-map').width();
+      map.panBy([x, 0]);
+    }
+  });
+
+  mainPage.on('hidden.bs.modal', '#addStationModal', function () {
+    $("#addStationModal").find("#station-name").val("");
+    $("#addStationModal").find("#station-longitude").val("");
+    $("#addStationModal").find("#station-latitude").val("");
+    $("#addStationModal").find("#station-url").val("");
+    $("#addStationModal").find("#station_user option:first").prop('selected', true);
+    newStation.remove();
+  });
+
+  mainPage.on('click', '#add_station', function () {
+    var name = $("#addStationModal").find("#station-name").val().trim();
+    var longitude = $("#addStationModal").find("#station-longitude").val().trim();
+    var latitude = $("#addStationModal").find("#station-latitude").val().trim();
+    var urlWeb = $("#addStationModal").find("#station-url").val().trim();
+    var user = $("#addStationModal").find("#station_user").val();
+
+    $.ajax({
+      type: 'POST',
+      url: '?mod=monitoring&action=addStation',
+      data: {
+        name: name,
+        longitude: longitude,
+        latitude: latitude,
+        urlWeb: urlWeb,
+        user: user
+      },
+      dataType: 'json',
+      success: function (response) {
+        console.log(response);
+        if (response.type == 'success') {
+          setNotifySession(response.message, response.notifyType);
+          window.location.reload();
+        } else if (response.type == 'fail') {
+          showNotify(response.message, response.notifyType);
+        } else {
+          showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
+        }
+      },
+
+      error: function () {
+        showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
+      }
+    });
+  })
+
+  mainPage.on('click', '#update_station', function () {
+    var id = $(this).val().trim();
+    var name = $("#updateStationModal").find("#station-name").val().trim();
+    var longitude = $("#updateStationModal").find("#station-longitude").val().trim();
+    var latitude = $("#updateStationModal").find("#station-latitude").val().trim();
+    var urlWeb = $("#updateStationModal").find("#station-url").val().trim();
+    var user = $("#updateStationModal").find("#station_user").val();
+
+    $.ajax({
+      type: 'POST',
+      url: '?mod=monitoring&action=updateStation',
+      data: {
+        id: id,
+        name: name,
+        longitude: longitude,
+        latitude: latitude,
+        urlWeb: urlWeb,
+        user: user
+      },
+      dataType: 'json',
+      success: function (response) {
+        console.log(response);
+        if (response.type == 'success') {
+          setNotifySession(response.message, response.notifyType);
+          window.location.reload();
+        } else if (response.type == 'fail') {
+          showNotify(response.message, response.notifyType);
+        } else {
+          showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
+        }
+      },
+
+      error: function () {
+        showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
+      }
+    });
+  })
+
+  mainPage.on('click', '#view-station', function (e) {
+    e.preventDefault();
+    var url = $(this).attr('href');
+    $.ajax({
+      type: "GET",
+      url: url,
+      success: function (response) {
+        $('#updateStationModal').html(response);
+        $('#updateStationModal').modal('show');
+      },
+  
+      error: function () {
+        showNotify("Lỗi hệ thống vui lòng thử lại sau!", "danger");
+      }
+    });
+  });
 }

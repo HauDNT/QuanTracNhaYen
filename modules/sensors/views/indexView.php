@@ -34,7 +34,7 @@
               <label for="sensor-status" class="text-secondary mb-1">Trang thái</label>
               <select id="sensor-status" class="form-select">
                 <option value="-1" selected>Tất cả</option>
-                <option value="0">Ngừng hoạt động</option>
+                <option value="0">Ngắt kết nối</option>
                 <option value="1">Hoạt động</option>
               </select>
             </div>
@@ -126,7 +126,7 @@
   <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm cảm biến <span class="text-danger">*</span></h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm cảm biến</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body overflow-y-scroll">
@@ -139,7 +139,7 @@
           <input type="text" class="form-control" id="name_sensor">
         </div>
         <div class="mb-3">
-          <label for="station_sensor" class="col-form-label">Trạm <span class="text-danger">*</span></label>
+          <label for="station_sensor" class="col-form-label">Trạm</label>
           <select class="form-select" id="station_sensor">
             <option selected hidden disabled>-- Chọn trạm --</option>
             <?php foreach ($list_station as $value) { ?>

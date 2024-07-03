@@ -51,7 +51,7 @@ function indexAction()
 function addSensorAction()
 {
   if (isset($_POST["idSensor"]) && isset($_POST['nameSensor'])) {
-    if (empty($_POST["idSensor"]) || empty($_POST["nameSensor"]) || empty($_POST["stationSensor"]) || empty($_POST["positionSensor"])) {
+    if (empty($_POST["idSensor"]) || empty($_POST["nameSensor"]) || empty($_POST["positionSensor"])) {
       echo json_encode([
         "type" => "fail",
         "message" => "Vui lòng nhập đầy đủ thông tin!",
@@ -72,7 +72,7 @@ function addSensorAction()
     $data = array(
       'sensor_id' => $_POST["idSensor"],
       'name' => $_POST["nameSensor"],
-      'station_id' => $_POST["stationSensor"],
+      'station_id' => empty($_POST["stationSensor"]) ? null : $_POST["stationSensor"],
       'position' => $_POST["positionSensor"],
     );
 

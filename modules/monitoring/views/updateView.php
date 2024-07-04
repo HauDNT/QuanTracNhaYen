@@ -20,6 +20,10 @@
         </div>
       </div>
       <div class="mb-3">
+          <label for="station-address" class="col-form-label">Địa chỉ cụ thể <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" id="station-address" value="<?= $station_update['address'] ?>">
+        </div>
+      <div class="mb-3">
         <label for="station-url" class="col-form-label">Địa chỉ DDNS URL</label>
         <input type="text" class="form-control" id="station-url" value="<?= $station_update['urlServer'] ?>">
       </div>

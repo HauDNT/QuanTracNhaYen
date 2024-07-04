@@ -14,6 +14,9 @@
 <!-- Script for flatpickr -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
+<!-- Script for chart js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script src="public/js/script.js?v=<?= time() ?>" type="text/javascript"></script>
 </body>
 

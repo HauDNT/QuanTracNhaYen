@@ -32,7 +32,7 @@ function indexAction()
 function addStationAction()
 {
   if (isset($_POST['name']) && isset($_POST['longitude']) && isset($_POST['latitude']) && isset($_POST['user'])) {
-    if (empty($_POST['name']) || empty($_POST['longitude']) || empty($_POST['latitude']) || empty($_POST['user'])) {
+    if (empty($_POST['name']) || empty($_POST['longitude']) || empty($_POST['latitude']) || empty($_POST['address']) || empty($_POST['user'])) {
       echo json_encode([
         "type" => "fail",
         "message" => "Vui lòng nhập đầy đủ thông tin!",
@@ -43,6 +43,7 @@ function addStationAction()
         'name' => $_POST['name'],
         'longitude' => $_POST['longitude'],
         'latitude' => $_POST['latitude'],
+        'address' => $_POST['address'],
         'urlServer' => empty($_POST["urlWeb"]) ? null : $_POST["urlWeb"],
         'user_id' => $_POST['user'],
       );
@@ -68,7 +69,7 @@ function addStationAction()
 function updateStationAction()
 {
   if (isset($_POST["id"]) && isset($_POST['name']) && isset($_POST['longitude']) && isset($_POST['latitude']) && isset($_POST['user'])) {
-    if (empty($_POST['name']) || empty($_POST['longitude']) || empty($_POST['latitude']) || empty($_POST['user'])) {
+    if (empty($_POST['name']) || empty($_POST['longitude']) || empty($_POST['latitude']) || empty($_POST['address']) || empty($_POST['user'])) {
       echo json_encode([
         "type" => "fail",
         "message" => "Vui lòng nhập đầy đủ thông tin!",
@@ -79,6 +80,7 @@ function updateStationAction()
         'name' => $_POST['name'],
         'longitude' => $_POST['longitude'],
         'latitude' => $_POST['latitude'],
+        'address' => $_POST['address'],
         'urlServer' => empty($_POST["urlWeb"]) ? null : $_POST["urlWeb"],
         'user_id' => $_POST['user'],
       );
@@ -114,4 +116,24 @@ function deleteStationAction()
   $id = (int) $_GET['id'];
   delete_station($id);
   header('location: ?mod=monitoring');
+}
+
+function showChartAction()
+{
+  if(isset($_POST["station_id"]) && isset($_POST["position"])) {
+    echo json_encode([
+      "legend" => get_data_chart_label($_POST["station_id"], $_POST["position"]),
+      "data" => get_data_chart($_POST["station_id"], $_POST["position"]),
+    ]);
+    exit();
+  } else {
+    $station_id = (int) $_GET["id"];
+    $station = get_station_by_id($station_id);
+    $position_list = get_position_station_by_station_id($station_id);
+    $data = array(
+      'station' => $station,
+      'position_list' => $position_list,
+    );
+    load_view('chart', $data);
+  }
 }

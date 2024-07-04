@@ -265,8 +265,13 @@ table * {
   color: #33B5E5 !important;
 }
 
-#box-bottom-map {
-  height: 50%;
+#box-chart-map {
+  height: 50% !important;
+}
+
+.chart {
+  max-width: 100% !important;
+  max-height: 100% !important;
 }
 
 @media (min-width: 992px) {

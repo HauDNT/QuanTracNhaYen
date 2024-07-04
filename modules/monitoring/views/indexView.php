@@ -26,7 +26,11 @@
                 <div class="d-flex align-items-center w-100">
                   <div data-value="<?= $station['longitude'] ?>-<?= $station['latitude'] ?>" class="station-content flex-fill me-4">
                     <p class="fw-semibold m-0"><?= $station['name'] ?></p>
-                    <small class="d-flex justify-content-between">
+                    <small class="text-secondary d-block mb-1">
+                      <i class="bi bi-geo-alt text-primary"></i>
+                      <?= $station['address'] ?>
+                    </small>
+                    <small class="d-flex justify-content-between flex-wrap">
                       <span class="text-secondary me-2">
                         <i class="bi bi-person text-primary"></i>
                         <?= $station['fullname'] ?>
@@ -59,15 +63,8 @@
     </div>
     <div id="map" view="map" class="h-100"></div>
 
-    <div class="offcanvas offcanvas-bottom position-absolute shadow border-0 rounded-3" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="box-bottom-map" aria-labelledby="boxBottomMapLabel">
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title fw-semibold" id="boxBottomMapLabel">Biểu đồ</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
-      </div>
+    <div class="offcanvas offcanvas-bottom position-absolute shadow border-0 rounded-3" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="box-chart-map" aria-labelledby="boxChartMapLabel">
     </div>
-
   </div>
 </div>
 
@@ -93,6 +90,10 @@
             <label for="station-latitude" class="col-form-label">Vĩ độ <span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="station-latitude">
           </div>
+        </div>
+        <div class="mb-3">
+          <label for="station-address" class="col-form-label">Địa chỉ cụ thể <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" id="station-address">
         </div>
         <div class="mb-3">
           <label for="station-url" class="col-form-label">Địa chỉ DDNS URL</label>

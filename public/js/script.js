@@ -533,7 +533,7 @@ if ($('#map').length > 0) {
   function displayTable(data, position, station) {
     var html =
       '<p class="fw-bold my-2">Tầng ' + position + '</p>' +
-      '<table id="table-map" class="table table-hover table-borderless w-100 nowrap shadow-sm mb-1 rounded-3 overflow-hidden">' +
+      '<table id="table-map" class="table table-borderless w-100 nowrap shadow-sm mb-1 rounded-3 overflow-hidden">' +
       '<thead>' +
       '<tr>' +
       '<th class="text-start">Chỉ số</th>' +
@@ -599,6 +599,8 @@ if ($('#map').length > 0) {
     });
   }
 
+  var station_id = null;
+
   function initMarkers(data) {
     data.station.forEach(element => {
       var marker = new mapboxgl.Marker()
@@ -625,14 +627,31 @@ if ($('#map').length > 0) {
       });
 
       popup.getElement().addEventListener('click', function () {
+        station_id = $(this).find('.popup-title').attr('value');
         if ($("#box-left-map.show").length > 0) {
           bootstrap.Offcanvas.getInstance($("#box-left-map.show")[0]).hide();
           var x = $('#box-left-map').width();
           map.panBy([x, 0]);
         }
-        bootstrap.Offcanvas.getOrCreateInstance($("#box-bottom-map")[0]).show();
+        showBoxChart(station_id);
+        bootstrap.Offcanvas.getOrCreateInstance($("#box-chart-map")[0]).show();
       });
     });
+  }
+
+  function showBoxChart(id) {
+    $.ajax({
+      type: 'GET',
+      url: '?mod=monitoring&action=showChart&id=' + id,
+      success: function (data) {
+        $("#box-chart-map").html(data);
+        chartInit();
+      },
+
+      error: function () {
+        showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
+      }
+    })
   }
 
   $("#add-location-btn").click(() => {
@@ -670,8 +689,8 @@ if ($('#map').length > 0) {
 
   mainPage.on('click', '.station-content', function () {
     bootstrap.Offcanvas.getInstance($("#box-left-map.show")[0]).hide();
-    if ($("#box-bottom-map.show").length > 0) {
-      bootstrap.Offcanvas.getInstance($("#box-bottom-map.show")[0]).hide();
+    if ($("#box-chart-map.show").length > 0) {
+      bootstrap.Offcanvas.getInstance($("#box-chart-map.show")[0]).hide();
     }
     var location = $(this).data('value');
     var longitude = location.split("-")[0];
@@ -725,6 +744,7 @@ if ($('#map').length > 0) {
   mainPage.on('click', '#box-left-btn', function () {
     var x = $('#box-left-map').width();
     map.panBy([(x * -1), 0]);
+    station_id = null;
   });
 
   mainPage.on('click', '#box-left-map .btn-close', function () {
@@ -732,17 +752,23 @@ if ($('#map').length > 0) {
     map.panBy([x, 0]);
   });
 
+  mainPage.on('click', '#box-chart-map .btn-close', function () {
+    station_id = null;
+  });
+
   $(window).on('resize', function () {
     if ($('#box-left-map').hasClass("hiding")) {
       var x = $('#box-left-map').width();
       map.panBy([x, 0]);
     }
+    station_id = null;
   });
 
   mainPage.on('hidden.bs.modal', '#addStationModal', function () {
     $("#addStationModal").find("#station-name").val("");
     $("#addStationModal").find("#station-longitude").val("");
     $("#addStationModal").find("#station-latitude").val("");
+    $("#addStationModal").find("#station-address").val("");
     $("#addStationModal").find("#station-url").val("");
     $("#addStationModal").find("#station_user option:first").prop('selected', true);
     newStation.remove();
@@ -752,6 +778,7 @@ if ($('#map').length > 0) {
     var name = $("#addStationModal").find("#station-name").val().trim();
     var longitude = $("#addStationModal").find("#station-longitude").val().trim();
     var latitude = $("#addStationModal").find("#station-latitude").val().trim();
+    var address = $("#addStationModal").find("#station-address").val().trim();
     var urlWeb = $("#addStationModal").find("#station-url").val().trim();
     var user = $("#addStationModal").find("#station_user").val();
 
@@ -762,6 +789,7 @@ if ($('#map').length > 0) {
         name: name,
         longitude: longitude,
         latitude: latitude,
+        address: address,
         urlWeb: urlWeb,
         user: user
       },
@@ -789,6 +817,7 @@ if ($('#map').length > 0) {
     var name = $("#updateStationModal").find("#station-name").val().trim();
     var longitude = $("#updateStationModal").find("#station-longitude").val().trim();
     var latitude = $("#updateStationModal").find("#station-latitude").val().trim();
+    var address = $("#updateStationModal").find("#station-address").val().trim();
     var urlWeb = $("#updateStationModal").find("#station-url").val().trim();
     var user = $("#updateStationModal").find("#station_user").val();
 
@@ -800,6 +829,7 @@ if ($('#map').length > 0) {
         name: name,
         longitude: longitude,
         latitude: latitude,
+        address: address,
         urlWeb: urlWeb,
         user: user
       },
@@ -838,4 +868,220 @@ if ($('#map').length > 0) {
       }
     });
   });
+
+  //==============================chart & map===================================
+  var lineChart = null;
+  var barChart = null;
+  var colorList = ['rgb(255, 99, 132)', 'rgb(255, 159, 64)', 'rgb(255, 205, 86)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)', 'rgb(201, 203, 207)'];
+
+  function chartInit() {
+    $.ajax({
+      type: "POST",
+      url: "?mod=monitoring&action=showChart",
+      data: {
+        station_id: station_id,
+        position: $("#box-chart-map").find("#position").val()
+      },
+      dataType: 'json',
+      success: function (response) {
+        const labels = [];
+        const datasets = [];
+        for (var i = 0; i < 4; i++) {
+          labels.push(response.data[i]["createdAt"].split(" ").pop());
+        }
+
+        var indexColor = 2;
+        response.legend.forEach(element => {
+          var data = [];
+          response.data.forEach(element2 => {
+            if (element2["name"] == element["name"]) {
+              data.push(element2["value"]);
+            }
+          });
+          datasets.push({
+            label: element["name"],
+            data: data,
+            backgroundColor: colorList[indexColor],
+            borderColor: colorList[indexColor],
+          });
+          indexColor++;
+          if (indexColor == colorList.length) {
+            indexColor = 0;
+          }
+        });
+
+        const data = {
+          labels: labels,
+          datasets: datasets
+        };
+
+        const customLegend = {
+          id: 'customLegend',
+          afterDraw: (chart, args, option) => {
+            const { _metasets, ctx } = chart;
+            ctx.save();
+            _metasets.forEach((meta) => {
+              ctx.font = 'bolder 12px Arial';
+              ctx.fillStyle = meta._dataset.borderColor;
+              ctx.textBaseline = 'middle';
+              ctx.fillText(meta._dataset.label, meta.data[meta.data.length - 1].x + 6, meta.data[meta.data.length - 1].y)
+            });
+          }
+        }
+
+        const lineConfig = {
+          type: 'line',
+          data: data,
+          options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            layout: {
+              padding: {
+                right: 100
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              }
+            },
+            tension: 0.4,
+            scales: {
+              x: {
+                ticks: {
+                  color: '#6C757D'
+                },
+                grid: {
+                  display: false
+                },
+                border: {
+                  display: false
+                }
+              },
+
+              y: {
+                ticks: {
+                  color: '#6C757D'
+                },
+                grid: {
+                  display: false
+                },
+                border: {
+                  display: false
+                },
+                beginAtZero: true
+              }
+            }
+          },
+          plugins: [customLegend]
+        };
+
+        const barConfig = {
+          type: 'bar',
+          data: data,
+          options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            maxBarThickness: 36,
+            plugins: {
+              legend: {
+                display: false
+              }
+            },
+            tension: 0.4,
+            scales: {
+              x: {
+                stacked: true,
+                ticks: {
+                  color: '#6C757D'
+                },
+                grid: {
+                  display: false
+                },
+                border: {
+                  display: false
+                }
+              },
+
+              y: {
+                stacked: true,
+                ticks: {
+                  color: '#6C757D'
+                },
+                grid: {
+                  display: false
+                },
+                border: {
+                  display: false
+                },
+                beginAtZero: true
+              }
+            }
+          },
+        };
+
+        if ($("#lineChart").length > 0 && $("#barChart").length > 0) {
+          lineChart = new Chart($("#lineChart"), lineConfig);
+          barChart = new Chart($("#barChart"), barConfig);
+        }
+      },
+    });
+  }
+
+  mainPage.on('change', "#box-chart-map #position", function () {
+    updateChart();
+  });
+
+  function updateChart() {
+    $.ajax({
+      type: "POST",
+      url: "?mod=monitoring&action=showChart",
+      data: {
+        station_id: station_id,
+        position: $("#box-chart-map").find("#position").val()
+      },
+      dataType: 'json',
+      success: function (response) {
+        const labels = [];
+        const datasets = [];
+        for (var i = 0; i < 4; i++) {
+          if (i >= response.data.length) {
+            break;
+          }
+          labels.push(response.data[i]["createdAt"].split(" ").pop());
+        }
+
+        var indexColor = 2;
+        response.legend.forEach(element => {
+          var data = [];
+          response.data.forEach(element2 => {
+            if (element2["name"] == element["name"]) {
+              data.push(element2["value"]);
+            }
+          });
+          datasets.push({
+            label: element["name"],
+            data: data,
+            backgroundColor: colorList[indexColor],
+            borderColor: colorList[indexColor],
+          });
+          indexColor++;
+          if (indexColor == colorList.length) {
+            indexColor = 0;
+          }
+        });
+
+        if ($("#lineChart").length > 0 && $("#barChart").length > 0) {
+          lineChart.data.labels = labels;
+          lineChart.data.datasets = datasets;
+
+          barChart.data.labels = labels;
+          barChart.data.datasets = datasets;
+
+          lineChart.update();
+          barChart.update();
+        }
+      },
+    });
+  }
 }

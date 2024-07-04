@@ -33,8 +33,9 @@
           <thead>
             <tr>
               <th class="text-center" width="80px">STT</th>
+              <th class="text-center">Mã chỉ số</th>
               <th class="text-center">Chỉ số</th>
-              <th class="text-center">Ký hiệu</th>
+              <th class="text-center">Đơn vị</th>
               <th class="text-center" width="80px"></th>
             </tr>
           </thead>
@@ -42,6 +43,7 @@
             <?php foreach ($list_indicators as $indicator) : ?>
               <tr>
                 <th data-title="STT" class="text-center"><?= $indicator['no'] ?></th>
+                <td data-title="Mã chỉ số" class="text-center"><?= $indicator['id'] ?></td>
                 <td data-title="Đơn vị" class="text-center"><?= $indicator['name'] ?></td>
                 <td data-title="Ký hiệu" class="text-center"><?= $indicator['unit'] ?></td>
                 <td data-title="Chức năng" class="text-center">

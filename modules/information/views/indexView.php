@@ -12,16 +12,16 @@
   </div>
 
   <div class="row g-0 bg-white shadow-sm flex-fill flex-column rounded-end-3 rounded-bottom-3">
-    <div class="row g-0 bg-white p-3 pb-2 mt-2">
-      <div id="user-avatar" class="col-12 col-sm-2 mb-2">
+    <div class="row p-3">
+      <div id="user-avatar" class="col-12 col-sm-2 mb-2 d-flex d-sm-block justify-content-center">
         <div class="position-relative d-inline-block">
-          <img class="rounded-circle" src="" alt="" width="64px" height="64px">
+          <img class="rounded-circle" src="" alt="" width="86px" height="86px">
           <input id="avatar" type="file" class="d-none">
           <label id="avatar-btn" for="avatar" class="bg-body-secondary rounded-circle border border-white position-absolute text-center"><i class="bi bi-pencil"></i></label>
         </div>
       </div>
 
-      <div id="user-info" class="col-12 col-sm-5 mb-2 px-2">
+      <div id="user-info" class="col-12 col-sm-5 mb-2">
         <h6 class="fw-semibold">Thông tin</h6>
         <hr>
         <div class="user-information d-flex justify-content-between">
@@ -41,7 +41,7 @@
         </div>
       </div>
 
-      <div id="user-account" class="col-12 col-sm-5 mb-2 px-2">
+      <div id="user-account" class="col-12 col-sm-5 mb-2">
         <h6 class="fw-semibold">Tài khoản</h6>
         <hr>
         <div class="user-information d-flex justify-content-between">

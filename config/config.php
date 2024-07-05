@@ -11,7 +11,7 @@ session_start();
  * 
  */
 
-$config['base_url'] = "http://localhost:8080/swiftlet_home/";
+$config['base_url'] = "http://localhost/nhayen/";
 
 
 $config['default_module'] = 'home';

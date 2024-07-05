@@ -56,7 +56,7 @@
       </div>
       <ul class="action-list list-inline ms-auto m-0 p-0 d-flex align-items-center">
         <li class="action-item me-2">
-          <a href="#" class="nav-link btn bg-transparent border-0 rounded-circle dropdown-toggle p-0 d-flex align-items-center" role="button">
+          <a href="?mod=information" class="nav-link btn bg-transparent border-0 rounded-circle dropdown-toggle p-0 d-flex align-items-center" role="button">
             <i class="bx bx-cog fs-4 text-secondary mx-auto"></i>
           </a>
         </li>

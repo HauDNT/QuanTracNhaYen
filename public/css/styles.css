@@ -274,6 +274,18 @@ table * {
   max-height: 100% !important;
 }
 
+#avatar-btn {
+  width: 28px;
+  height: 28px;
+  font-size: 12px;
+  bottom: 0;
+  left: 65%;
+}
+
+#avatar-btn i {
+  line-height: 28px;
+}
+
 @media (min-width: 992px) {
   .sidebar {
     min-width: 260px;

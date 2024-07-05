@@ -8,7 +8,6 @@ function construct()
 
 function indexAction()
 {
-  load('helper', 'format');
   $list_users = get_list_users();
   if (isset($_POST["search"])) {
     $list_users = get_list_users_by_search($_POST["search"], $_POST["userRole"], $_POST["userStatus"]);

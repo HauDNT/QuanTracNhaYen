@@ -61,10 +61,9 @@
         </ul>
       </div>
     </div>
-    <div id="map" view="map" class="h-100"></div>
-
     <div class="offcanvas offcanvas-bottom position-absolute shadow border-0 rounded-3" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="box-chart-map" aria-labelledby="boxChartMapLabel">
     </div>
+    <div id="map" view="map" class="h-100"></div>
   </div>
 </div>
 

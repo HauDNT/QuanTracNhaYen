@@ -4,6 +4,7 @@ function construct()
 {
   //    echo "DÙng chung, load đầu tiên";
   load_model('index');
+  load('helper', 'sendPusher');
 }
 
 function indexAction()
@@ -20,7 +21,6 @@ function indexAction()
     if (isset($_POST["search"])) {
       $list_station_info = get_list_station_info_by_name($_POST["search"]);
     }
-
     load_view('index', [
       'active' => 'monitoring',
       'list_station_info' => $list_station_info,
@@ -91,6 +91,7 @@ function updateStationAction()
           "message" => "Cập nhật thành công.",
           "notifyType" => "success"
         ]);
+        sendPusherEvent("test", "test", "success");
       } else {
         echo json_encode([
           "type" => "fail",
@@ -120,10 +121,11 @@ function deleteStationAction()
 
 function showChartAction()
 {
-  if(isset($_POST["station_id"]) && isset($_POST["position"])) {
+  if (isset($_POST["station_id"]) && isset($_POST["position"])) {
     echo json_encode([
-      "legend" => get_data_chart_label($_POST["station_id"], $_POST["position"]),
+      "legend" => get_data_chart_legend($_POST["station_id"], $_POST["position"]),
       "data" => get_data_chart($_POST["station_id"], $_POST["position"]),
+      "label" => get_data_chart_label($_POST["station_id"], $_POST["position"])
     ]);
     exit();
   } else {
@@ -135,5 +137,30 @@ function showChartAction()
       'position_list' => $position_list,
     );
     load_view('chart', $data);
+  }
+}
+
+function addValueAction()
+{
+  global $conn;
+  if (isset($_POST["temperature"]) && isset($_POST["humidity"]) && isset($_POST["fire"]) && isset($_POST["dht_id"]) && isset($_POST["flame_id"])) {
+    $temperature = $_POST["temperature"];
+    $humidity = $_POST["humidity"];
+    $fire = $_POST["fire"];
+    $dht_id = get_id_by_sensor_id($_POST["dht_id"])["id"];
+    $flame_id = get_id_by_sensor_id($_POST["flame_id"])["id"];
+
+    // Insert  
+    $sql = "INSERT INTO sensor_values (sensor_id, value, indicator_id) VALUES 
+              ($dht_id, " . $humidity . ", 13),
+              ($dht_id, " . $temperature . ", 12),
+              ($flame_id, " . $fire . ", 15)";
+
+    if (mysqli_query($conn, $sql)) {
+      sendPusherEvent("sensor", "update", []);
+      echo "Thêm dữ liệu cảm biến thành công!";
+    } else {
+      echo "Thêm dữ liệu cảm biến không thành công!";
+    }
   }
 }

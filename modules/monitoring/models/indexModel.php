@@ -18,7 +18,7 @@ function get_sensor_value()
     ON sv1.sensor_id = sv2.sensor_id 
     AND sv1.indicator_id = sv2.indicator_id 
     AND sv1.createdAt = sv2.latest) sv ON ss.id = sv.sensor_id
-  JOIN indicators i ON sv.indicator_id = i.id ORDER BY i.id;");
+  JOIN indicators i ON sv.indicator_id = i.id");
   return $result;
 }
 
@@ -114,12 +114,26 @@ function get_station_by_id($id)
   return $result;
 }
 
-function get_data_chart($station_id, $position) {
-  $result = db_fetch_array("WITH LatestValues AS ( SELECT ss.station_id, i.name, sv.value, i.unit, ss.position, sv.createdAt, ROW_NUMBER() OVER (PARTITION BY sv.sensor_id, sv.indicator_id ORDER BY sv.createdAt DESC) as rn FROM sensors ss JOIN sensor_values sv ON ss.id = sv.sensor_id JOIN indicators i ON sv.indicator_id = i.id ) SELECT station_id, name, value, unit, position, createdAt FROM LatestValues WHERE station_id = {$station_id} AND position = {$position} AND rn <= 4 ORDER BY station_id, name, rn;");
+function get_data_chart($station_id, $position)
+{
+  $result = db_fetch_array("WITH LatestValues AS ( SELECT ss.station_id, i.name, sv.value, i.unit, ss.position, sv.createdAt, ROW_NUMBER() OVER (PARTITION BY sv.sensor_id, sv.indicator_id ORDER BY sv.createdAt DESC) as rn FROM sensors ss JOIN sensor_values sv ON ss.id = sv.sensor_id JOIN indicators i ON sv.indicator_id = i.id ) SELECT station_id, name, value, unit, position, createdAt FROM LatestValues WHERE station_id = {$station_id} AND position = {$position} AND unit != '-' AND rn <= 4 ORDER BY createdAt DESC");
   return $result;
 }
 
-function get_data_chart_label($station_id, $position) {
-  $result = db_fetch_array("SELECT i.name FROM indicators i JOIN sensor_values sv ON i.id = sv.indicator_id JOIN sensors s ON s.id = sv.sensor_id WHERE s.station_id = {$station_id} AND s.position = {$position} GROUP BY i.name");
+function get_data_chart_legend($station_id, $position)
+{
+  $result = db_fetch_array("SELECT i.name FROM indicators i JOIN sensor_values sv ON i.id = sv.indicator_id JOIN sensors s ON s.id = sv.sensor_id WHERE s.station_id = {$station_id} AND s.position = {$position} AND i.unit != '-' GROUP BY i.name");
+  return $result;
+}
+
+function get_data_chart_label($station_id, $position)
+{
+  $result = db_fetch_array("SELECT createdAt FROM sensor_values sv JOIN sensors s ON sv.sensor_id = s.id WHERE s.station_id = {$station_id} AND s.position = {$position} GROUP BY createdAt ORDER BY createdAt DESC LIMIT 4");
+  return $result;
+}
+
+function get_id_by_sensor_id($sensor_id)
+{
+  $result = db_fetch_row("SELECT id FROM sensors WHERE sensor_id = '{$sensor_id}'");
   return $result;
 }

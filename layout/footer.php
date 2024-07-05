@@ -17,6 +17,9 @@
 <!-- Script for chart js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<!-- Script for pusher js -->
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+
 <script src="public/js/script.js?v=<?= time() ?>" type="text/javascript"></script>
 </body>
 

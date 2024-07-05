@@ -1,3 +1,14 @@
+var pusher = new Pusher('ce8cd0fde22ea5ff4a20', {
+  cluster: 'ap1'
+});
+
+var channel = pusher.subscribe('sensor');
+channel.bind('update', function (data) {
+  console.log("update");
+  updateMap();
+  updateChart();
+});
+
 function showNotify(message, type) {
   $('#notify').removeClass("text-bg-info");
   $('#notify').removeClass("text-bg-success");
@@ -207,7 +218,7 @@ mainPage.on('click', '#add_sensor', function () {
 });
 
 mainPage.on('hidden.bs.modal', '#addSensorModal', function () {
-  $(this).find('#id_sensor').val('1');
+  $(this).find('#id_sensor').val('');
   $(this).find('#name_sensor').val('');
   $(this).find('#station_sensor option:first').prop('selected', true);
   $(this).find('#position_sensor').val('1');
@@ -416,7 +427,6 @@ mainPage.on('click', '#add_user', function () {
     },
     dataType: 'json',
     success: function (response) {
-      console.log(response);
       if (response.type == 'success') {
         setNotifySession(response.message, response.notifyType);
         window.location.reload();
@@ -583,7 +593,7 @@ if ($('#map').length > 0) {
     data.station.forEach(element => {
       markers.forEach(function (markerObj) {
         var markerLngLat = markerObj.marker.getLngLat();
-        if (markerLngLat.lng === element["longitude"] && markerLngLat.lat === element["latitude"]) {
+        if (markerLngLat.lng == element["longitude"] && markerLngLat.lat == element["latitude"]) {
           var popupElement = markerObj.popup.getElement();
           var ulElement = $(popupElement).find('ul.popup-list-data');
           var newHtml = displayData(data.sensor_value, data.position_list, element);
@@ -672,7 +682,7 @@ if ($('#map').length > 0) {
     }
   });
 
-  function update() {
+  function updateMap() {
     $.ajax({
       type: 'POST',
       url: '?mod=monitoring',
@@ -686,6 +696,11 @@ if ($('#map').length > 0) {
       }
     });
   }
+
+  // setInterval(() => {
+  //   console.log("update");
+  //   updateMap();
+  // }, 1000);
 
   mainPage.on('click', '.station-content', function () {
     bootstrap.Offcanvas.getInstance($("#box-left-map.show")[0]).hide();
@@ -736,10 +751,6 @@ if ($('#map').length > 0) {
     newStation.setLngLat([longitude, latitude]);
     map.setCenter([longitude, latitude]);
   });
-  // setInterval(() => {
-  //   update();
-  //   console.log("2");
-  // }, 1000);
 
   mainPage.on('click', '#box-left-btn', function () {
     var x = $('#box-left-map').width();
@@ -795,7 +806,6 @@ if ($('#map').length > 0) {
       },
       dataType: 'json',
       success: function (response) {
-        console.log(response);
         if (response.type == 'success') {
           setNotifySession(response.message, response.notifyType);
           window.location.reload();
@@ -835,7 +845,6 @@ if ($('#map').length > 0) {
       },
       dataType: 'json',
       success: function (response) {
-        console.log(response);
         if (response.type == 'success') {
           setNotifySession(response.message, response.notifyType);
           window.location.reload();
@@ -886,8 +895,8 @@ if ($('#map').length > 0) {
       success: function (response) {
         const labels = [];
         const datasets = [];
-        for (var i = 0; i < 4; i++) {
-          labels.push(response.data[i]["createdAt"].split(" ").pop());
+        for (var i = response.label.length - 1; i >= 0; i--) {
+          labels.push(response.label[i]["createdAt"].split(" ").pop());
         }
 
         var indexColor = 2;
@@ -1029,10 +1038,6 @@ if ($('#map').length > 0) {
   }
 
   mainPage.on('change', "#box-chart-map #position", function () {
-    updateChart();
-  });
-
-  function updateChart() {
     $.ajax({
       type: "POST",
       url: "?mod=monitoring&action=showChart",
@@ -1044,11 +1049,8 @@ if ($('#map').length > 0) {
       success: function (response) {
         const labels = [];
         const datasets = [];
-        for (var i = 0; i < 4; i++) {
-          if (i >= response.data.length) {
-            break;
-          }
-          labels.push(response.data[i]["createdAt"].split(" ").pop());
+        for (var i = response.label.length - 1; i >= 0; i--) {
+          labels.push(response.label[i]["createdAt"].split(" ").pop());
         }
 
         var indexColor = 2;
@@ -1083,5 +1085,95 @@ if ($('#map').length > 0) {
         }
       },
     });
+  });
+
+  function updateChart() {
+    $.ajax({
+      type: "POST",
+      url: "?mod=monitoring&action=showChart",
+      data: {
+        station_id: station_id,
+        position: $("#box-chart-map").find("#position").val()
+      },
+      dataType: 'json',
+      success: function (response) {
+        const labels = [];
+        const datasets = [];
+        for (var i = response.label.length - 1; i >= 0; i--) {
+          labels.push(response.label[i]["createdAt"].split(" ").pop());
+        }
+
+        var indexColor = 2;
+        response.legend.forEach(element => {
+          var data = [];
+          response.data.forEach(element2 => {
+            if (element2["name"] == element["name"]) {
+              data.push(element2["value"]);
+            }
+          });
+          datasets.push({
+            label: element["name"],
+            data: data,
+            backgroundColor: colorList[indexColor],
+            borderColor: colorList[indexColor],
+          });
+          indexColor++;
+          if (indexColor == colorList.length) {
+            indexColor = 0;
+          }
+        });
+
+        if (response.label.length >= 4) {
+          var indexLine = 0;
+          lineChart.data.datasets.forEach(element => {
+            var setData = [];
+            response.data.forEach(element2 => {
+              if (element2.name == response.legend[indexLine].name) {
+                setData.push(element2.value);
+              }
+            });
+            element.data = setData;
+            indexLine++;
+          });
+        }
+
+        if ($("#lineChart").length > 0 && $("#barChart").length > 0) {
+          lineChart.data.labels = labels;
+
+          if (response.label.length < 4) {
+            lineChart.data.datasets = datasets;
+          }
+
+          barChart.data.labels = labels;
+          if (response.label.length < 4) {
+            barChart.data.datasets = datasets;
+          }
+
+          lineChart.update();
+          barChart.update();
+        }
+      },
+    });
   }
 }
+
+//======================================Setting===============================
+mainPage.on('click', '#change-password-btn', function (e) {
+  e.preventDefault();
+  $('#change-password-modal').modal('show');
+});
+
+mainPage.on('hidden.bs.modal', '#change-password-modal', function () {
+  $('#InputPasswordOld').val('');
+  $('#InputPassword1').val('');
+  $('#InputPassword2').val('');
+  $('#InputPasswordOld').attr('type', 'password');
+  $('#InputPassword1').attr('type', 'password');
+  $('#InputPassword2').attr('type', 'password');
+  $('#eye-old').removeClass('bi-eye');
+  $('#eye-old').addClass('bi-eye-slash');
+  $('#eye').removeClass('bi-eye');
+  $('#eye').addClass('bi-eye-slash');
+  $('#eye2').removeClass('bi-eye');
+  $('#eye2').addClass('bi-eye-slash');
+});

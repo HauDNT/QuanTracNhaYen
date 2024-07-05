@@ -17,3 +17,11 @@ $config['base_url'] = "http://localhost/nhayen/";
 $config['default_module'] = 'monitoring';
 $config['default_controller'] = 'index';
 $config['default_action'] = 'index';
+
+$config['pusher'] = [
+  'app_id' => 'your_app_id',
+  'key' => 'your_key',
+  'secret' => 'your_secret',
+  'cluster' => 'your_cluster',
+  'useTLS' => true,
+];

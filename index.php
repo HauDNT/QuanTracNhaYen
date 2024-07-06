@@ -21,7 +21,7 @@ define('COREPATH', APPPATH . DIRECTORY_SEPARATOR . $core_folder);
  * modules path
  * --------------------------------------------------------------------
  */
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/libraries/pusher/vendor/autoload.php';
 $modules_folder = 'modules';
 define('MODULESPATH', APPPATH . DIRECTORY_SEPARATOR . $modules_folder);
 

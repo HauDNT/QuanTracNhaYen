@@ -12,10 +12,10 @@
   </div>
 
   <div class="row g-0 bg-white shadow-sm flex-fill flex-column rounded-end-3 rounded-bottom-3">
-    <div class="row p-3">
+    <div class="row p-3 g-0 gx-sm-4">
       <div id="user-avatar" class="col-12 col-sm-2 mb-2 d-flex d-sm-block justify-content-center">
         <div class="position-relative d-inline-block">
-          <img class="rounded-circle" src="" alt="" width="86px" height="86px">
+          <img class="rounded-circle" src="<?= $user_info["avatar"]?>" alt="" width="86px" height="86px">
           <input id="avatar" type="file" class="d-none">
           <label id="avatar-btn" for="avatar" class="bg-body-secondary rounded-circle border border-white position-absolute text-center"><i class="bi bi-pencil"></i></label>
         </div>
@@ -33,10 +33,10 @@
           </div>
 
           <div>
-            <p><strong>Đặng Nguyễn Tiền Hậu</strong></p>
-            <p><strong>dnth@gmail.com</strong></p>
-            <p><strong>01/01/2003</strong></p>
-            <p><strong>0987654321</strong></p>
+            <p><strong><?= $user_info["fullname"] ?></strong></p>
+            <p><strong><?= $user_info["email"] ?></strong></p>
+            <p><strong><?= date('d-m-Y', strtotime($user_info["birthday"])) ?></strong></p>
+            <p><strong><?= $user_info["phone_number"] ?></strong></p>
           </div>
         </div>
       </div>
@@ -47,11 +47,15 @@
         <div class="user-information d-flex justify-content-between">
           <div class="text-secondary text-nowrap me-2 d-flex flex-column justify-content-between">
             <p>Tài khoản:</p>
+            <p>Quyền hạn:</p>
+            <p>Ngày tạo:</p>
             <p>Mật khẩu:</p>
           </div>
 
           <div class="text-break">
-            <p><strong>haudn123</strong></p>
+            <p><strong><?= $user_info["username"] ?></strong></p>
+            <p><strong><?= $user_info["name"] ?></strong></p>
+            <p><strong><?= date('d-m-Y', strtotime($user_info["date_created"])) ?></strong></p>
             <a id="change-password-btn" href="#">Đổi mật khẩu</a>
           </div>
         </div>

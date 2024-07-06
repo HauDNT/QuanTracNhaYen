@@ -2,8 +2,12 @@
 
 function construct()
 {
+  if (!isset($_SESSION["user_info"])) {
+    header('location: ?mod=logins');
+  }
   //    echo "DÙng chung, load đầu tiên";
   load_model('index');
+  load('helper', 'sendPusher');
 }
 
 function indexAction()
@@ -79,7 +83,13 @@ function addUserAction()
     } else if (!empty(get_list_users_by_username($_POST["username"]))) {
       echo json_encode([
         "type" => "fail",
-        "message" => "Tài khoản đã tồn tại.",
+        "message" => "Tài khoản đã được sử dụng.",
+        "notifyType" => "warning",
+      ]);
+    } else if (!empty(get_list_users_by_email($_POST["email"]))) {
+      echo json_encode([
+        "type" => "fail",
+        "message" => "Email đã được sử dụng.",
         "notifyType" => "warning",
       ]);
     } else {
@@ -167,6 +177,13 @@ function updateUserAction()
           "message" => "Cập nhật thành công.",
           "notifyType" => "success"
         ]);
+
+        if($_POST["status"] == 0) {
+          sendPusherEvent("pusher", "user", [
+            "id" => $_POST["account_id"],
+            "type" => "block",
+          ]);
+        }
       } else {
         echo json_encode([
           "type" => "fail",
@@ -206,4 +223,14 @@ function deleteUserAction()
   db_delete('accounts', "`id` = {$id}");
 
   header('location: ?mod=users');
+}
+
+function blockAction()
+{
+  if (isset($_POST["account_id"])) {
+    if ($_POST["account_id"] == $_SESSION['user_info']["account_id"]) {
+      echo "success";
+      exit();
+    }
+  }
 }

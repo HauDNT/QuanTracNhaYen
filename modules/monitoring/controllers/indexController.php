@@ -2,6 +2,9 @@
 
 function construct()
 {
+  if(!isset($_SESSION["user_info"])) {
+    header('location: ?mod=logins');
+  } 
   //    echo "DÙng chung, load đầu tiên";
   load_model('index');
   load('helper', 'sendPusher');
@@ -91,7 +94,6 @@ function updateStationAction()
           "message" => "Cập nhật thành công.",
           "notifyType" => "success"
         ]);
-        sendPusherEvent("test", "test", "success");
       } else {
         echo json_encode([
           "type" => "fail",
@@ -157,7 +159,7 @@ function addValueAction()
               ($flame_id, " . $fire . ", 15)";
 
     if (mysqli_query($conn, $sql)) {
-      sendPusherEvent("sensor", "update", []);
+      sendPusherEvent("pusher", "sensor", []);
       echo "Thêm dữ liệu cảm biến thành công!";
     } else {
       echo "Thêm dữ liệu cảm biến không thành công!";

@@ -19,6 +19,10 @@ body {
   user-select: none; /* Chuẩn */
 }
 
+img {
+  object-fit: cover;
+}
+
 .toast-container {
   z-index: 99999 !important;
 }

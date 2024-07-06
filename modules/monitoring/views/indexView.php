@@ -49,7 +49,8 @@
                     </button>
                     <ul class="dropdown-menu px-2">
                       <li><a id="view-station" class="dropdown-item rounded-3" href="?mod=monitoring&action=updateStation&id=<?= $station['id'] ?>">Chỉnh sửa</a></li>
-                      <li><a class="dropdown-item rounded-3 text-danger" href="?mod=monitoring&action=deleteStation&id=<?= $station['id'] ?>" onclick="return confirm('Bạn có chắc muốn xoá trạm này?')">Xóa</a></li>
+                      <li><a id="station-setting" class="dropdown-item rounded-3" href="#">Thiết lập</a></li>
+                      <li class="mt-2 pt-2 border-2 border-top border-light-subtle"><a class="dropdown-item rounded-3 text-danger" href="?mod=monitoring&action=deleteStation&id=<?= $station['id'] ?>" onclick="return confirm('Bạn có chắc muốn xoá trạm này?')">Xóa</a></li>
                     </ul>
                   </div>
                 </div>

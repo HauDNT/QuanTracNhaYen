@@ -8,9 +8,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js?v=<?= time() ?>" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
 </script>
 
-<!-- Script for Mapbox -->
-<script src="public/js/mapbox.js?v=<?= time() ?>" type="text/javascript"></script>
-
 <!-- Script for flatpickr -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 

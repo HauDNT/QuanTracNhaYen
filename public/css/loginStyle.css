@@ -1,0 +1,50 @@
+:root {
+  --nav-height: 56px;
+  --primary-color: #4070f4;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.login-form .card-footer a {
+  font-size: 14px;
+}
+
+.login-form .card{
+  width: 380px;
+}
+
+#sign-in-submit,
+#forgot-password-send,
+#reset-password-submit {
+  height: 42px;
+  box-shadow: 0 0.125rem 0.25rem rgba(64, 112, 244, 0.55);
+}
+
+#notify-error, #notify-success {
+  font-size: 14px;
+}
+
+@media (max-width: 576px) {
+  .login-form .card{
+    width: 100% !important;
+  }
+}

@@ -49,7 +49,7 @@
       <div class="offcanvas-footer mt-auto px-2">
         <ul class="lists list-inline">
           <li class="list">
-            <a href="#" class="nav-link text-secondary py-2">
+            <a href="?mod=logins&action=logout" class="nav-link text-secondary py-2" onclick="return confirm('Bạn có chắc muốn đăng xuất?')">
               <i class="bi bi-box-arrow-right me-2"></i>
               <span class="link">Đăng xuất</span>
             </a>

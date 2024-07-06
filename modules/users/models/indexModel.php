@@ -2,13 +2,13 @@
 
 function get_list_users()
 {
-   $result = db_fetch_array("SELECT *, accounts.*, roles.name FROM userinfo, accounts, roles WHERE userinfo.account_id = accounts.id AND accounts.role_id = roles.id AND accounts.username != 'unknown' GROUP BY accounts.id ORDER BY accounts.id DESC");
+   $result = db_fetch_array("SELECT *, accounts.*, roles.name FROM userinfo, accounts, roles WHERE userinfo.account_id = accounts.id AND accounts.role_id = roles.id AND accounts.username != 'unknown' AND userinfo.id != {$_SESSION["user_info"]["id"]}  GROUP BY accounts.id ORDER BY accounts.id DESC");
    return $result;
 }
 
 function get_list_users_by_search($name, $role, $status)
 {
-   $sql = "SELECT *, accounts.*, roles.name FROM userinfo, accounts, roles WHERE userinfo.account_id = accounts.id AND accounts.role_id = roles.id AND accounts.username != 'unknown' AND userinfo.fullname LIKE '%{$name}%'";
+   $sql = "SELECT *, accounts.*, roles.name FROM userinfo, accounts, roles WHERE userinfo.account_id = accounts.id AND accounts.role_id = roles.id AND accounts.username != 'unknown' AND userinfo.id != {$_SESSION["user_info"]["id"]} AND userinfo.fullname LIKE '%{$name}%'";
    if ($role != -1) {
       $sql .= " AND accounts.role_id = {$role}";
    }
@@ -26,6 +26,12 @@ function get_list_users_by_search($name, $role, $status)
 function get_list_users_by_username($username)
 {
    $result = db_fetch_array("SELECT *, accounts.*, roles.name FROM userinfo, accounts, roles WHERE userinfo.account_id = accounts.id AND accounts.role_id = roles.id AND accounts.username = '{$username}'");
+   return $result;
+}
+
+function get_list_users_by_email($email)
+{
+   $result = db_fetch_array("SELECT *, accounts.*, roles.name FROM userinfo, accounts, roles WHERE userinfo.account_id = accounts.id AND accounts.role_id = roles.id AND userinfo.email = '{$email}'");
    return $result;
 }
 

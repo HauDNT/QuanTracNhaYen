@@ -2,11 +2,27 @@ var pusher = new Pusher('ce8cd0fde22ea5ff4a20', {
   cluster: 'ap1'
 });
 
-var channel = pusher.subscribe('sensor');
-channel.bind('update', function (data) {
-  console.log("update");
+var channel = pusher.subscribe('pusher');
+channel.bind('sensor', function (data) {
   updateMap();
   updateChart();
+});
+
+channel.bind('user', function (data) {
+  if (data.type == "block") {
+    $.ajax({
+      url: '?mod=users&action=block',
+      type: 'POST',
+      data: {
+        account_id: data.id
+      },
+      success: function (data) {
+        if (data == "success") {
+          window.location.href = "?mod=logins&action=logout";
+        }
+      },
+    })
+  }
 });
 
 function showNotify(message, type) {
@@ -1170,10 +1186,66 @@ mainPage.on('hidden.bs.modal', '#change-password-modal', function () {
   $('#InputPasswordOld').attr('type', 'password');
   $('#InputPassword1').attr('type', 'password');
   $('#InputPassword2').attr('type', 'password');
-  $('#eye-old').removeClass('bi-eye');
-  $('#eye-old').addClass('bi-eye-slash');
-  $('#eye').removeClass('bi-eye');
-  $('#eye').addClass('bi-eye-slash');
-  $('#eye2').removeClass('bi-eye');
-  $('#eye2').addClass('bi-eye-slash');
+  $('.eye-btn').html('<i class="bi bi-eye-slash"></i>');
+});
+
+mainPage.on('change', '#avatar', function () {
+  var fileInput = $(this)[0];
+  var avatar = fileInput.files[0];
+  var formData = new FormData();
+  formData.append('avatar', avatar);
+  $.ajax({
+    type: "POST",
+    url: "?mod=information&action=updateAvatar",
+    data: formData,
+    contentType: false,
+    processData: false,
+    dataType: 'json',
+    success: function (response) {
+      if (response.type == 'success') {
+        setNotifySession(response.message, response.notifyType);
+        window.location.reload();
+      } else if (response.type == 'fail') {
+        showNotify(response.message, response.notifyType);
+      } else {
+        showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
+      }
+    },
+
+    error: function () {
+      showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
+    }
+  });
+});
+
+mainPage.on('click', '#change-password-submit', function () {
+  var oldPass = $('#InputPasswordOld').val().trim();
+  var newPass = $('#InputPassword1').val().trim();
+  var confirmPass = $('#InputPassword2').val().trim();
+  $.ajax({
+    type: "POST",
+    url: "?mod=information&action=updatePassword",
+    data: {
+      oldPass: oldPass,
+      newPass: newPass,
+      confirmPass: confirmPass
+    },
+    dataType: 'json',
+    success: function (response) {
+      console.log(response);
+      if (response.type == 'success') {
+        setNotifySession(response.message, response.notifyType);
+        window.location.reload();
+      } else if (response.type == 'fail') {
+        showNotify(response.message, response.notifyType);
+      } else {
+        showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
+      }
+    },
+
+    error: function (e) {
+      console.log(e);
+      showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
+    }
+  });
 });

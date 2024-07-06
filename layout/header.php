@@ -71,7 +71,7 @@
           </ul>
         </li>
         <li class="action-item ms-2">
-          <img src="upload/avatar-default.jpg" class="rounded-circle" alt="" width="36px" height="36px">
+          <img src="<?= $_SESSION["user_info"]["avatar"] ?>" class="rounded-circle" alt="" width="36px" height="36px">
         </li>
       </ul>
     </div>

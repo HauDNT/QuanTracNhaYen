@@ -1,6 +1,9 @@
 <?php
 function construct()
 {
+  if(!isset($_SESSION["user_info"])) {
+    header('location: ?mod=logins');
+  } 
   load_model('index');
 }
 

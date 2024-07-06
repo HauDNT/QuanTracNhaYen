@@ -2,6 +2,9 @@
 
 function construct()
 {
+  if (!isset($_SESSION["user_info"])) {
+    header('location: ?mod=logins');
+  }
   //    echo "DÙng chung, load đầu tiên";
   load_model('index');
 }

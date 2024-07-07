@@ -35,12 +35,10 @@
                         <i class="bi bi-person text-primary"></i>
                         <?= $station['fullname'] ?>
                       </span>
-                      <?php if (!empty($station['urlServer'])) : ?>
-                        <span class="text-secondary">
-                          <i class="bi bi-globe2 text-primary"></i>
-                          <?= $station['urlServer'] ?>
-                        </span>
-                      <?php endif; ?>
+                      <span class="text-secondary">
+                        <i class="bi bi-telephone text-primary"></i>
+                        <?= $station['phone_number'] ?>
+                      </span>
                     </small>
                   </div>
                   <div class="dropdown">
@@ -49,7 +47,7 @@
                     </button>
                     <ul class="dropdown-menu px-2">
                       <li><a id="view-station" class="dropdown-item rounded-3" href="?mod=monitoring&action=updateStation&id=<?= $station['id'] ?>">Chỉnh sửa</a></li>
-                      <li><a id="station-setting" class="dropdown-item rounded-3" href="#">Thiết lập</a></li>
+                      <li><a id="station-setting" class="dropdown-item rounded-3" href="?mod=monitoring&action=settingStation&id=<?= $station['id'] ?>">Thiết lập</a></li>
                       <li class="mt-2 pt-2 border-2 border-top border-light-subtle"><a class="dropdown-item rounded-3 text-danger" href="?mod=monitoring&action=deleteStation&id=<?= $station['id'] ?>" onclick="return confirm('Bạn có chắc muốn xoá trạm này?')">Xóa</a></li>
                     </ul>
                   </div>
@@ -96,10 +94,6 @@
           <input type="text" class="form-control" id="station-address">
         </div>
         <div class="mb-3">
-          <label for="station-url" class="col-form-label">Địa chỉ DDNS URL</label>
-          <input type="text" class="form-control" id="station-url">
-        </div>
-        <div class="mb-3">
           <label for="station_user" class="col-form-label">Người quản lý <span class="text-danger">*</span></label>
           <select class="form-select" aria-label="Default select example" id="station_user">
             <option selected hidden>-- Chọn người quản lý trạm --</option>
@@ -119,6 +113,10 @@
 
 <!-- Modal update Station-->
 <div class="modal fade" id="updateStationModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</div>
+
+<!-- Modal setting Station-->
+<div class="modal fade" id="settingStationModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
 </div>
 
 <!-- Footer -->

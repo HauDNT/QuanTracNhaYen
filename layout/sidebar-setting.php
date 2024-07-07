@@ -21,7 +21,7 @@
       <div class="offcanvas-body px-2">
         <ul class="lists list-inline">
           <li class="list">
-            <a href="?mod=information" class="nav-link text-secondary py-2 <?= $active == "information" ? "active" : "" ?>">
+            <a href="?mod=personal" class="nav-link text-secondary py-2 <?= $active == "personal" || $active == "change_password" ? "active" : "" ?>">
               <i class="bi bi-person me-2"></i>
               <span class="link">Thông tin cá nhân</span>
             </a>

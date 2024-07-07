@@ -56,19 +56,9 @@
       </div>
       <ul class="action-list list-inline ms-auto m-0 p-0 d-flex align-items-center">
         <li class="action-item me-2">
-          <a href="?mod=information" class="nav-link btn bg-transparent border-0 rounded-circle dropdown-toggle p-0 d-flex align-items-center" role="button">
+          <a href="?mod=personal" class="nav-link btn bg-transparent border-0 rounded-circle dropdown-toggle p-0 d-flex align-items-center" role="button">
             <i class="bx bx-cog fs-4 text-secondary mx-auto"></i>
           </a>
-        </li>
-        <li class="action-item dropdown me-2">
-          <button class="btn bg-transparent border-0 rounded-circle dropdown-toggle p-0 d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bx bx-bell fs-4 text-secondary mx-auto"></i>
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
         </li>
         <li class="action-item ms-2">
           <img src="<?= $_SESSION["user_info"]["avatar"] ?>" class="rounded-circle" alt="" width="36px" height="36px">

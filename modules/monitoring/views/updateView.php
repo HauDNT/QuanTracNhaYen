@@ -20,19 +20,15 @@
         </div>
       </div>
       <div class="mb-3">
-          <label for="station-address" class="col-form-label">Địa chỉ cụ thể <span class="text-danger">*</span></label>
-          <input type="text" class="form-control" id="station-address" value="<?= $station_update['address'] ?>">
-        </div>
-      <div class="mb-3">
-        <label for="station-url" class="col-form-label">Địa chỉ DDNS URL</label>
-        <input type="text" class="form-control" id="station-url" value="<?= $station_update['urlServer'] ?>">
+        <label for="station-address" class="col-form-label">Địa chỉ cụ thể <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" id="station-address" value="<?= $station_update['address'] ?>">
       </div>
       <div class="mb-3">
         <label for="station_user" class="col-form-label">Người quản lý <span class="text-danger">*</span></label>
         <select class="form-select" aria-label="Default select example" id="station_user">
           <option selected hidden>-- Chọn người quản lý trạm --</option>
           <?php foreach ($list_user_info as $user) : ?>
-            <option value="<?= $user['account_id'] ?>" <?= $station_update['user_id'] == $user['account_id'] ? "selected" : "" ?> ><?= $user['fullname'] ?></option>
+            <option value="<?= $user['account_id'] ?>" <?= $station_update['user_id'] == $user['account_id'] ? "selected" : "" ?>><?= $user['fullname'] ?></option>
           <?php endforeach; ?>
         </select>
       </div>

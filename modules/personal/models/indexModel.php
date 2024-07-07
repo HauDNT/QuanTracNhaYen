@@ -10,12 +10,3 @@ function update_user_info($id, $data)
 {
    return db_update('userinfo', $data, "`id` = '{$id}'");
 }
-
-function get_id_account_by_id_user($id) {
-   $result = db_fetch_row("SELECT a.id FROM accounts a JOIN userinfo u ON a.id = u.account_id WHERE u.id = {$id}");
-   return $result;
-}
-
-function update_account($id, $data) {
-   return db_update('accounts', $data, "`id` = '{$id}'");
-}

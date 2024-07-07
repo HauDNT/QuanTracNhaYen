@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="public/img/logoKGU.png" />
-  <title>Quản lý nhà yến</title>
+  <title>Quên mật khẩu</title>
 
   <!-- Link CSS Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css?v=<?= time() ?>" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -19,7 +19,21 @@
 </head>
 
 <body>
-  <div class="login-page container-fluid p-0 vh-100 d-flex align-items-center">
+  <nav class="d-flex align-items-center bg-white justify-content-between px-2 z-3">
+    <div class="container-fluid p-0 d-flex align-items-center flex-wrap">
+      <div class="logo d-flex align-items-center">
+        <a class="nav-link d-flex align-items-center" href="?mod=monitoring">
+          <img src="public/img/logoKGU.png" alt="" height="36px">
+          <div class="logo-name d-flex flex-column">
+            <span class="ms-2 text-dark-emphasis fw-semibold">Đại học kiên giang</span>
+            <span class="ms-2 text-secondary">Hệ thống quản lý nhà yến</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="login-page container-fluid p-0 d-flex align-items-center">
     <div class="login-form mx-auto d-flex flex-wrap-reverse justify-content-center">
       <div class="card border-0 align-self-end">
         <div class="card-header border-0 bg-transparent d-flex align-items-center justify-content-center">
@@ -44,11 +58,17 @@
             <i class="bi bi-exclamation-circle-fill d-none"></i>
             <span></span>
           </div>
-          <button id="forgot-password-send" class="btn btn-primary w-100 mb-3">Gửi</button>
-          <a href="?mod=logins" class="text-decoration-none d-block border-0 text-primary text-center">Quay lại đăng nhập</a>
+          <button id="forgot-password-send" class="btn btn-primary w-100 mb-3">
+            <div class="spinner-border spinner-border-sm d-none" role="status">
+            </div>
+            <span>Gửi</span>
+          </button>
+          <div class="text-center">
+            <a href="?mod=logins" class="text-decoration-none border-0 text-primary">Quay lại đăng nhập</a>
+          </div>
         </div>
       </div>
-      <img src="public/img/forgot-password-bg.jpg" alt="" height="360px" class="ms-0 ms-sm-5">
+      <!-- <img src="public/img/forgot-password-bg.jpg" alt="" height="360px" class="ms-0 ms-sm-5 d-none d-lg-block"> -->
     </div>
   </div>
   <!-- import jquery -->

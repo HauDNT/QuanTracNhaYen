@@ -894,6 +894,30 @@ if ($('#map').length > 0) {
     });
   });
 
+  mainPage.on('click', '#station-setting', function (e) {
+    e.preventDefault();
+    var url = $(this).attr('href');
+    $.ajax({
+      type: "GET",
+      url: url,
+      success: function (response) {
+        if (response != "") {
+          $('#settingStationModal').html(response);
+          $('#settingStationModal').modal('show');
+          mainPage.find("#time-start, #time-finish").flatpickr({
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+          });
+        }
+      },
+
+      error: function () {
+        showNotify("Lỗi hệ thống vui lòng thử lại sau!", "danger");
+      }
+    });
+  });
+
   //==============================chart & map===================================
   var lineChart = null;
   var barChart = null;
@@ -1174,21 +1198,6 @@ if ($('#map').length > 0) {
 }
 
 //======================================Setting===============================
-mainPage.on('click', '#change-password-btn', function (e) {
-  e.preventDefault();
-  $('#change-password-modal').modal('show');
-});
-
-mainPage.on('hidden.bs.modal', '#change-password-modal', function () {
-  $('#InputPasswordOld').val('');
-  $('#InputPassword1').val('');
-  $('#InputPassword2').val('');
-  $('#InputPasswordOld').attr('type', 'password');
-  $('#InputPassword1').attr('type', 'password');
-  $('#InputPassword2').attr('type', 'password');
-  $('.eye-btn').html('<i class="bi bi-eye-slash"></i>');
-});
-
 mainPage.on('change', '#avatar', function () {
   var fileInput = $(this)[0];
   var avatar = fileInput.files[0];
@@ -1196,7 +1205,7 @@ mainPage.on('change', '#avatar', function () {
   formData.append('avatar', avatar);
   $.ajax({
     type: "POST",
-    url: "?mod=information&action=updateAvatar",
+    url: "?mod=personal&action=updateAvatar",
     data: formData,
     contentType: false,
     processData: false,
@@ -1219,12 +1228,12 @@ mainPage.on('change', '#avatar', function () {
 });
 
 mainPage.on('click', '#change-password-submit', function () {
-  var oldPass = $('#InputPasswordOld').val().trim();
-  var newPass = $('#InputPassword1').val().trim();
-  var confirmPass = $('#InputPassword2').val().trim();
+  var oldPass = $('.change_password-form').find('#InputPasswordOld').val().trim();
+  var newPass = $('.change_password-form').find('#InputPassword1').val().trim();
+  var confirmPass = $('.change_password-form').find('#InputPassword2').val().trim();
   $.ajax({
     type: "POST",
-    url: "?mod=information&action=updatePassword",
+    url: "?mod=change_password&action=updatePassword",
     data: {
       oldPass: oldPass,
       newPass: newPass,
@@ -1232,7 +1241,57 @@ mainPage.on('click', '#change-password-submit', function () {
     },
     dataType: 'json',
     success: function (response) {
-      console.log(response);
+      if (response.type == 'success') {
+        setNotifySession(response.message, response.notifyType);
+        window.location.reload();
+      } else if (response.type == 'fail') {
+        $("#notify-error i").removeClass("d-none");
+        $("#notify-error span").text(response.message);
+      } else {
+        showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
+      }
+    },
+
+    error: function () {
+      showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
+    }
+  });
+});
+
+mainPage.on('keypress', '#InputPasswordOld', function (event) {
+  if (event.which === 13) {
+    $('#InputPassword1').focus();
+  }
+});
+
+mainPage.on('keypress', '#InputPassword1', function (event) {
+  if (event.which === 13) {
+    $('#InputPassword2').focus();
+  }
+});
+
+mainPage.on('keypress', '#InputPassword2', function (event) {
+  if (event.which === 13) {
+    $('#change-password-submit').click();
+  }
+});
+
+mainPage.on('click', '#update-info-submit', function () {
+  var full_name = $(".info-form").find("#full_name").val().trim();
+  var gender = $(".info-form").find("#gender").val();
+  var birthday = $(".info-form").find("#birthday").val().trim();
+
+  $.ajax({
+    type: 'POST',
+    url: '?mod=personal&action=updateInfo',
+    data: {
+      full_name: full_name,
+      gender: gender,
+      birthday: birthday
+    },
+
+    dataType: 'json',
+    success: function (response) {
       if (response.type == 'success') {
         setNotifySession(response.message, response.notifyType);
         window.location.reload();
@@ -1243,9 +1302,152 @@ mainPage.on('click', '#change-password-submit', function () {
       }
     },
 
-    error: function (e) {
-      console.log(e);
+    error: function () {
       showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
+    }
+  });
+})
+
+//==========================station setting=============================
+
+mainPage.on("input", "#temp_thres_min_range", function () {
+  var temp_thres_min = $(this).val();
+  $("#temp_thres_min").val(temp_thres_min);
+})
+
+mainPage.on("input", "#temp_thres_max_range", function () {
+  var temp_thres_max = $(this).val();
+  $("#temp_thres_max").val(temp_thres_max);
+})
+
+mainPage.on("input", "#temp_thres_min", function () {
+  var temp_thres_min = $(this).val();
+  $("#temp_thres_min_range").val(temp_thres_min);
+})
+
+mainPage.on("input", "#temp_thres_max", function () {
+  var temp_thres_max = $(this).val();
+  $("#temp_thres_max_range").val(temp_thres_max);
+})
+
+mainPage.on("input", "#humid_thres_min_range", function () {
+  var humid_thres_min = $(this).val();
+  $("#humid_thres_min").val(humid_thres_min);
+})
+
+mainPage.on("input", "#humid_thres_max_range", function () {
+  var humid_thres_max = $(this).val();
+  $("#humid_thres_max").val(humid_thres_max);
+})
+
+mainPage.on("input", "#humid_thres_min", function () {
+  var humid_thres_min = $(this).val();
+  $("#humid_thres_min_range").val(humid_thres_min);
+})
+
+mainPage.on("input", "#humid_thres_max", function () {
+  var humid_thres_max = $(this).val();
+  $("#humid_thres_max_range").val(humid_thres_max);
+})
+
+mainPage.on("change", "#settingStationModal #position", function () {
+  var id = $("#settingStationModal").find(".modal-content").attr("value");
+  var position = $(this).val();
+  $.ajax({
+    type: "POST",
+    url: "?mod=monitoring&action=settingStation",
+    data: {
+      id: id,
+      position: position
+    },
+    success: function (response) {
+      $('#settingStationModal').html(response);
+      mainPage.find("#time-start, #time-finish").flatpickr({
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+      });
+    },
+
+    error: function () {
+      showNotify("Lỗi hệ thống vui lòng thử lại sau!", "danger");
+    }
+  });
+});
+
+mainPage.on("input", "#settingStationModal #turn_mist_spray", function () {
+  var id = $(this).attr("data");
+  var status = $(this).is(':checked') ? 1 : 0;
+  $.ajax({
+    type: "POST",
+    url: "?mod=monitoring&action=updateMotor",
+    data: {
+      id: id,
+      status: status
+    },
+    dataType: 'json',
+    success: function (response) {
+      if (response.type == 'success') {
+        showNotify(response.message, response.notifyType);
+      } else if (response.type == 'fail') {
+        showNotify(response.message, response.notifyType);
+        $("#settingStationModal").find("#turn_mist_spray").is(':checked') ? $("#settingStationModal").find("#turn_mist_spray").prop('checked', false) : $("#settingStationModal").find("#turn_mist_spray").prop('checked', true);
+      } else {
+        showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
+        $("#settingStationModal").find("#turn_mist_spray").is(':checked') ? $("#settingStationModal").find("#turn_mist_spray").prop('checked', false) : $("#settingStationModal").find("#turn_mist_spray").prop('checked', true);
+      }
+    },
+
+    error: function () {
+      showNotify("Lỗi hệ thống vui lòng thử lại sau!", "danger");
+      $("#settingStationModal").find("#turn_mist_spray").is(':checked') ? $("#settingStationModal").find("#turn_mist_spray").prop('checked', false) : $("#settingStationModal").find("#turn_mist_spray").prop('checked', true);
+    }
+  });
+});
+
+mainPage.on('click', '#setting_station_save', function() {
+  var station_id = $("#settingStationModal").find(".modal-content").attr("value");
+  var sensor_id = $(this).val();
+  var time_start = $("#time-start").val().trim();
+  var time_finish = $("#time-finish").val().trim();
+  var temp_thres_min = $("#temp_thres_min").val();
+  var temp_thres_max = $("#temp_thres_max").val();
+  var humid_thres_min = $("#humid_thres_min").val();
+  var humid_thres_max = $("#humid_thres_max").val();
+  var send_data = $("#send_data").val();
+  var send_email = $("#send_email").val();
+  var sender_email = $("#email").val().trim();
+  var sender_password = $("#password").val().trim();
+  $.ajax({
+    type: "POST",
+    url: "?mod=monitoring&action=updateStationSetting",
+    data: {
+      station_id: station_id,
+      sensor_id: sensor_id,
+      time_start: time_start,
+      time_finish: time_finish,
+      temp_thres_min: temp_thres_min,
+      temp_thres_max: temp_thres_max,
+      humid_thres_min: humid_thres_min,
+      humid_thres_max: humid_thres_max,
+      send_data: send_data,
+      send_email: send_email,
+      sender_email: sender_email,
+      sender_password: sender_password
+    },
+    dataType: 'json',
+    success: function (response) {
+      if (response.type == 'success') {
+        showNotify(response.message, response.notifyType);
+      } else if (response.type == 'fail') {
+        showNotify(response.message, response.notifyType);
+      } else {
+        showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
+      }
+    },
+
+    error: function () {
+      showNotify("Lỗi hệ thống vui lòng thử lại sau!", "danger");
     }
   });
 });

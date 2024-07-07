@@ -2,9 +2,9 @@
 
 function construct()
 {
-  if(!isset($_SESSION["user_info"])) {
+  if (!isset($_SESSION["user_info"])) {
     header('location: ?mod=logins');
-  } 
+  }
   //    echo "DÙng chung, load đầu tiên";
   load_model('index');
   load('helper', 'sendPusher');
@@ -164,5 +164,126 @@ function addValueAction()
     } else {
       echo "Thêm dữ liệu cảm biến không thành công!";
     }
+  }
+}
+
+function settingStationAction()
+{
+  if (isset($_POST["id"]) && isset($_POST["position"])) {
+    $id = $_POST["id"];
+    $position = $_POST["position"];
+  } else {
+    $id = (int) $_GET['id'];
+    $position = 1;
+  }
+
+  $position_list = get_position_station_by_station_id($id);
+  $sensor_setting = get_station_setting_by_station_id($id, $position);
+  $email_setting = get_email_setting_by_station_id($id);
+  $data = array(
+    'id' => $id,
+    'position_choose' => $position,
+    'position_list' => $position_list,
+    'sensor_setting' => $sensor_setting,
+    'email_setting' => $email_setting
+  );
+  if (!empty($position_list)) {
+    load_view('setting', $data);
+  }
+}
+
+function updateMotorAction()
+{
+  if (isset($_POST['id']) && isset($_POST['status'])) {
+    $data = array(
+      "motor_status" => $_POST['status']
+    );
+
+    if ($_POST['status'] == 0) {
+      $message = "Tắt động cơ";
+    } else {
+      $message = "Bật động cơ";
+    }
+
+
+    if (update_sensor_setting($_POST['id'], $data)) {
+      echo json_encode([
+        "type" => "success",
+        "message" => $message . " thành công.",
+        "notifyType" => "success",
+      ]);
+    } else {
+      echo json_encode([
+        "type" => "fail",
+        "message" => $message . " thất bại.",
+        "notifyType" => "danger",
+      ]);
+    }
+    exit();
+  }
+}
+
+function updateStationSettingAction()
+{
+  if (isset($_POST['station_id']) && isset($_POST['sensor_id'])) {
+    $station_id = $_POST['station_id'];
+    $sensor_id = $_POST['sensor_id'];
+    $time_start = $_POST['time_start'];
+    $time_finish = $_POST['time_finish'];
+    $temp_thres_min = $_POST['temp_thres_min'];
+    $temp_thres_max = $_POST['temp_thres_max'];
+    $humid_thres_min = $_POST['humid_thres_min'];
+    $humid_thres_max = $_POST['humid_thres_max'];
+    $send_data = $_POST['send_data'];
+    $send_email = $_POST['send_email'];
+    $sender_email = $_POST['sender_email'];
+    $sender_password = $_POST['sender_password'];
+
+    $emailPattern = "/^[^\s@]+@[^\s@]+\.[^\s@]+$/";
+
+    if(empty($sender_email) || empty($sender_password)) {
+      echo json_encode([
+        "type" => "fail",
+        "message" => "Vui lòng nhập email và mật khẩu gửi.",
+        "notifyType" => "warning",
+      ]);
+    } else if (!preg_match($emailPattern, $sender_email)) {
+      echo json_encode([
+        "type" => "fail",
+        "message" => "Định dạng email không hợp lệ.",
+        "notifyType" => "warning",
+      ]);
+    } else {
+      $data_sensor = array(
+        "time_send_data" => $send_data,
+        "time_start" => $time_start,
+        "time_finish"=> $time_finish,
+        "temp_thres_min" => $temp_thres_min,
+        "temp_thres_max" => $temp_thres_max,
+        "humid_thres_min"=> $humid_thres_min,
+        "humid_thres_max"=> $humid_thres_max
+      );
+
+      $data_email = array(
+        "sender_email"=> $sender_email,
+        "sender_password"=> $sender_password,
+        "timeSendEmail"=> $send_email,
+      );
+
+      if(update_setting($station_id, $sensor_id, $data_sensor, $data_email)) {
+        echo json_encode([
+          "type" => "success",
+          "message" => "Cập nhật thành công.",
+          "notifyType" => "success",
+        ]);
+      } else {
+        echo json_encode([
+          "type" => "fail",
+          "message" => "Cập nhật thất bại.",
+          "notifyType" => "danger",
+        ]);
+      }
+    }
+    exit();
   }
 }

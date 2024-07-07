@@ -262,11 +262,11 @@ table * {
 }
 
 #add-station-btn:hover {
-  background-color: #F2F2F2 !important;
+  background-color: #f2f2f2 !important;
 }
 
 #add-station-btn.active {
-  color: #33B5E5 !important;
+  color: #33b5e5 !important;
 }
 
 #box-chart-map {
@@ -279,15 +279,51 @@ table * {
 }
 
 #avatar-btn {
-  width: 28px;
-  height: 28px;
-  font-size: 12px;
+  height: 30%;
   bottom: 0;
-  left: 70%;
+  left: 0;
+  right: 0;
+  display: none;
 }
 
-#avatar-btn i {
-  line-height: 28px;
+#user-avatar > div:hover #avatar-btn {
+  display: inline-block;
+}
+
+.info-form,
+.change_password-form {
+  max-width: 400px;
+}
+
+#notify-btn span {
+  top: 10px;
+  right: 3px;
+}
+
+.nav-info p:last-of-type {
+  font-size: 12px;
+}
+
+#temp_thres_min, #temp_thres_max,
+#humid_thres_min, #humid_thres_max {
+  max-width: 80px;
+}
+
+.range-slider {
+  height: 5px;
+  width: 100px;
+  border-radius: 5px;
+  background: #ddd;
+  position: relative;
+}
+
+.range-slider .range-progress {
+  height: 5px;
+  left: 25%;
+  right: 25%;
+  border-radius: 5px;
+  position: absolute;
+  background: var(--primary-color);
 }
 
 @media (min-width: 992px) {

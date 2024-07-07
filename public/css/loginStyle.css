@@ -24,6 +24,18 @@
   border-radius: 10px;
 }
 
+nav {
+  height: var(--nav-height);
+}
+
+.logo-name span:last-child {
+  font-size: 12px;
+}
+
+.login-page {
+  height: calc(100vh - var(--nav-height));
+}
+
 .login-form .card-footer a {
   font-size: 14px;
 }
@@ -41,6 +53,22 @@
 
 #notify-error, #notify-success {
   font-size: 14px;
+}
+
+.success-body {
+  padding: 0 32px;
+}
+
+.success-form {
+  max-width: 300px;
+}
+
+.success-form i {
+  font-size: 128px;
+}
+
+.success-form h5 {
+  font-size: 16px;
 }
 
 @media (max-width: 576px) {

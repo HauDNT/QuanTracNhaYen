@@ -25,24 +25,26 @@
               <span class="link">Giám sát</span>
             </a>
           </li>
-          <li class="list">
+          <!-- <li class="list">
             <a href="?mod=report" class="nav-link text-secondary py-2 <?= $active == "report"  ? "active" : "" ?>">
               <i class="bi bi-clipboard2-data me-2"></i>
               <span class="link">Thống kê</span>
             </a>
-          </li>
+          </li> -->
           <li class="list">
             <a href="?mod=sensors" class="nav-link text-secondary py-2 <?= $active == "sensor" || $active == "unit"  ? "active" : "" ?>">
               <i class="bi bi-cpu me-2"></i>
               <span class="link">Cảm biến</span>
             </a>
           </li>
-          <li class="list">
-            <a href="?mod=users" class="nav-link text-secondary py-2 <?= $active == "user"  ? "active" : "" ?>">
-              <i class='bi bi-people me-2'></i>
-              <span class="link">Người dùng</span>
-            </a>
-          </li>
+          <?php if ($_SESSION['user_info']['role_id'] == 5) : ?>
+            <li class="list">
+              <a href="?mod=users" class="nav-link text-secondary py-2 <?= $active == "user"  ? "active" : "" ?>">
+                <i class='bi bi-people me-2'></i>
+                <span class="link">Người dùng</span>
+              </a>
+            </li>
+          <?php endif; ?>
         </ul>
       </div>
 

@@ -77,6 +77,7 @@ function addSensorAction()
       'name' => $_POST["nameSensor"],
       'station_id' => empty($_POST["stationSensor"]) ? null : $_POST["stationSensor"],
       'position' => $_POST["positionSensor"],
+      'threshold_setting' => $_POST["threshold_setting"]
     );
 
     if (db_insert('sensors', $data)) {
@@ -110,8 +111,9 @@ function updateSensorAction()
 
     $data = array(
       'name' => $_POST["nameSensor"],
-      'station_id' => $_POST["stationSensor"],
+      'station_id' => empty($_POST["stationSensor"]) ? null : $_POST["stationSensor"],
       'position' => $_POST["positionSensor"],
+      'threshold_setting' => $_POST["threshold_setting"]
     );
     if (update_sensor($_POST['idSensor'], $data)) {
       echo json_encode([
@@ -142,6 +144,7 @@ function updateSensorAction()
 function deleteSensorAction()
 {
   $id = (int) $_GET['id'];
-  db_delete('sensors', "`id` = {$id}");
+
+  delete_sensor($id);
   header('location: ?mod=sensors');
 }

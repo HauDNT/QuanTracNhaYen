@@ -67,11 +67,10 @@ function delete_station($id)
     if (!empty(get_sensor_id_by_station_id($id))) {
       $sensor_id = get_sensor_id_by_station_id($id)[0]["id"];
       $data = array(
-        "connect_status" => "0",
         "station_id" => null
       );
       if (db_update('sensors', $data, "`id` = '{$sensor_id}'")) {
-        if (db_delete('stations', "`id` = {$id}")) {
+        if (db_delete('email_settings', "`station_id` = {$id}") && db_delete('stations', "`id` = {$id}")) {
           mysqli_commit($conn);
           return true;
         } else {
@@ -116,13 +115,13 @@ function get_station_by_id($id)
 
 function get_data_chart($station_id, $position)
 {
-  $result = db_fetch_array("WITH LatestValues AS ( SELECT ss.station_id, i.name, sv.value, i.unit, ss.position, sv.createdAt, ROW_NUMBER() OVER (PARTITION BY sv.sensor_id, sv.indicator_id ORDER BY sv.createdAt DESC) as rn FROM sensors ss JOIN sensor_values sv ON ss.id = sv.sensor_id JOIN indicators i ON sv.indicator_id = i.id ) SELECT station_id, name, value, unit, position, createdAt FROM LatestValues WHERE station_id = {$station_id} AND position = {$position} AND unit != '-' AND rn <= 4 ORDER BY createdAt DESC");
+  $result = db_fetch_array("WITH LatestValues AS ( SELECT ss.station_id, i.name, sv.value, i.unit, ss.position, sv.createdAt, ROW_NUMBER() OVER (PARTITION BY sv.sensor_id, sv.indicator_id ORDER BY sv.createdAt DESC) as rn FROM sensors ss JOIN sensor_values sv ON ss.id = sv.sensor_id JOIN indicators i ON sv.indicator_id = i.id ) SELECT station_id, name, value, unit, position, createdAt FROM LatestValues WHERE station_id = {$station_id} AND position = {$position} AND unit != 'safety' AND rn <= 4 ORDER BY createdAt DESC");
   return $result;
 }
 
 function get_data_chart_legend($station_id, $position)
 {
-  $result = db_fetch_array("SELECT i.name FROM indicators i JOIN sensor_values sv ON i.id = sv.indicator_id JOIN sensors s ON s.id = sv.sensor_id WHERE s.station_id = {$station_id} AND s.position = {$position} AND i.unit != '-' GROUP BY i.name");
+  $result = db_fetch_array("SELECT i.name FROM indicators i JOIN sensor_values sv ON i.id = sv.indicator_id JOIN sensors s ON s.id = sv.sensor_id WHERE s.station_id = {$station_id} AND s.position = {$position} AND i.unit != 'safety' GROUP BY i.name");
   return $result;
 }
 
@@ -138,9 +137,9 @@ function get_id_by_sensor_id($sensor_id)
   return $result;
 }
 
-function get_station_setting_by_station_id($station_id, $position = 1)
+function get_station_setting_by_id($id, $position = 1)
 {
-  $result = db_fetch_row("SELECT sst.* FROM sensor_settings sst JOIN sensors s ON sst.sensor_id = s.id WHERE s.position = {$position} AND s.station_id = {$station_id}");
+  $result = db_fetch_row("SELECT sst.*, s.threshold_setting FROM sensor_settings sst JOIN sensors s ON sst.sensor_id = s.id WHERE s.position = {$position} AND s.station_id = {$id}");
   return $result;
 }
 
@@ -177,3 +176,21 @@ function update_setting($station_id, $sensor_id, $data_sensor = array(), $data_e
     return false;
   }
 }
+
+// function add_station($id, $sender_name, $data)
+// {
+//   global $conn;
+//   mysqli_begin_transaction($conn);
+//   try {
+//     if (db_insert('stations', $data_stations)) {
+//       mysqli_commit($conn);
+//       return true;
+//     } else {
+//       mysqli_rollback($conn);
+//       return false;
+//     }
+//   } catch (Exception $e) {
+//     mysqli_rollback($conn);
+//     return false;
+//   }
+// }

@@ -206,6 +206,7 @@ mainPage.on('click', '#add_sensor', function () {
   var nameSensor = $('#addSensorModal').find('#name_sensor').val();
   var stationSensor = $('#addSensorModal').find('#station_sensor').val();
   var positionSensor = $('#addSensorModal').find('#position_sensor').val();
+  var threshold_setting = $('#addSensorModal').find('#threshold_setting').val();
   $.ajax({
     type: 'POST',
     url: '?mod=sensors&action=addSensor',
@@ -213,7 +214,8 @@ mainPage.on('click', '#add_sensor', function () {
       idSensor: idSensor,
       nameSensor: nameSensor,
       stationSensor: stationSensor,
-      positionSensor: positionSensor
+      positionSensor: positionSensor,
+      threshold_setting: threshold_setting,
     },
     dataType: 'json',
     success: function (response) {
@@ -227,7 +229,7 @@ mainPage.on('click', '#add_sensor', function () {
       }
     },
 
-    error: function () {
+    error: function (e) {
       showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
     }
   });
@@ -262,6 +264,7 @@ mainPage.on('click', '#update_sensor', function () {
   var nameSensor = $('#updateSensorModal').find('#name_sensor').val();
   var stationSensor = $('#updateSensorModal').find('#station_sensor').val();
   var positionSensor = $('#updateSensorModal').find('#position_sensor').val();
+  var threshold_setting = $('#updateSensorModal').find('#threshold_setting').val();
   if (idSensor.trim() == '' || nameSensor.trim() == '' || stationSensor == null || positionSensor.trim() == '') {
     showNotify("Vui lòng nhập đầy đủ thông tin.", "warning");
   } else {
@@ -272,7 +275,8 @@ mainPage.on('click', '#update_sensor', function () {
         idSensor: idSensor,
         nameSensor: nameSensor,
         stationSensor: stationSensor,
-        positionSensor: positionSensor
+        positionSensor: positionSensor,
+        threshold_setting: threshold_setting,
       },
 
       dataType: 'json',
@@ -806,7 +810,6 @@ if ($('#map').length > 0) {
     var longitude = $("#addStationModal").find("#station-longitude").val().trim();
     var latitude = $("#addStationModal").find("#station-latitude").val().trim();
     var address = $("#addStationModal").find("#station-address").val().trim();
-    var urlWeb = $("#addStationModal").find("#station-url").val().trim();
     var user = $("#addStationModal").find("#station_user").val();
 
     $.ajax({
@@ -817,7 +820,6 @@ if ($('#map').length > 0) {
         longitude: longitude,
         latitude: latitude,
         address: address,
-        urlWeb: urlWeb,
         user: user
       },
       dataType: 'json',
@@ -1387,8 +1389,8 @@ mainPage.on("input", "#settingStationModal #turn_mist_spray", function () {
     },
     dataType: 'json',
     success: function (response) {
-      if (response.type == 'success') {
-        showNotify(response.message, response.notifyType);
+      if (response.type != 'success') {
+        // showNotify(response.message, response.notifyType);
       } else if (response.type == 'fail') {
         showNotify(response.message, response.notifyType);
         $("#settingStationModal").find("#turn_mist_spray").is(':checked') ? $("#settingStationModal").find("#turn_mist_spray").prop('checked', false) : $("#settingStationModal").find("#turn_mist_spray").prop('checked', true);
@@ -1405,7 +1407,7 @@ mainPage.on("input", "#settingStationModal #turn_mist_spray", function () {
   });
 });
 
-mainPage.on('click', '#setting_station_save', function() {
+mainPage.on('click', '#setting_station_save', function () {
   var station_id = $("#settingStationModal").find(".modal-content").attr("value");
   var sensor_id = $(this).val();
   var time_start = $("#time-start").val().trim();

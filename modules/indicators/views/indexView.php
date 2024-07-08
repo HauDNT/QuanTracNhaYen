@@ -53,7 +53,9 @@
                     </button>
                     <ul class="dropdown-menu px-2">
                       <li><a id="view-indicator" class="dropdown-item rounded-3" href="?mod=indicators&action=updateIndicator&views=update&id=<?= $indicator['id'] ?>">Chỉnh sửa</a></li>
-                      <li><a class="dropdown-item rounded-3 text-danger" href="?mod=indicators&action=deleteIndicator&id=<?= $indicator['id'] ?>" onclick="return confirm('Bạn có chắc muốn xoá chỉ số này?')">Xóa</a></li>
+                      <?php if ($_SESSION['user_info']['role_id'] == 5) : ?>
+                        <li><a class="dropdown-item rounded-3 text-danger" href="?mod=indicators&action=deleteIndicator&id=<?= $indicator['id'] ?>" onclick="return confirm('Bạn có chắc muốn xoá chỉ số này?')">Xóa</a></li>
+                      <?php endif; ?>
                     </ul>
                   </div>
                 </td>

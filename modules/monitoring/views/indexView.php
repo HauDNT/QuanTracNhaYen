@@ -6,7 +6,9 @@
   <div class="row g-0 bg-white shadow-sm flex-fill flex-column rounded-3 overflow-hidden position-relative">
     <button id="box-left-btn" class="btn bg-white border-0 w-auto position-absolute z-3 px-2 py-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#box-left-map" aria-controls="box-left-map"><i class="bi bi-list fs-4"></i></button>
 
-    <button id="add-station-btn" class="btn bg-white border-0 position-absolute z-3 p-0"><i class="bi bi-geo-alt-fill"></i></button>
+    <?php if ($_SESSION['user_info']['role_id'] == 5) : ?>
+      <button id="add-station-btn" class="btn bg-white border-0 position-absolute z-3 p-0"><i class="bi bi-geo-alt-fill"></i></button>
+    <?php endif; ?>
 
     <div class="offcanvas offcanvas-start position-absolute shadow border-0 rounded-3" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="box-left-map" aria-labelledby="boxLeftMapLabel">
       <div class="offcanvas-header">
@@ -46,9 +48,13 @@
                       <i class="bi bi-three-dots-vertical"></i>
                     </button>
                     <ul class="dropdown-menu px-2">
-                      <li><a id="view-station" class="dropdown-item rounded-3" href="?mod=monitoring&action=updateStation&id=<?= $station['id'] ?>">Chỉnh sửa</a></li>
+                      <?php if ($_SESSION['user_info']['role_id'] == 5) : ?>
+                        <li><a id="view-station" class="dropdown-item rounded-3" href="?mod=monitoring&action=updateStation&id=<?= $station['id'] ?>">Chỉnh sửa</a></li>
+                      <?php endif; ?>
                       <li><a id="station-setting" class="dropdown-item rounded-3" href="?mod=monitoring&action=settingStation&id=<?= $station['id'] ?>">Thiết lập</a></li>
-                      <li class="mt-2 pt-2 border-2 border-top border-light-subtle"><a class="dropdown-item rounded-3 text-danger" href="?mod=monitoring&action=deleteStation&id=<?= $station['id'] ?>" onclick="return confirm('Bạn có chắc muốn xoá trạm này?')">Xóa</a></li>
+                      <?php if ($_SESSION['user_info']['role_id'] == 5) : ?>
+                        <li class="mt-2 pt-2 border-2 border-top border-light-subtle"><a class="dropdown-item rounded-3 text-danger" href="?mod=monitoring&action=deleteStation&id=<?= $station['id'] ?>" onclick="return confirm('Bạn có chắc muốn xoá trạm này?')">Xóa</a></li>
+                      <?php endif; ?>
                     </ul>
                   </div>
                 </div>

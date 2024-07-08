@@ -92,8 +92,7 @@ function db_delete($table, $where)
 {
   global $conn;
   $query_string = "DELETE FROM " . $table . " WHERE $where";
-  db_query($query_string);
-  return mysqli_affected_rows($conn);
+  return db_query($query_string);
 }
 
 function escape_string($str)

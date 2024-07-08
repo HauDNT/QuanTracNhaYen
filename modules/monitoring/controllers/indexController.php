@@ -47,7 +47,6 @@ function addStationAction()
         'longitude' => $_POST['longitude'],
         'latitude' => $_POST['latitude'],
         'address' => $_POST['address'],
-        'urlServer' => empty($_POST["urlWeb"]) ? null : $_POST["urlWeb"],
         'user_id' => $_POST['user'],
       );
 
@@ -178,7 +177,7 @@ function settingStationAction()
   }
 
   $position_list = get_position_station_by_station_id($id);
-  $sensor_setting = get_station_setting_by_station_id($id, $position);
+  $sensor_setting = get_station_setting_by_id($id, $position);
   $email_setting = get_email_setting_by_station_id($id);
   $data = array(
     'id' => $id,
@@ -187,9 +186,7 @@ function settingStationAction()
     'sensor_setting' => $sensor_setting,
     'email_setting' => $email_setting
   );
-  if (!empty($position_list)) {
-    load_view('setting', $data);
-  }
+  load_view('setting', $data);
 }
 
 function updateMotorAction()
@@ -241,7 +238,7 @@ function updateStationSettingAction()
 
     $emailPattern = "/^[^\s@]+@[^\s@]+\.[^\s@]+$/";
 
-    if(empty($sender_email) || empty($sender_password)) {
+    if (empty($sender_email) || empty($sender_password)) {
       echo json_encode([
         "type" => "fail",
         "message" => "Vui lòng nhập email và mật khẩu gửi.",
@@ -257,20 +254,20 @@ function updateStationSettingAction()
       $data_sensor = array(
         "time_send_data" => $send_data,
         "time_start" => $time_start,
-        "time_finish"=> $time_finish,
+        "time_finish" => $time_finish,
         "temp_thres_min" => $temp_thres_min,
         "temp_thres_max" => $temp_thres_max,
-        "humid_thres_min"=> $humid_thres_min,
-        "humid_thres_max"=> $humid_thres_max
+        "humid_thres_min" => $humid_thres_min,
+        "humid_thres_max" => $humid_thres_max
       );
 
       $data_email = array(
-        "sender_email"=> $sender_email,
-        "sender_password"=> $sender_password,
-        "timeSendEmail"=> $send_email,
+        "sender_email" => $sender_email,
+        "sender_password" => $sender_password,
+        "timeSendEmail" => $send_email,
       );
 
-      if(update_setting($station_id, $sensor_id, $data_sensor, $data_email)) {
+      if (update_setting($station_id, $sensor_id, $data_sensor, $data_email)) {
         echo json_encode([
           "type" => "success",
           "message" => "Cập nhật thành công.",

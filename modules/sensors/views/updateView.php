@@ -7,7 +7,7 @@
     <div class="modal-body overflow-y-scroll pe-2">
       <div class="mb-3">
         <label for="id_sensor" class="col-form-label">Mã cảm biến</label>
-        <input type="text" class="form-control bg-transparent" id="id_sensor" placeholder="SS<?= date("Y") ?>00000" value="<?= $sensor_update['sensor_id'] ?>">
+        <input type="text" class="form-control" id="id_sensor" placeholder="SS<?= date("Y") ?>00000" value="<?= $sensor_update['sensor_id'] ?>" disabled>
       </div>
       <div class="mb-3">
         <label for="name_sensor" class="col-form-label">Tên cảm biến</label>
@@ -27,6 +27,14 @@
       <div class="mb-3">
         <label for="position_sensor" class="col-form-label">Tầng</label>
         <input type="number" class="form-control" id="position_sensor" value="<?php echo $sensor_update['position'] ?>" min="1">
+      </div>
+
+      <div class="mb-3">
+        <label for="threshold_setting" class="col-form-label">Thiết lập cảm biến</label>
+        <select class="form-select" id="threshold_setting">
+          <option value="0" <?= $sensor_update["threshold_setting"] == 0 ? "selected" : "" ?>>Từ chối</option>
+          <option value="1" <?= $sensor_update["threshold_setting"] == 1 ? "selected" : "" ?>>Cho phép</option>
+        </select>
       </div>
     </div>
     <div class="modal-footer">

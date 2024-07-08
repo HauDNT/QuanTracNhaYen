@@ -12,6 +12,7 @@
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body overflow-y-scroll">
+      <?php if (!empty($sensor_setting["threshold_setting"]) && $sensor_setting["threshold_setting"] == 1) : ?>
       <div class="mb-3">
         <div class="form-check form-switch form-check-reverse text-start d-flex align-items-center justify-content-between">
           <label for="time-start" class="col-form-label fw-semibold">Thời gian phun sương</label>
@@ -88,6 +89,10 @@
           </div>
         </div>
       </div>
+
+      <?php elseif(empty($sensor_setting["threshold_setting"]) || $sensor_setting["threshold_setting"] == 0) : ?>
+        <h4 class="text-center">Thiết lập cảm biến đang tắt hoặc chưa được lắp đặt.</h4>
+      <?php endif; ?>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trở lại</button>

@@ -88,7 +88,9 @@
                     </button>
                     <ul class="dropdown-menu px-2">
                       <li><a id="view-sensor" class="dropdown-item rounded-3" href="?mod=sensors&action=updateSensor&views=update&id=<?= $sensor['id'] ?>">Chỉnh sửa</a></li>
-                      <li><a class="dropdown-item rounded-3 text-danger" href="?mod=sensors&action=deleteSensor&id=<?= $sensor['id'] ?>" onclick="return confirm('Bạn có chắc muốn xoá cảm biến này?')">Xóa</a></li>
+                      <?php if ($_SESSION['user_info']['role_id'] == 5) : ?>
+                        <li><a class="dropdown-item rounded-3 text-danger" href="?mod=sensors&action=deleteSensor&id=<?= $sensor['id'] ?>" onclick="return confirm('Bạn có chắc muốn xoá cảm biến này?')">Xóa</a></li>
+                      <?php endif; ?>
                     </ul>
                   </div>
                 </td>
@@ -150,6 +152,14 @@
         <div class="mb-3">
           <label for="position_sensor" class="col-form-label">Tầng <span class="text-danger">*</span></label>
           <input type="number" class="form-control" id="position_sensor" value="1" min="1">
+        </div>
+
+        <div class="mb-3">
+          <label for="threshold_setting" class="col-form-label">Thiết lập cảm biến</label>
+          <select class="form-select" id="threshold_setting">
+            <option value="0">Từ chối</option>
+            <option value="1">Cho phép</option>
+          </select>
         </div>
       </div>
       <div class="modal-footer">

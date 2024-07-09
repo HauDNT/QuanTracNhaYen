@@ -326,6 +326,10 @@ table * {
   background: var(--primary-color);
 }
 
+#report-barChart, #report-lineChart {
+  min-height: 200px;
+}
+
 @media (min-width: 992px) {
   .sidebar {
     min-width: 260px;

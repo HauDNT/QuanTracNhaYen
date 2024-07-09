@@ -11,11 +11,25 @@ function construct()
 
 function indexAction()
 {
-   $report = get_report();
+   $station = get_station();
+   $indicator = get_indicator();
    load_view('index', [
       'active' => 'report',
-      "report" => $report
+      'station' => $station,
+      'indicator' => $indicator
    ]);
+}
+
+function getChartAction()
+{
+   if (isset($_POST["getChart"])) {
+      echo json_encode([
+         "label" => get_label_month(),
+         "legend" => get_indicator(),
+         "data" => get_data_month()
+      ]);
+      exit();
+   }
 }
 
 function addAction()

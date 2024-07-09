@@ -54,7 +54,6 @@ function delete_sensor($id)
     if (
       db_delete('sensor_settings', "sensor_id = {$id}") &&
       db_delete('sensor_values', "sensor_id = {$id}") &&
-      db_delete('avgvalues', "sensor_id = {$id}") &&
       db_delete('sensors', "id = {$id}")
     ) {
       mysqli_commit($conn);

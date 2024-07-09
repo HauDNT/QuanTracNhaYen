@@ -35,7 +35,7 @@
 
   <div class="login-page container-fluid p-0 d-flex align-items-center">
     <div class="login-form mx-auto d-flex flex-wrap justify-content-center">
-      <!-- <img src="public/img/Login-bg.jpg" alt="" height="360px" class="me-0 me-sm-5 d-none d-lg-block"> -->
+      <img src="public/img/Login-bg.jpg" alt="" height="360px" class="me-0 me-sm-5 d-none d-lg-block">
       <div class="card border-0 align-self-start">
         <div class="card-header border-0 bg-transparent d-flex align-items-center justify-content-center">
           <p class="fs-3 fw-bold mt-3">Đăng nhập</p>

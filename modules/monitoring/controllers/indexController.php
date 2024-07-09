@@ -284,3 +284,15 @@ function updateStationSettingAction()
     exit();
   }
 }
+
+function getUserLocationAction() {
+  if (isset($_POST['getLocation'])) {
+    $location = get_location_by_user_id($_SESSION["user_info"]["id"]);
+    echo json_encode([
+      "type" => "success",
+      "longitude" => $location["longitude"],
+      "latitude" => $location["latitude"],
+    ]);
+    exit();
+  }
+}

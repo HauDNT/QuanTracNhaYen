@@ -25,12 +25,12 @@
               <span class="link">Giám sát</span>
             </a>
           </li>
-          <!-- <li class="list">
+          <li class="list">
             <a href="?mod=report" class="nav-link text-secondary py-2 <?= $active == "report"  ? "active" : "" ?>">
               <i class="bi bi-clipboard2-data me-2"></i>
-              <span class="link">Thống kê</span>
+              <span class="link">Báo cáo</span>
             </a>
-          </li> -->
+          </li>
           <li class="list">
             <a href="?mod=sensors" class="nav-link text-secondary py-2 <?= $active == "sensor" || $active == "unit"  ? "active" : "" ?>">
               <i class="bi bi-cpu me-2"></i>

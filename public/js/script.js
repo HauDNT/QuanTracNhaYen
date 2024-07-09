@@ -120,11 +120,10 @@ mainPage.on('input', '#search', function () {
     url: window.location.href,
     data: requestSearch(),
     success: function (data) {
-      var showing = $(data).find('.showing').html();
       var table = $(data).find('#table').html();
       var stations_list = $(data).find('#stations-list').html();
       var pagination = $(data).find('.pagination').html();
-      $('.showing').html(showing);
+
       $('#table').html(table);
       $('#stations-list').html(stations_list);
       $('.pagination').html(pagination);
@@ -536,8 +535,30 @@ if ($('#map').length > 0) {
   var map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v11',
-    center: [105.14434709756426, 9.914565453807697],
     zoom: 14,
+  });
+
+  $.ajax({
+    type: 'POST',
+    url: '?mod=monitoring&action=getUserLocation',
+    data: {
+      getLocation: "true",
+    },
+    dataType: 'json',
+    success: function (response) {
+      if (response.type == 'success') {
+        longitude = response.longitude;
+        latitude = response.latitude;
+
+        map.setCenter([longitude, latitude]);
+      } else {
+        map.setCenter([105.14434709756426, 9.914565453807697]);
+      }
+    },
+
+    error: function () {
+      map.setCenter([105.14434709756426, 9.914565453807697]);
+    }
   });
 
   // Thêm điều khiển định vị địa lý vào bản đồ.
@@ -1389,7 +1410,7 @@ mainPage.on("input", "#settingStationModal #turn_mist_spray", function () {
     },
     dataType: 'json',
     success: function (response) {
-      if (response.type != 'success') {
+      if (response.type == 'success') {
         // showNotify(response.message, response.notifyType);
       } else if (response.type == 'fail') {
         showNotify(response.message, response.notifyType);
@@ -1453,3 +1474,127 @@ mainPage.on('click', '#setting_station_save', function () {
     }
   });
 });
+
+//==================================report=================================
+if ($("#report-barChart").length > 0 && $("#report-lineChart").length > 0) {
+  var report_barChart = null;
+  var report_lineChart = null;
+  var colorList = ['rgb(255, 99, 132)', 'rgb(255, 159, 64)', 'rgb(255, 205, 86)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)', 'rgb(201, 203, 207)'];
+
+  function reportChartInit() {
+    $.ajax({
+      type: "POST",
+      url: "?mod=report&action=getChart",
+      data: {
+        getChart: "true"
+      },
+      dataType: 'json',
+      success: function (response) {
+        const labels = [];
+        const datasets = [];
+        var indexColor = 2;
+        response.label.forEach(element => {
+          labels.push(element["month"]);
+        })
+
+        response.legend.forEach(element => {
+          var data = [];
+          response.data.forEach(element2 => {
+            if (element2["indicator_name"] == element["name"]) {
+              data.push(element2["average_value"]);
+            }
+          });
+
+          console.log(data);
+
+          datasets.push({
+            label: element["name"],
+            data: data,
+            backgroundColor: colorList[indexColor],
+            borderColor: colorList[indexColor],
+          });
+
+          indexColor++;
+          if (indexColor == colorList.length) {
+            indexColor = 0;
+          }
+        });
+
+        const data = {
+          labels: labels,
+          datasets: datasets
+        };
+
+        const lineConfig = {
+          type: 'line',
+          data: data,
+          options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            plugins: {
+              legend: {
+                display: false
+              }
+            },
+            tension: 0.4,
+            scales: {
+              x: {
+                ticks: {
+                  color: '#6C757D'
+                },
+                grid: {
+                  display: false
+                },
+              },
+
+              y: {
+                ticks: {
+                  color: '#6C757D'
+                },
+                grid: {
+                  display: false
+                },
+              }
+            }
+          },
+        };
+
+        const barConfig = {
+          type: 'bar',
+          data: data,
+          options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            maxBarThickness: 36,
+            plugins: {
+              legend: {
+                display: false
+              }
+            },
+            tension: 0.4,
+            scales: {
+              x: {
+                grid: {
+                  display: false
+                },
+              },
+
+              y: {
+                grid: {
+                  display: false
+                },
+              }
+            }
+          },
+        };
+
+        if ($("#report-lineChart").length > 0 && $("#report-barChart").length > 0) {
+          report_barChart = new Chart($("#report-barChart"), barConfig);
+          report_lineChart = new Chart($("#report-lineChart"), lineConfig);
+        }
+      },
+    });
+  }
+
+  reportChartInit();
+}

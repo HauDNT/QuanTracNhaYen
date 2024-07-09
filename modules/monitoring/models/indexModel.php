@@ -28,6 +28,11 @@ function get_position_station()
   return $result;
 }
 
+function get_location_by_user_id($id) {
+  $result = db_fetch_row("SELECT st.longitude, st.latitude FROM accounts a JOIN userinfo u ON a.id = u.account_id JOIN stations st ON st.user_id = a.id WHERE u.id = {$id}");
+  return $result;
+}
+
 function get_position_station_by_station_id($id)
 {
   $result = db_fetch_array("SELECT DISTINCT station_id, position FROM sensors WHERE station_id = {$id}");

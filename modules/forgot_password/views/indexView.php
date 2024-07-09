@@ -68,7 +68,7 @@
           </div>
         </div>
       </div>
-      <!-- <img src="public/img/forgot-password-bg.jpg" alt="" height="360px" class="ms-0 ms-sm-5 d-none d-lg-block"> -->
+      <img src="public/img/forgot-password-bg.jpg" alt="" height="360px" class="ms-0 ms-sm-5 d-none d-lg-block">
     </div>
   </div>
   <!-- import jquery -->

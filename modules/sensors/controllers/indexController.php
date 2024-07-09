@@ -13,7 +13,7 @@ function indexAction()
 {
   $list_sensor = get_list_sensor_info();
   if (isset($_POST["search"])) {
-    $list_sensor = get_list_sensor_search($_POST["search"], $_POST["status"]);
+    $list_sensor = get_list_sensor_search($_POST["search"], $_POST["sensorStatus"]);
   }
 
   $data_list = array();

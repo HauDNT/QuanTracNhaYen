@@ -3,17 +3,10 @@
 <?php require "./layout/sidebar.php" ?>
 
 <div class="content w-100 p-0 d-flex flex-column">
-  <div class="row g-0">
-    <ul id="tab-sensor" class="nav nav-tabs border-0">
-      <li class="nav-item">
-        <a class="nav-link text-secondary fw-semibold border-0 <?= $active == "user"  ? "active" : "" ?>" href="?mod=users">Người dùng</a>
-      </li>
-    </ul>
-  </div>
-
-  <div class="row g-0 bg-white shadow-sm flex-fill flex-column <?= $active == "user"  ? "rounded-end-3 rounded-bottom-3" : "rounded-3" ?>">
-    <div class="row g-0 align-items-center p-3 border-2 border-bottom border-light-subtle">
-      <div class="d-flex w-auto ms-auto">
+  <div class="row g-0 bg-white shadow-sm flex-fill flex-column rounded-3">
+    <div class="row g-0 align-items-center p-3 pb-0 border-2 border-bottom border-light-subtle">
+      <span class="fw-semibold w-auto mb-3 me-2">Người dùng</span>
+      <div class="d-flex w-auto ms-auto mb-3">
         <div class="input-group w-auto me-2">
           <label for="search" class="d-flex align-items-center text-secondary text-center bg-white border border-end-0 rounded-start-3 ps-2 pe-1"><i class="bi bi-search"></i></label>
           <input id="search" class="px-1 form-control border-start-0 rounded-end-3 text-secondary" type="search" placeholder="Tìm kiếm..." aria-label="Search">
@@ -58,7 +51,7 @@
           <thead>
             <tr>
               <th class="text-center" width="80px">STT</th>
-              <th class="text-start">Người dùng</th>
+              <th class="text-start">Họ tên</th>
               <th class="text-start">Quyền hạn</th>
               <th class="text-start">Ngày tạo</th>
               <th class="text-start">Trạng thái</th>
@@ -69,7 +62,7 @@
             <?php foreach ($list_users as $user) : ?>
               <tr>
                 <th data-title="STT" class="text-center"><?= $user['no'] ?></th>
-                <td data-title="Người dùng" class="text-start d-flex align-items-center flex-wrap">
+                <td data-title="Họ tên" class="text-start d-flex align-items-center flex-wrap">
                   <div class="d-flex align-items-center ms-2 ms-sm-0">
                     <img class="rounded-circle me-2" src="<?= $user['avatar'] ?>" alt="" width="36px" height="36px">
                     <div>

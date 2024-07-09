@@ -326,8 +326,14 @@ table * {
   background: var(--primary-color);
 }
 
-#report-barChart, #report-lineChart {
-  min-height: 200px;
+#report-lineChart {
+  height: 250px !important;
+}
+
+#filter-report {
+  padding-bottom: 0 !important;
+  min-height: 61px;
+  overflow-x: scroll;
 }
 
 @media (min-width: 992px) {
@@ -398,5 +404,9 @@ table * {
 
   .table:not(#table-map) tbody tr td:not(td[data-title="Chức năng"]) {
     order: 2;
+  }
+
+  #report-lineChart {
+    height: 150px !important;
   }
 }

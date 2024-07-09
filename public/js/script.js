@@ -157,8 +157,11 @@ function requestSearch() {
 function requestPage(page) {
   var requestData = {
     page: page,
-    search: $('#search').val().trim(),
   };
+
+  if ($('#search').length > 0) {
+    requestData.search = $('#search').val().trim();
+  }
 
   if ($('#sensor-status').length > 0) {
     requestData.sensorStatus = $('#sensor-status').val();
@@ -186,7 +189,7 @@ mainPage.on('change', '#sensor-status', function () {
     url: window.location.href,
     data: {
       search: $('#search').val().trim(),
-      status: $('#sensor-status').val().trim(),
+      sensorStatus: $('#sensor-status').val().trim(),
     },
     success: function (data) {
       var value = $(data).find('#table').html();
@@ -738,11 +741,6 @@ if ($('#map').length > 0) {
     });
   }
 
-  // setInterval(() => {
-  //   console.log("update");
-  //   updateMap();
-  // }, 1000);
-
   mainPage.on('click', '.station-content', function () {
     bootstrap.Offcanvas.getInstance($("#box-left-map.show")[0]).hide();
     if ($("#box-chart-map.show").length > 0) {
@@ -944,7 +942,7 @@ if ($('#map').length > 0) {
   //==============================chart & map===================================
   var lineChart = null;
   var barChart = null;
-  var colorList = ['rgb(255, 99, 132)', 'rgb(255, 159, 64)', 'rgb(255, 205, 86)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)', 'rgb(201, 203, 207)'];
+  var colorList = ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 159, 64)', 'rgb(255, 205, 86)', 'rgb(75, 192, 192)', 'rgb(153, 102, 255)', 'rgb(201, 203, 207)'];
 
   function chartInit() {
     $.ajax({
@@ -962,7 +960,7 @@ if ($('#map').length > 0) {
           labels.push(response.label[i]["createdAt"].split(" ").pop());
         }
 
-        var indexColor = 2;
+        var indexColor = 0;
         response.legend.forEach(element => {
           var data = [];
           response.data.forEach(element2 => {
@@ -1476,10 +1474,9 @@ mainPage.on('click', '#setting_station_save', function () {
 });
 
 //==================================report=================================
-if ($("#report-barChart").length > 0 && $("#report-lineChart").length > 0) {
-  var report_barChart = null;
+if ($("#report-lineChart").length > 0) {
   var report_lineChart = null;
-  var colorList = ['rgb(255, 99, 132)', 'rgb(255, 159, 64)', 'rgb(255, 205, 86)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)', 'rgb(201, 203, 207)'];
+  var colorList = ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 159, 64)', 'rgb(255, 205, 86)', 'rgb(75, 192, 192)', 'rgb(153, 102, 255)', 'rgb(201, 203, 207)'];
 
   function reportChartInit() {
     $.ajax({
@@ -1492,7 +1489,7 @@ if ($("#report-barChart").length > 0 && $("#report-lineChart").length > 0) {
       success: function (response) {
         const labels = [];
         const datasets = [];
-        var indexColor = 2;
+        var indexColor = 0;
         response.label.forEach(element => {
           labels.push(element["month"]);
         })
@@ -1504,14 +1501,12 @@ if ($("#report-barChart").length > 0 && $("#report-lineChart").length > 0) {
               data.push(element2["average_value"]);
             }
           });
-
-          console.log(data);
-
           datasets.push({
             label: element["name"],
             data: data,
             backgroundColor: colorList[indexColor],
             borderColor: colorList[indexColor],
+            pointRadius: 0
           });
 
           indexColor++;
@@ -1522,7 +1517,7 @@ if ($("#report-barChart").length > 0 && $("#report-lineChart").length > 0) {
 
         const data = {
           labels: labels,
-          datasets: datasets
+          datasets: datasets,
         };
 
         const lineConfig = {
@@ -1540,56 +1535,32 @@ if ($("#report-barChart").length > 0 && $("#report-lineChart").length > 0) {
             scales: {
               x: {
                 ticks: {
-                  color: '#6C757D'
+                  color: '#6C757D',
                 },
                 grid: {
                   display: false
                 },
+                border: {
+                  display: false
+                }
               },
 
               y: {
                 ticks: {
-                  color: '#6C757D'
+                  color: '#6C757D',
                 },
                 grid: {
                   display: false
                 },
+                border: {
+                  display: false
+                }
               }
             }
           },
         };
 
-        const barConfig = {
-          type: 'bar',
-          data: data,
-          options: {
-            maintainAspectRatio: false,
-            responsive: true,
-            maxBarThickness: 36,
-            plugins: {
-              legend: {
-                display: false
-              }
-            },
-            tension: 0.4,
-            scales: {
-              x: {
-                grid: {
-                  display: false
-                },
-              },
-
-              y: {
-                grid: {
-                  display: false
-                },
-              }
-            }
-          },
-        };
-
-        if ($("#report-lineChart").length > 0 && $("#report-barChart").length > 0) {
-          report_barChart = new Chart($("#report-barChart"), barConfig);
+        if ($("#report-lineChart").length > 0) {
           report_lineChart = new Chart($("#report-lineChart"), lineConfig);
         }
       },

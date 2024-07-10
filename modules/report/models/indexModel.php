@@ -149,13 +149,18 @@ ORDER BY d.weekdays, i.name;
 
 function get_data_table()
 {
-  $result = db_fetch_array("SELECT i.name AS indicator, sv.value, i.unit, st.name AS station, ss.position, sv.createdAt FROM stations st JOIN sensors ss ON st.id = ss.station_id JOIN sensor_values sv ON ss.id = sv.sensor_id JOIN indicators i ON i.id = sv.indicator_id ORDER BY sv.createdAt DESC, st.id, ss.position");
+  $result = db_fetch_array("SELECT i.name AS indicator, sv.value, i.unit, st.name AS station, ss.position, sv.createdAt FROM stations st JOIN sensors ss ON st.id = ss.station_id JOIN sensor_values sv ON ss.id = sv.sensor_id JOIN indicators i ON i.id = sv.indicator_id WHERE MONTH(sv.createdAt) = MONTH(CURDATE()) ORDER BY sv.createdAt DESC, st.id, ss.position");
   return $result;
 }
 
 function get_data_table_by_search($search, $position, $indicator, $dateStart, $dateEnd)
 {
   $sql = "SELECT i.name AS indicator, sv.value, i.unit, st.name AS station, ss.position, sv.createdAt FROM stations st JOIN sensors ss ON st.id = ss.station_id JOIN sensor_values sv ON ss.id = sv.sensor_id JOIN indicators i ON i.id = sv.indicator_id WHERE st.name LIKE '%{$search}%'";
+
+  if ($position == '-1' && $indicator == '-1' && empty($dateStart) && empty($dateEnd)) {
+    $sql .= " AND MONTH(sv.createdAt) = MONTH(CURDATE())";
+  }
+
   if ($position != '-1') {
     $sql .= " AND ss.position = {$position}";
   }

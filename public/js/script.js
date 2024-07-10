@@ -105,7 +105,6 @@ mainPage.on('click', ".page-link", function (e) {
       var pagination = $(data).find('.pagination').html();
       $('#table').html(value);
       $('.pagination').html(pagination);
-
     },
 
     error: function () {
@@ -172,16 +171,8 @@ function requestSearch() {
 function requestPage(page) {
   var requestData = {
     page: page,
+    search: $('#search').val().trim(),
   };
-
-  if ($('#search').length > 0) {
-    requestData.search = $('#search').val().trim();
-  }
-
-  if ($('#sensor-status').length > 0) {
-    requestData.sensorStatus = $('#sensor-status').val();
-  }
-
 
   if ($('#sensor-status').length > 0) {
     requestData.sensorStatus = $('#sensor-status').val();
@@ -201,6 +192,14 @@ function requestPage(page) {
 
   if ($('#report-indicator').length > 0) {
     requestData.reportIndicator = $('#report-indicator').val();
+  }
+
+  if ($('#date-start').length > 0) {
+    requestData.dateStart = $('#date-start').val().trim();
+  }
+
+  if ($('#date-end').length > 0) {
+    requestData.dateEnd = $('#date-end').val().trim();
   }
   return requestData;
 }
@@ -227,7 +226,6 @@ mainPage.on('change', '#sensor-status', function () {
       sensorStatus: $('#sensor-status').val().trim(),
     },
     success: function (data) {
-      console.log(data);
       var value = $(data).find('#table').html();
       var pagination = $(data).find('.pagination').html();
       $('#table').html(value);
@@ -1672,6 +1670,34 @@ if ($("#report-lineChart").length > 0) {
         var pagination = $(data).find('.pagination').html();
         $('#table').html(value);
         $('.pagination').html(pagination);
+      },
+      error: function () {
+        showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
+      }
+    });
+  });
+
+  mainPage.on('click', '#export-excel', function (e) {
+    e.preventDefault();
+    var url = $(this).attr('href');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: requestSearch(),
+      xhrFields: {
+        responseType: 'blob'
+      },
+      success: function (data) {
+        var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        var url = window.URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'bao_cao.xlsx';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
       },
       error: function () {
         showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");

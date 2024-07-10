@@ -41,7 +41,7 @@
           <label for="search" class="d-flex align-items-center text-secondary text-center bg-white border border-end-0 rounded-start-3 ps-2 pe-1"><i class="bi bi-search"></i></label>
           <input id="search" class="px-1 form-control border-start-0 rounded-end-3 text-secondary" type="search" placeholder="Tìm kiếm..." aria-label="Search">
         </div>
-        <div class="d-flex w-auto">
+        <div class="d-flex w-auto me-2">
           <div class="filter-report dropdown">
             <button class="btn btn-outline-secondary border dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false">
               <i class="bi bi-funnel"></i>
@@ -90,6 +90,9 @@
             </div>
           </div>
         </div>
+        <a href="?mod=report&action=exportExcel" id="export-excel" title="Xuất file" role="button" class="btn btn-success">
+          <i class="bi bi-upload"></i>
+        </a>
       </div>
     </div>
 
@@ -115,7 +118,7 @@
                   <td data-title="Tầng" class="text-center"><?= $item['position'] ?></td>
                   <td data-title="Chỉ số" class="text-center"><?= $item['indicator'] ?></td>
                   <td data-title="Giá trị" class="text-center">
-                    <?= $item["unit"] == "safety" ? ($item["value"] == 1 ? "An toàn" : "Báo động") : ($item['value'] . $item["unit"]) ?>
+                    <?= $item['value'] ?>
                   </td>
                   <td data-title="Thời gian" class="text-center"><?= $item['createdAt'] ?></td>
                 </tr>

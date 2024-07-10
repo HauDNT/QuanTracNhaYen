@@ -7,6 +7,7 @@ function construct()
    }
    //    echo "DÙng chung, load đầu tiên";
    load_model('index');
+   load('helper', 'exportExcel');
 }
 
 function indexAction()
@@ -23,8 +24,7 @@ function indexAction()
          'station' => $value['station'],
          'position' => $value['position'],
          'indicator' => $value['indicator'],
-         'value' => $value['value'],
-         'unit' => $value['unit'],
+         'value' => $value["unit"] == "safety" ? ($value["value"] == 1 ? "An toàn" : "Báo động") : ($value['value'] . $value["unit"]),
          'createdAt' => date('d-m-Y H:s:i', strtotime($value['createdAt'])),
       );
    }
@@ -51,15 +51,39 @@ function indexAction()
    ]);
 }
 
+function exportExcelAction()
+{
+   $data_table = get_data_table();
+   if (isset($_POST["search"])) {
+      $data_table = get_data_table_by_search($_POST["search"], $_POST["reportPosition"], $_POST["reportIndicator"],  $_POST["dateStart"],  $_POST["dateEnd"]);
+   }
+
+   $data_list = array();
+   foreach ($data_table as $index => $value) {
+      $data_list[] = array(
+         'no' => $index + 1,
+         'station' => $value['station'],
+         'position' => $value['position'],
+         'indicator' => $value['indicator'],
+         'value' => $value["unit"] == "safety" ? ($value["value"] == 1 ? "An toàn" : "Báo động") : ($value['value'] . $value["unit"]),
+         'createdAt' => date('d-m-Y H:s:i', strtotime($value['createdAt'])),
+      );
+   }
+
+   $headers = ['STT', 'Trạm', 'Tầng', 'Chỉ số', 'Giá trị', 'Thời gian'];
+   exportExcel($data_list, $headers, "bao_cao.xlsx");
+   exit();
+}
+
 function getChartAction()
 {
    if (isset($_POST["date"])) {
       $label = get_label_month();
       $data = get_data_month();
-      if($_POST["date"] == "this_week" || $_POST["date"] == "last_week") {
+      if ($_POST["date"] == "this_week" || $_POST["date"] == "last_week") {
          $label = get_label_week();
          $data = get_data_week();
-         if($_POST["date"] == "last_week") {
+         if ($_POST["date"] == "last_week") {
             $data = get_data_last_week();
          }
       }

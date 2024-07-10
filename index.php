@@ -22,6 +22,7 @@ define('COREPATH', APPPATH . DIRECTORY_SEPARATOR . $core_folder);
  */
 require_once __DIR__ . '/libraries/pusher/vendor/autoload.php';
 require_once __DIR__ . '/libraries/phpMailer/vendor/autoload.php';
+require_once __DIR__ . '/libraries/phpExcel/vendor/autoload.php';
 $modules_folder = 'modules';
 define('MODULESPATH', APPPATH . DIRECTORY_SEPARATOR . $modules_folder);
 

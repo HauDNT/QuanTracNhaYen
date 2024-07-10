@@ -74,7 +74,7 @@ function setNotifySession(message, type) {
 // showNotify("text", "success");
 
 //========================Flatpickr=============================
-$("#birthday, #birthday-update").flatpickr({
+$("#birthday, #birthday-update, #date-start, #date-end").flatpickr({
   dateFormat: "d-m-Y",
 });
 
@@ -151,6 +151,21 @@ function requestSearch() {
     requestData.userStatus = $('#user-status').val();
   }
 
+  if ($('#report-position').length > 0) {
+    requestData.reportPosition = $('#report-position').val();
+  }
+
+  if ($('#report-indicator').length > 0) {
+    requestData.reportIndicator = $('#report-indicator').val();
+  }
+
+  if ($('#date-start').length > 0) {
+    requestData.dateStart = $('#date-start').val().trim();
+  }
+  if ($('#date-end').length > 0) {
+    requestData.dateEnd = $('#date-end').val().trim();
+  }
+
   return requestData;
 }
 
@@ -167,6 +182,26 @@ function requestPage(page) {
     requestData.sensorStatus = $('#sensor-status').val();
   }
 
+
+  if ($('#sensor-status').length > 0) {
+    requestData.sensorStatus = $('#sensor-status').val();
+  }
+
+  if ($('#user-role').length > 0) {
+    requestData.userRole = $('#user-role').val();
+  }
+
+  if ($('#user-status').length > 0) {
+    requestData.userStatus = $('#user-status').val();
+  }
+
+  if ($('#report-position').length > 0) {
+    requestData.reportPosition = $('#report-position').val();
+  }
+
+  if ($('#report-indicator').length > 0) {
+    requestData.reportIndicator = $('#report-indicator').val();
+  }
   return requestData;
 }
 
@@ -192,6 +227,7 @@ mainPage.on('change', '#sensor-status', function () {
       sensorStatus: $('#sensor-status').val().trim(),
     },
     success: function (data) {
+      console.log(data);
       var value = $(data).find('#table').html();
       var pagination = $(data).find('.pagination').html();
       $('#table').html(value);
@@ -1483,7 +1519,7 @@ if ($("#report-lineChart").length > 0) {
       type: "POST",
       url: "?mod=report&action=getChart",
       data: {
-        getChart: "true"
+        date: "month"
       },
       dataType: 'json',
       success: function (response) {
@@ -1491,7 +1527,11 @@ if ($("#report-lineChart").length > 0) {
         const datasets = [];
         var indexColor = 0;
         response.label.forEach(element => {
-          labels.push(element["month"]);
+          if (element["month"]) {
+            labels.push(element["month"]);
+          } else if (element["weekdays"]) {
+            labels.push((parseInt(element["weekdays"]) + 1) != 8 ? ("T" + (parseInt(element["weekdays"]) + 1)) : "CN");
+          }
         })
 
         response.legend.forEach(element => {
@@ -1506,9 +1546,7 @@ if ($("#report-lineChart").length > 0) {
             data: data,
             backgroundColor: colorList[indexColor],
             borderColor: colorList[indexColor],
-            pointRadius: 0
           });
-
           indexColor++;
           if (indexColor == colorList.length) {
             indexColor = 0;
@@ -1568,4 +1606,76 @@ if ($("#report-lineChart").length > 0) {
   }
 
   reportChartInit();
+
+  mainPage.on('change', '#chart-date', function () {
+    var filter = $(this).val();
+    $.ajax({
+      type: "POST",
+      url: "?mod=report&action=getChart",
+      data: {
+        date: filter
+      },
+      dataType: 'json',
+      success: function (response) {
+        const labels = [];
+        const datasets = [];
+        var indexColor = 0;
+        response.label.forEach(element => {
+          if (element["month"]) {
+            labels.push(element["month"]);
+          } else if (element["weekdays"]) {
+            labels.push((parseInt(element["weekdays"]) + 1) != 8 ? ("T" + (parseInt(element["weekdays"]) + 1)) : "CN");
+          }
+        })
+
+        response.legend.forEach(element => {
+          var data = [];
+          response.data.forEach(element2 => {
+            if (element2["indicator_name"] == element["name"]) {
+              data.push(element2["average_value"]);
+            }
+          });
+          datasets.push({
+            label: element["name"],
+            data: data,
+            backgroundColor: colorList[indexColor],
+            borderColor: colorList[indexColor],
+          });
+          indexColor++;
+          if (indexColor == colorList.length) {
+            indexColor = 0;
+          }
+        });
+
+        if ($("#report-lineChart").length > 0) {
+          report_lineChart.data.labels = labels;
+          report_lineChart.data.datasets = datasets;
+          report_lineChart.update();
+        }
+      },
+    });
+  })
+
+  mainPage.on('change', '#report-position, #report-indicator, #date-start, #date-end', function () {
+    $.ajax({
+      type: 'POST',
+      url: window.location.href,
+      data: {
+        search: $('#search').val().trim(),
+        reportPosition: $('#report-position').val(),
+        reportIndicator: $('#report-indicator').val(),
+        dateStart: $('#date-start').val().trim(),
+        dateEnd: $('#date-end').val().trim(),
+      },
+      success: function (data) {
+        var value = $(data).find('#table').html();
+        var pagination = $(data).find('.pagination').html();
+        $('#table').html(value);
+        $('.pagination').html(pagination);
+      },
+      error: function () {
+        showNotify("Lỗi hệ thống vui lòng thử lại sau.", "danger");
+      }
+    });
+  });
 }

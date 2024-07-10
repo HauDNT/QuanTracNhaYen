@@ -22,7 +22,7 @@
           <input id="search" class="px-1 form-control border-start-0 rounded-end-3 text-secondary" type="search" placeholder="Tìm kiếm..." aria-label="Search">
         </div>
         <div class="filter dropdown me-2">
-          <button class="btn btn-outline-secondary border dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <button class="btn btn-outline-secondary border dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false">
             <i class="bi bi-funnel"></i>
           </button>
           <div class="dropdown-menu border border-light-subtle border-opacity-10 shadow-sm">

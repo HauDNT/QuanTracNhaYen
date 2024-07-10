@@ -8,9 +8,9 @@ function get_list_sensor_info()
 
 function get_list_sensor_search($search, $status)
 {
-  $select = "SELECT s.id, s.sensor_id, s.name AS sensor_name, s.position, st.name AS station_name, s.connect_status FROM sensors s LEFT JOIN stations st ON s.station_id = st.id WHERE s.name LIKE '%{$search}%' OR st.name LIKE '%{$search}%'";
+  $select = "SELECT s.id, s.sensor_id, s.name AS sensor_name, s.position, st.name AS station_name, s.connect_status FROM sensors s LEFT JOIN stations st ON s.station_id = st.id WHERE s.name LIKE '%{$search}%'";
   if ($status != -1) {
-    $select .= " AND s.connect_status = '{$status}'";
+    $select .= " AND s.connect_status = {$status}";
   }
   $select .= " ORDER BY s.id DESC";
   $result = db_fetch_array($select);

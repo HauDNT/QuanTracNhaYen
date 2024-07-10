@@ -8,7 +8,7 @@
       <span class="fw-semibold w-auto">Biểu đồ</span>
       <div class="d-flex w-auto ms-auto">
         <div class="filter dropdown">
-          <button class="btn btn-outline-secondary border dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <button class="btn btn-outline-secondary border dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false">
             <i class="bi bi-funnel"></i>
           </button>
           <div class="dropdown-menu border border-light-subtle border-opacity-10 shadow-sm">
@@ -17,9 +17,9 @@
               <hr class="m-0 mt-2">
             </div>
             <div class="dropdown-menu-body p-2">
-              <label for="date" class="text-secondary mb-1">Thời gian</label>
-              <select id="date" class="form-select">
-                <option value="-1" selected>Tháng</option>
+              <label for="chart-date" class="text-secondary mb-1">Thời gian</label>
+              <select id="chart-date" class="form-select">
+                <option value="month" selected>Tháng</option>
                 <option value="this_week">Tuần này</option>
                 <option value="last_week">Tuần trước</option>
               </select>
@@ -42,8 +42,8 @@
           <input id="search" class="px-1 form-control border-start-0 rounded-end-3 text-secondary" type="search" placeholder="Tìm kiếm..." aria-label="Search">
         </div>
         <div class="d-flex w-auto">
-          <div class="filter dropdown">
-            <button class="btn btn-outline-secondary border dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <div class="filter-report dropdown">
+            <button class="btn btn-outline-secondary border dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false">
               <i class="bi bi-funnel"></i>
             </button>
             <div class="dropdown-menu border border-light-subtle border-opacity-10 shadow-sm">
@@ -52,28 +52,40 @@
                 <hr class="m-0 mt-2">
               </div>
               <div class="dropdown-menu-body p-2">
-                <label for="station" class="text-secondary mb-1">Tầng</label>
-                <select id="station" class="form-select mb-2">
+                <label for="report-position" class="text-secondary mb-1">Tầng</label>
+                <select id="report-position" class="form-select mb-2">
                   <option value="-1" selected>Tất cả</option>
                   <?php foreach ($position as $item) : ?>
                     <option value="<?= $item["position"] ?>">Tầng <?= $item["position"] ?></option>
                   <?php endforeach; ?>
                 </select>
 
-                <label for="indicator" class="text-secondary mb-1">Chỉ số</label>
-                <select id="indicator" class="form-select mb-2">
+                <label for="report-indicator" class="text-secondary mb-1">Chỉ số</label>
+                <select id="report-indicator" class="form-select mb-2">
                   <option value="-1" selected>Tất cả</option>
                   <?php foreach ($indicator as $item) : ?>
                     <option value="<?= $item["id"] ?>"><?= $item["name"] ?></option>
                   <?php endforeach; ?>
                 </select>
 
-                <label for="date" class="text-secondary mb-1">Thời gian</label>
-                <select id="date" class="form-select">
-                  <option value="-1" selected>Tháng</option>
-                  <option value="this_week">Tuần này</option>
-                  <option value="last_week">Tuần trước</option>
-                </select>
+                <div class="d-flex">
+                  <div class="me-2">
+                    <label for="date-start" class="col-form-label">Từ ngày</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control border-end-0" id="date-start" placeholder="dd-mm-yyyy">
+                      <i class="bi bi-calendar3 input-group-text bg-transparent text-primary"></i>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label for="date-end" class="col-form-label">Đến ngày</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control border-end-0" id="date-end" placeholder="dd-mm-yyyy">
+                      <i class="bi bi-calendar3 input-group-text bg-transparent text-primary"></i>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>

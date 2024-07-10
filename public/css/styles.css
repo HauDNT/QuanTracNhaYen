@@ -169,12 +169,17 @@ nav .dropdown-toggle {
   color: #4070f4 !important;
 }
 
-.filter .dropdown-toggle::after {
+.filter .dropdown-toggle::after,
+.filter-report .dropdown-toggle::after{
   display: none !important;
 }
 
 .filter .dropdown-menu {
   width: 220px;
+}
+
+.filter-report .dropdown-menu {
+  width: 350px;
 }
 
 .modal .modal-body {

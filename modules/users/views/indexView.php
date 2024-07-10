@@ -39,7 +39,7 @@
             </div>
           </div>
         </div>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal" data-bs-whatever="@mdo">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal" data-bs-auto-close="false" data-bs-whatever="@mdo">
           <i class="bi bi-plus-lg"></i>
         </button>
       </div>

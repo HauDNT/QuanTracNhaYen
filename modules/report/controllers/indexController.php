@@ -13,7 +13,7 @@ function indexAction()
 {
    $data_table = get_data_table();
    if (isset($_POST["search"])) {
-      $data_table = get_data_table_by_search($_POST["search"]);
+      $data_table = get_data_table_by_search($_POST["search"], $_POST["reportPosition"], $_POST["reportIndicator"],  $_POST["dateStart"],  $_POST["dateEnd"]);
    }
 
    $data_list = array();
@@ -25,7 +25,7 @@ function indexAction()
          'indicator' => $value['indicator'],
          'value' => $value['value'],
          'unit' => $value['unit'],
-         'createdAt' => date('d-m-Y', strtotime($value['createdAt'])),
+         'createdAt' => date('d-m-Y H:s:i', strtotime($value['createdAt'])),
       );
    }
 
@@ -53,11 +53,21 @@ function indexAction()
 
 function getChartAction()
 {
-   if (isset($_POST["getChart"])) {
+   if (isset($_POST["date"])) {
+      $label = get_label_month();
+      $data = get_data_month();
+      if($_POST["date"] == "this_week" || $_POST["date"] == "last_week") {
+         $label = get_label_week();
+         $data = get_data_week();
+         if($_POST["date"] == "last_week") {
+            $data = get_data_last_week();
+         }
+      }
+
       echo json_encode([
-         "label" => get_label_month(),
+         "label" => $label,
          "legend" => get_indicator(),
-         "data" => get_data_month()
+         "data" => $data
       ]);
       exit();
    }

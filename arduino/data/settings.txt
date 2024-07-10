@@ -1,6 +1,0 @@
-dht_id=SS202400006
-flame_id=SS202400007
-station_id=11
-ssid=ThuVien
-password=K@thuvien
-server_ip=qlnhayen.000webhostapp.com

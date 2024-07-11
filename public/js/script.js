@@ -76,6 +76,7 @@ function setNotifySession(message, type) {
 //========================Flatpickr=============================
 $("#birthday, #birthday-update, #date-start, #date-end").flatpickr({
   dateFormat: "d-m-Y",
+  allowInput: true,
 });
 
 //========================Notify=============================
@@ -509,6 +510,7 @@ mainPage.on('click', '#view-user', function (e) {
       $('#updateUserModal').html(response);
       flatpickr("#birthday-update", {
         dateFormat: "d-m-Y",
+        allowInput: true,
       });
       $('#updateUserModal').modal('show');
     },
@@ -963,6 +965,9 @@ if ($('#map').length > 0) {
             enableTime: true,
             noCalendar: true,
             dateFormat: "H:i",
+            minuteIncrement: 1,
+            hourIncrement: 1,
+            allowInput: true,
           });
         }
       },
@@ -1421,6 +1426,9 @@ mainPage.on("change", "#settingStationModal #position", function () {
         enableTime: true,
         noCalendar: true,
         dateFormat: "H:i",
+        minuteIncrement: 1,
+        hourIncrement: 1,
+        allowInput: true,
       });
     },
 

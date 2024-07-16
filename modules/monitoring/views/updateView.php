@@ -27,7 +27,7 @@
         <label for="station_user" class="col-form-label">Người quản lý <span class="text-danger">*</span></label>
         <select class="form-select" aria-label="Default select example" id="station_user">
           <option selected hidden>-- Chọn người quản lý trạm --</option>
-          <?php foreach ($list_user_info as $user) : ?>
+          <?php foreach ($list_user_info as $user): ?>
             <option value="<?= $user['account_id'] ?>" <?= $station_update['user_id'] == $user['account_id'] ? "selected" : "" ?>><?= $user['fullname'] ?></option>
           <?php endforeach; ?>
         </select>
@@ -35,7 +35,8 @@
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trở lại</button>
-      <button value="<?= $station_update['id'] ?>" type="button" class="btn btn-primary" id="update_station">Cập nhật</button>
+      <button value="<?= $station_update['id'] ?>" type="button" class="btn btn-primary" id="update_station">Cập
+        nhật</button>
     </div>
   </div>
 </div>

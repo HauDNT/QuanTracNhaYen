@@ -1,7 +1,7 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-function sendMail($to, $subject, $body)
+function sendMail($user, $password, $name, $to, $subject, $body)
 {
   $mail = new PHPMailer();
   try {
@@ -9,14 +9,14 @@ function sendMail($to, $subject, $body)
     $mail->isSMTP();
     $mail->Host = 'smtp.gmail.com';
     $mail->SMTPAuth = true;
-    $mail->Username = 'tienhauit@gmail.com';
-    $mail->Password = 'utfx wbun cmoo yquz';
+    $mail->Username = $user;
+    $mail->Password = $password;
     $mail->SMTPSecure = 'tls';
     $mail->Port = 587;
 
     $mail->CharSet = 'UTF-8';
 
-    $mail->setFrom('tienhauit@gmail.com', 'Giám sát nhà yến');
+    $mail->setFrom($user, $name);
     $mail->addAddress($to);
 
     $mail->isHTML(true);

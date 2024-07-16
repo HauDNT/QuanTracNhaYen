@@ -52,7 +52,7 @@ function resetPasswordAction()
         $htmlContent = str_replace('{{name}}', get_user_info_by_email($email)["fullname"], $htmlContent);
         $htmlContent = str_replace('{{link}}', base_url('?mod=reset_password&token=' . $token), $htmlContent);
 
-        if (sendMail($email, "Đặt lại mật khẩu", $htmlContent)) {
+        if (sendMail('tienhauit@gmail.com', 'utfx wbun cmoo yquz', 'Giám sát nhà yến', $email, "Đặt lại mật khẩu", $htmlContent)) {
           echo json_encode([
             "type" => "success",
             "message" => "Vui lòng kiểm tra email để đặt lại mật khẩu.",

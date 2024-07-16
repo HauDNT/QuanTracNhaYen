@@ -3,6 +3,7 @@
 function construct()
 {
   load_model('index');
+  load('helper', 'sendMail');
 }
 
 function mailerSettingAction()
@@ -14,6 +15,20 @@ function mailerSettingAction()
       echo json_encode($data);
     } else {
       echo json_encode(array("error" => "No data found."));
+    }
+  }
+}
+
+function sendMailAction() {
+  if (isset($_GET['station_id']) && isset($_GET['subject']) && isset($_GET['container'])) {
+    $station_id = $_GET['station_id'];
+    $subject = $_GET['subject'];
+    $container = $_GET['container'];
+    $data = get_mailer_setting_by_station_id($station_id);
+    if(sendMail($data['sender_email'], $data['sender_password	'], $data['sender_name'], $data['email'], $subject, $container)) {
+      echo "Send mail success.";
+    } else {
+      echo "Send mail fail!!!";
     }
   }
 }

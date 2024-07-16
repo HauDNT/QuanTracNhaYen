@@ -2,7 +2,7 @@
 
 function get_list_users()
 {
-   $result = db_fetch_array("SELECT *, accounts.*, roles.name FROM userinfo, accounts, roles WHERE userinfo.account_id = accounts.id AND accounts.role_id = roles.id AND accounts.username != 'unknown' AND userinfo.id != {$_SESSION["user_info"]["id"]}  GROUP BY accounts.id ORDER BY accounts.id DESC");
+   $result = db_fetch_array("SELECT *, accounts.*, roles.name FROM userinfo, accounts, roles WHERE userinfo.account_id = accounts.id AND accounts.role_id = roles.id AND accounts.username != 'unknown' AND userinfo.id != {$_SESSION["user_info"]["id"]} ORDER BY accounts.id DESC");
    return $result;
 }
 
@@ -17,7 +17,7 @@ function get_list_users_by_search($name, $role, $status)
       $sql .= " AND accounts.status = {$status}";
    }
 
-   $sql .= " GROUP BY accounts.id ORDER BY accounts.id DESC";
+   $sql .= " ORDER BY accounts.id DESC";
 
    $result = db_fetch_array($sql);
    return $result;
